@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="renderer" content="webkit">
+    <title></title>
+    <link rel="stylesheet" href="../../../static/css/pintuer.css">
+    <link rel="stylesheet" href="../../../static/css/admin.css">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+
+
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 新闻管理 </strong></div>
+    <div class="padding border-bottom">
+        <button type="button" class="button border-yellow" id="btn-add" href="#"><span
+                class="icon-plus-square-o" ></span> 添加新闻
+        </button>
+    </div>
+    <table class="table table-hover text-center" id="main-table">
+    </table>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="addModel">
+    <div class="modal-dialog" role="document" style="width: 900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                <h4 class="modal-title">新闻信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel admin-panel margin-top">
+                    <div class="body-content" style="width: 800px;">
+                        <form method="post" class="form-x" action="">
+
+                            <div class="form-group">
+                                <div class="label">
+                                    <label>标题：</label>
+                                </div>
+                                <div class="field">
+                                    <input type="text" class="input" name="s_title" id="input_title"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="label">
+                                    <label>内容：</label>
+                                </div>
+                                <div class="field">
+                                    <textarea  style="height:320px"
+                                              id="input_content"></textarea>
+                                    <div class="tips"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-success" id="btn-insert">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</body>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/pintuer.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/admin.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.all.min.js"> </script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="../../static/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<script>
+
+    var kCount
+    var kDeleteId
+    var kUpdateItem
+    var kPageNumber
+    var ue = UE.getEditor('input_content');
+
+    $(function () {
+        kPageNumber = 0
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../news/count",
+            data: {},
+            success: function (data) {
+                kCount = data
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+
+        $("#btn-add").click(function () {
+            showAddModel()
+        })
+
+
+
+
+    })
+
+    function requestList() {
+
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../news/selectNewsByPageNumber",
+            data: {
+                pageNumber: kPageNumber
+            },
+            success: function (data) {
+                generateList(data)
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function generateList(data) {
+        if (data.length <= 0) return
+
+
+        var tempStr = "<tr>\n" +
+            "            <th width=\"5%\">ID</th>\n" +
+            "            <th width=\"10%\">新闻标题</th>\n" +
+            "            <th width=\"20%\">新闻内容</th>\n" +
+            "            <th width=\"10%\">创建时间</th>\n" +
+            "            <th width=\"10%\">操作</th>\n" +
+            "        </tr>";
+        for (var i = 0; i < data.length; i++) {
+            var tempDate = new Date()
+            tempDate.setTime(data[i].createTime)
+            tempStr += "<tr>"
+            tempStr += "<td>" + data[i].id + "</td>\n"
+            tempStr += "<td>" + data[i].title + "</td>\n"
+            tempStr += "<td>" + data[i].content.substring(0, 20) + "</td>\n"
+            tempStr += "<td>" + tempDate.toLocaleString() + "</td>\n"
+            tempStr += "<td><div class=\"button-group\">" +
+                "<a class=\"button border-main\" onclick='showUpdateModel(" + JSON.stringify(data[i]) + ")'><span class=\"icon-edit\"></span> 修改</a>" +
+                "<a class=\"button border-red\" href=\"javascript:void(0)\" onclick=\"showDeleteModel(" + data[i].id + ")\"><span class=\"icon-trash-o\"></span> 删除</a>" +
+                "</div></td>"
+
+            tempStr += "</tr>"
+        }
+        tempStr += "<tr>\n" +
+            "        <td colspan=\"8\"><div class=\"pagelist\"> <a onclick='lastPage()'>上一页</a><a id='display-page'>第" + (kPageNumber + 1) + "页，共" + (parseInt(kCount / 8) + (kCount % 8 == 0 ? 0 : 1)) + "页</a><a onclick='nextPage()'>下一页</a><a onclick='endPage()'>尾页</a> </div></td>\n" +
+            "      </tr>"
+        $("#main-table").empty()
+        $("#main-table").append(tempStr)
+    }
+
+    // model 显示控制
+    function showDeleteModel(id) {
+        kDeleteId = id
+        addDialog("是否删除？", "是否删除？", "deleteModal", deleteRequest)
+        showDialog("deleteModal")
+    }
+
+    function showAddModel() {
+        $("#btn-insert").text("添加")
+
+        $("#btn-insert").off("click").one("click",function () {
+            addRequest()
+        })
+
+        $("#input_title").val("")
+        $("#input_content").val("")
+        showDialog("addModel")
+
+    }
+
+    function showUpdateModel(data) {
+        $("#btn-insert").text("保存")
+        $("#btn-insert").off("click").one("click",function () {
+            updateRequest()
+        })
+
+        $("#input_title").val(data.title)
+        ue.setContent(data.content)
+        kUpdateItem = data
+        showDialog("addModel")
+    }
+
+    // 请求
+    function deleteRequest() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../news/deleteNews",
+            data: {
+                newsId: kDeleteId
+            },
+            success: function (data) {
+                alert("删除成功")
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function addRequest() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../news/addNews",
+            data: {
+                title: $("#input_title").val(),
+                content: ue.getContent()
+            },
+            success: function (data) {
+                alert("添加成功")
+                hideDialog("addModel")
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function updateRequest() {
+
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../news/updateNews",
+            data: {
+                id: kUpdateItem.id,
+                title: $("#input_title").val(),
+                content: ue.getContent()
+            },
+            success: function (data) {
+                alert("更新成功")
+                hideDialog("addModel")
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+
+    }
+
+    function lastPage() {
+        if (kPageNumber == 0) {
+            alert("已经是第一页")
+            return
+        }
+
+        kPageNumber = kPageNumber - 1
+        requestList()
+    }
+
+    function nextPage() {
+        if (kPageNumber == parseInt(kCount / 8) || kCount == kPageNumber * 8 + 8) {
+            alert("已经是最后一页了")
+            return
+        }
+        kPageNumber = kPageNumber + 1
+        requestList()
+
+    }
+
+    function endPage() {
+        kPageNumber = parseInt(kCount / 8)
+        requestList()
+    }
+
+</script>
+</html>

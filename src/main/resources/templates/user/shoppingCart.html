@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Spareparts Website Template | carlights :: W3layouts</title>
+    <link href="./static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <!--<link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>-->
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+</head>
+<body>
+<!---start-wrap--->
+<div class="wrap">
+    <!---start-header--->
+    <div class="header">
+        <!---start-top-header--->
+        <div class="top-header" style="display: none;">
+            <div class="top-header-left">
+                <ul>
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Specials</a></li>
+                    <li><a href="#">Delivery</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="top-header-right">
+                <ul>
+                    <li><a href="#">CURRENCY:</a></li>
+                    <li>
+                        <select>
+                            <option>Dollar</option>
+                            <option>Euro</option>
+                            <option>Pound</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="sub-header" style="margin-top: 24px;">
+            <div class="logo">
+                <a href="index.html"><img src="../../static/images/logo.png" title="logo"/></a>
+            </div>
+            <div class="sub-header-right">
+                <ul>
+                    <li><a id="li_login">登录</a></li>
+                    <li><a id="li_account">我的账户</a></li>
+                    <li><a id="li_shopping_car">购物车 <img src="../../static/images/cart.png" title="cart"/></a></li>
+                </ul>
+                <!--<input type="text"><input type="submit" value="查找"/>-->
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="top-nav">
+            <ul>
+                <li><a id="li_home">主页</a></li>
+                <li><a id="li_news">最新资讯</a></li>
+                <li><a id="li_score">积分商城</a></li>
+                <li><a id="li_car_fix">车辆维护</a></li>
+                <li><a id="li_question">咨询服务</a></li>
+                <li><a id="li_report">问卷调查</a></li>
+                <!--<li><a href="login.html">Feedback</a></li>-->
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <!---end-top-header--->
+        <!---End-header--->
+    </div>
+
+    <!--content-->
+    <div class="content" style="margin-top: -30px;">
+        <div class="contact">
+
+            <h4 style="padding-top: 20px;">购物车结算</h4>
+            <table class="table table-striped" style="padding-top: 10px">
+                <thead>
+                <tr>
+                    <th style="font-size: 17px;">商品名称</th>
+                    <th style="font-size: 17px;">数量</th>
+                    <th style="font-size: 17px;">单价</th>
+                    <th style="font-size: 17px;">优惠</th>
+                    <th style="font-size: 17px;">总价</th>
+                    <th style="font-size: 17px;">操作</th>
+                </tr>
+                </thead>
+                <tbody id="table-body">
+
+                </tbody>
+            </table>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th rowspan="2" style="font-size: 17px;">结算</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>总价：</strong>
+                    </td>
+                    <td id="td_sum"></td>
+                </tr>
+                <tr>
+                    <td><strong>优惠：</strong>
+                    </td>
+                    <td id="tb_discount_sum"></td>
+                </tr>
+                <tr>
+                    <td><strong>总计</strong>
+                    </td>
+                    <td id="tb_real_sum"></td>
+                </tr>
+                <tr>
+                    <td><strong>我的积分</strong>
+                    </td>
+                    <td id="tb_my_score"></td>
+                </tr>
+                </tbody>
+
+            </table>
+
+            <div class="text-right">
+                <button class="btn btn-primary" onclick="buyAllGoods()"><i class="fa fa-dollar"></i>购买</button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="clear"></div>
+<!--footer-->
+<div class="footer">
+    <div class="section group">
+        <div class="col_1_of_4 span_1_of_4">
+            <h3>INFORMATION</h3>
+            <ul>
+                <li><a href="#">关于我们</a></li>
+                <li><a href="#">位置信息</a></li>
+                <li><a href="#">联系方式</a></li>
+                <li><a href="#">团队精神</a></li>
+                <li><a href="#">法律责任</a></li>
+            </ul>
+        </div>
+        <div class="col_1_of_4 span_1_of_4">
+            <h3>OUR OFFERS</h3>
+            <ul>
+                <li><a href="#">最新产品</a></li>
+                <li><a href="#">今日特价</a></li>
+                <li><a href="#">全部产品</a></li>
+                <li><a href="#">维护套餐</a></li>
+                <li><a href="#">维护预约</a></li>
+            </ul>
+        </div>
+        <div class="col_1_of_4 span_1_of_4">
+            <h3>YOUR ACCOUNT</h3>
+            <ul>
+                <li><a href="#">我的账号</a></li>
+                <li><a href="#">会员信息</a></li>
+                <li><a href="#">积分详情</a></li>
+                <li><a href="#">收货地址</a></li>
+                <li><a href="#">我的购物车</a></li>
+            </ul>
+        </div>
+        <div class="col_1_of_4 span_1_of_4 footer-lastgrid">
+            <h3>Get in touch</h3>
+            <ul>
+                <li><a href="#"><img src="./static/images/facebook.png" title="facebook"/></a></li>
+                <li><a href="#"><img src="./static/images/twitter.png" title="Twiiter"/></a></li>
+                <li><a href="#"><img src="./static/images/rss.png" title="Rss"/></a></li>
+                <li><a href="#"><img src="./static/images/gpluse.png" title="Google+"/></a></li>
+            </ul>
+            <p>Design by <a href="#">W3layouts</a></p>
+        </div>
+    </div>
+</div>
+</div>
+<!---End-wrap--->
+</body>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/common.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/admin.js"></script>
+<script src="../../static/js/jquery.form.js"></script>
+<script>
+    var kAllScore
+    var kIntegral
+
+    $(function () {
+        getShoppingCartCount()
+
+        requestList()
+    })
+
+    function requestList() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../shoppingCart/selectGoodsList",
+            data: {},
+            success: function (data) {
+                generateList(data)
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../account/getUserInfo",
+            data: {},
+            success: function (data) {
+                kIntegral = (data.integral == null ? "0" : data.integral)
+                $("#tb_my_score").text(kIntegral + "积分")
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+
+    function generateList(data) {
+        if (data.length <= 0) {
+            $("#table-body").empty()
+            $("#td_sum").text("")
+            $("#tb_discount_sum").text("")
+            $("#tb_real_sum").text("")
+            kAllScore = 0
+            return
+        }
+        var sum = 0
+        var realSum = 0
+
+        var tempString = ''
+        for (var i = 0; i < data.length; i++) {
+
+            sum += data[i].count * data[i].price
+            realSum += (data[i].count * data[i].price * data[i].discount / 10)
+            tempString +=
+                '<tr>\n' +
+                '<td><div><strong>' + data[i].name + '</strong></div></td>\n' +
+                '<td><button class="btn-default btn-xs" onclick=\'decount(' + JSON.stringify(data[i]) + ')\' >-</button> ' + data[i].count + '' +
+                ' <button class="btn-default btn-xs" onclick=\'addCount(' + JSON.stringify(data[i]) + ')\' >+</button></td>\n' +
+                '<td>' + data[i].price.toFixed(2) + '</td>\n' +
+                '<td>' + data[i].discount + '折</td>\n' +
+                '<td>' + (data[i].count * data[i].price * data[i].discount / 10).toFixed(2) + '</td>\n' +
+                '<td><button class="btn-danger btn-sm" onclick="del(' + data[i].id + ')">删除</button></td>\n' +
+                '</tr>'
+
+        }
+        $("#table-body").empty().append(tempString)
+
+        kAllScore = realSum
+        $("#td_sum").text(sum.toFixed(2) + " 积分")
+        $("#tb_discount_sum").text((sum - realSum).toFixed(2) + " 积分")
+        $("#tb_real_sum").text(realSum.toFixed(2) + " 积分")
+
+    }
+
+    function addCount(data) {
+        updateCount(data, data.count + 1)
+    }
+
+    function decount(data) {
+        updateCount(data, data.count - 1)
+
+    }
+
+    function del(id) {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../shoppingCart/delete",
+            data: {
+                tbGoodsId: id,
+            },
+            success: function (data) {
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function updateCount(data, count) {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../shoppingCart/updateCount",
+            data: {
+                tbGoodsId: data.id,
+                count: count
+            },
+            success: function (data) {
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function buyAllGoods() {
+        var myScore = parseInt(kIntegral)
+        if (myScore < kAllScore) {
+            alert("积分不足")
+            return
+        }
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../shoppingCart/buyAllGoods",
+            data: {
+                realSum: kAllScore
+            },
+            success: function (data) {
+                if (data == -1) {
+                    alert("积分不足")
+                } else {
+                    requestList()
+                }
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+
+</script>
+</html>
+

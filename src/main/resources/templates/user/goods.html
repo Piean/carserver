@@ -1,0 +1,249 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>卡其汽车4S店管理系统</title>
+    <link href="./static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+</head>
+<body>
+<!---start-wrap--->
+<div class="wrap">
+    <!---start-header--->
+    <div class="header">
+        <!---start-top-header--->
+        <div class="top-header" style="display: none;">
+            <div class="top-header-left">
+                <ul>
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Specials</a></li>
+                    <li><a href="#">Delivery</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="top-header-right">
+                <ul>
+                    <li><a href="#">CURRENCY:</a></li>
+                    <li>
+                        <select>
+                            <option>Dollar</option>
+                            <option>Euro</option>
+                            <option>Pound</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="sub-header" style="margin-top: 24px;">
+            <div class="logo">
+                <a href="index.html"><img src="../../static/images/logo.png" title="logo"/></a>
+            </div>
+            <div class="sub-header-right">
+                <ul>
+                    <li><a id="li_login">登录</a></li>
+                    <li><a id="li_account">我的账户</a></li>
+                    <li><a id="li_shopping_car">购物车 <img src="../../static/images/cart.png" title="cart"/></a></li>
+                </ul>
+                <!--<input type="text"><input type="submit" value="查找"/>-->
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="top-nav">
+            <ul>
+                <li><a id="li_home">主页</a></li>
+                <li><a id="li_news">最新资讯</a></li>
+                <li><a id="li_score">积分商城</a></li>
+                <li><a id="li_car_fix">车辆维护</a></li>
+                <li><a id="li_question">咨询服务</a></li>
+                <li><a id="li_report">问卷调查</a></li>
+                <!--<li><a href="login.html">Feedback</a></li>-->
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <!---end-top-header--->
+        <!---End-header--->
+    </div>
+
+    <!--content-->
+    <div class="content">
+        <div class="products-box">
+            <div class="products" id="div-container">
+
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <!--footer-->
+    <div class="footer">
+        <div class="section group">
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>INFORMATION</h3>
+                <ul>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">位置信息</a></li>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">团队精神</a></li>
+                    <li><a href="#">法律责任</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>OUR OFFERS</h3>
+                <ul>
+                    <li><a href="#">最新产品</a></li>
+                    <li><a href="#">今日特价</a></li>
+                    <li><a href="#">全部产品</a></li>
+                    <li><a href="#">维护套餐</a></li>
+                    <li><a href="#">维护预约</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>YOUR ACCOUNT</h3>
+                <ul>
+                    <li><a href="#">我的账号</a></li>
+                    <li><a href="#">会员信息</a></li>
+                    <li><a href="#">积分详情</a></li>
+                    <li><a href="#">收货地址</a></li>
+                    <li><a href="#">我的购物车</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4 footer-lastgrid">
+                <h3>Get in touch</h3>
+                <ul>
+                    <li><a href="#"><img src="./static/images/facebook.png" title="facebook"/></a></li>
+                    <li><a href="#"><img src="./static/images/twitter.png" title="Twiiter"/></a></li>
+                    <li><a href="#"><img src="./static/images/rss.png" title="Rss"/></a></li>
+                    <li><a href="#"><img src="./static/images/gpluse.png" title="Google+"/></a></li>
+                </ul>
+                <p>Design by <a href="#">W3layouts</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!---End-wrap--->
+</body>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/common.js"></script>
+<script>
+    var kPageNumber
+    var kCount
+
+    $(function () {
+        kPageNumber = 0
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../goods/count",
+            data: {},
+            success: function (data) {
+                kCount = data
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+        getShoppingCartCount()
+
+    })
+
+    function requestList() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../goods/selectByPageNumber",
+            data: {
+                pageNumber: kPageNumber
+            },
+            success: function (data) {
+                generateList(data)
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function goodsDetail(data) {
+        $.post("../goodsDetail", {
+            id : data.id,
+            name : data.name,
+            introduction : data.introduction,
+            price : data.price,
+            imageUrl : data.imageUrl,
+            discount : data.discount
+        },function(response){
+//            var obj = window.open("about:blank","_blank")
+            history.pushState({},"","../goodsDetail");
+            document.write(response)
+            initUrl()
+        });
+    }
+
+    function generateList(data) {
+        if (data.length <= 0) return
+
+        var tempString =
+
+            '<h5><span>积分</span>商城</h5>' +
+            '<div class="section group">'
+
+        for (var i = 0; i < (data.length < 4 ? data.length : 4); i++) {
+            tempString += '<div class="grid_1_of_5 images_1_of_5">' +
+                '<img src="' + data[i].imageUrl + '">' +
+                '<h3>商品名：' + data[i].name + '</h3>' +
+                '<p>介绍：' + data[i].introduction + '</p>' +
+                '<h4>价格：' + data[i].price + ' 积分</h4>' +
+                "<div class=\"button\"><span><a href=\"javascript:void(0);\" onclick='goodsDetail(" + JSON.stringify(data[i]) + ")'>详情</a></span></div>" +
+                '</div>'
+        }
+
+        tempString += '</div>'
+        tempString += '<div class="section group">'
+
+        for (var i = 4; i < data.length; i++) {
+            tempString += '<div class="grid_1_of_5 images_1_of_5">' +
+                '<img src="' + data[i].imageUrl + '">' +
+                '<h3>商品名：' + data[i].name + '</h3>' +
+                '<p>介绍：' + data[i].introduction + '</p>' +
+                '<h4>价格：' + data[i].price + ' 积分</h4>' +
+                "<div class=\"button\"><span><a href=\"javascript:void(0);\" onclick='goodsDetail(" + JSON.stringify(data[i]) + ")'>详情</a></span></div>" +
+                '</div>'
+        }
+        tempString += '</div>'
+        tempString +=
+            '<div class="car-tires-top-pagnation">\n' +
+            '   <ul>\n' +
+            '     <li><a href="javascript:void(0);" onclick="lastPage()">上一页 </a></li>\n' +
+            '     <li style="font-size: 13px;color: #999;">第' + (kPageNumber + 1) + '页，共' + (parseInt(kCount / 8) + (kCount % 8 == 0 ? 0 : 1)) + '页</li>\n' +
+            '     <li><a href="javascript:void(0);" onclick="nextPage()">下一页</a></li>\n' +
+            '   </ul>\n' +
+            '</div>'
+
+
+        $("#div-container").empty()
+        $("#div-container").append(tempString)
+    }
+
+    function lastPage() {
+        if (kPageNumber == 0) {
+            alert("已经是第一页")
+            return
+        }
+        kPageNumber = kPageNumber - 1
+        requestList()
+    }
+
+    function nextPage() {
+        if (kPageNumber == parseInt(kCount / 8) || kCount == kPageNumber * 8 + 8) {
+            alert("已经是最后一页了")
+            return
+        }
+        kPageNumber = kPageNumber + 1
+        requestList()
+
+    }
+</script>
+</html>
+

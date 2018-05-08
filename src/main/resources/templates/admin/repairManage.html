@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="renderer" content="webkit">
+    <title></title>
+    <link rel="stylesheet" href="../../../static/css/pintuer.css">
+    <link rel="stylesheet" href="../../../static/css/admin.css">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 保修管理 </strong></div>
+    <!--<div class="padding border-bottom">-->
+    <!--<button type="button" class="button border-yellow" id="btn-add"><span-->
+    <!--class="icon-plus-square-o"></span> 添加记录-->
+    <!--</button>-->
+    <!--</div>-->
+    <table class="table table-hover text-center" id="main-table">
+    </table>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="addModel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                <h4 class="modal-title">保修信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel admin-panel margin-top">
+                    <div class="body-content">
+                        <form method="post" class="form-x" action="">
+
+                            <div class="form-group">
+                                <div class="label" style="width: 70px;">
+                                    <label>报销类型：</label>
+                                </div>
+                                <div class="field">
+                                    <input type="text" class="input" name="s_title" id="input_carType"/>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="label" style="width: 70px;">
+                                    <label>报销金额：</label>
+                                </div>
+                                <div class="field">
+                                    <input type="text" class="input" name="s_title" id="input_amount"
+                                           onkeyup="value=value.replace(/[^\d\.]/g,'')"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="label" style="width: 70px;">
+                                    <label>报销人：</label>
+                                </div>
+                                <div class="field">
+                                    <input type="text" class="input" name="s_title" id="input_salerName"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="label" style="width: 70px;">
+                                    <label>备注：</label>
+                                </div>
+                                <div class="field">
+                                    <textarea name="scopyright" class="input" style="height:120px;"
+                                              id="input_introduction"></textarea>
+                                    <!--<input type="text" class="input" name="s_keywords" id="input_introduction"/>-->
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-success" id="btn-insert">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="upModal">
+    <div class="modal-dialog" role="document" style="width: 900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                <h4 class="modal-title">维修信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="label">
+                        <label>选择维修时间：</label>
+                    </div>
+                    <select class="form-control" id="sel-time"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-success" onclick="updateRequest()">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+</body>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/pintuer.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/admin.js"></script>
+<script>
+
+    var kCount
+    var kUpdateItem
+    var kDeleteId
+    var kPageNumber
+
+    $(function () {
+        kPageNumber = 0
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../repair/count",
+            data: {},
+            success: function (data) {
+                kCount = data
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+
+        $("#btn-add").click(function () {
+            showAddModel()
+        })
+    })
+
+    function requestList() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../repair/selectByPageNumber",
+            data: {
+                pageNumber: kPageNumber
+            },
+            success: function (data) {
+                generateList(data)
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function generateList(data) {
+        if (data.length <= 0) return
+
+        var tempStr = "<tr>\n" +
+            "            <th width=\"5%\">ID</th>\n" +
+            "            <th width=\"8%\">车型</th>\n" +
+            "            <th width=\"15%\">车辆问题</th>\n" +
+            "            <th width=\"8%\">联系号码</th>\n" +
+            "            <th width=\"8%\">预约时间</th>\n" +
+            "            <th width=\"8%\">当前状态</th>\n" +
+            "            <th width=\"15%\">操作</th>\n" +
+            "        </tr>";
+        for (var i = 0; i < data.length; i++) {
+            var tempDate = new Date()
+            tempDate.setTime(data[i].dateTime)
+
+            tempStr += "<tr>"
+            tempStr += "<td>" + data[i].id + "</td>\n"
+            tempStr += "<td>" + data[i].carType + "</td>\n"
+            tempStr += "<td>" + data[i].matter + "</td>\n"
+            tempStr += "<td>" + data[i].phone + "</td>\n"
+            tempStr += "<td>" + (data[i].isRepair == 0 ? "待处理" : tempDate.toLocaleDateString()) + "</td>\n"
+            tempStr += "<td>" + (data[i].isRepair == 0 ? "待处理" : "已处理") + "</td>\n"
+            tempStr += "<td><div class=\"button-group\">" +
+                (data[i].isRepair == 0 ? "<a class=\"button border-main\" onclick='showUpdateModel(" + JSON.stringify(data[i]) + ")'><span class=\"icon-edit\"></span> 处理</a>" : "") +
+                "<a class=\"button border-red\" href=\"javascript:void(0)\" onclick=\"showDeleteModel(" + data[i].id + ")\"><span class=\"icon-trash-o\"></span> 删除</a>" +
+                "</div></td>"
+            tempStr += "</tr>"
+        }
+        tempStr += "<tr>\n" +
+            "        <td colspan=\"8\"><div class=\"pagelist\"> <a onclick='lastPage()'>上一页</a><a id='display-page'>第" + (kPageNumber + 1) + "页，共" + (parseInt(kCount / 8) + (kCount % 8 == 0 ? 0 : 1)) + "页</a><a onclick='nextPage()'>下一页</a><a onclick='endPage()'>尾页</a> </div></td>\n" +
+            "      </tr>"
+        $("#main-table").empty()
+        $("#main-table").append(tempStr)
+    }
+
+    // model 显示控制
+    function showDeleteModel(id) {
+        kDeleteId = id
+        addDialog("是否删除？", "是否删除？", "deleteModal", deleteRequest)
+        showDialog("deleteModal")
+    }
+
+    function showUpdateModel(data) {
+
+        var tempDate = new Date()
+        tempDate.setTime(data.dateTime)
+        var str = tempDate.toLocaleDateString()
+
+        tempDate.setTime(data.dateTime2)
+        var str2 = tempDate.toLocaleDateString()
+
+        tempDate.setTime(data.dateTime3)
+        var str3 = tempDate.toLocaleDateString()
+
+        tempDate.set
+        kUpdateItem = data
+        $("#sel-time").empty().append(
+            '<option value="">' + str + '</option>' +
+            '<option value="">' + str2 + '</option>' +
+            '<option value="">' + str3 + '</option>'
+        )
+//        addDialog("是否修改？", "是否将 " + data.phone + " 用户的 " + data.carType + " 维修预约修改为已处理？", "confirmModal", updateRequest)
+        showDialog("upModal")
+
+    }
+
+    // 增删改接口请求
+    function deleteRequest() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../repair/delete",
+            data: {
+                id: kDeleteId
+            },
+            success: function (data) {
+                alert("删除成功")
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function updateRequest() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../repair/update",
+            data: {
+                id: kUpdateItem.id,
+                isRepair: 1
+            },
+            success: function (data) {
+                alert("修改成功")
+//                hideDialog("addModel")
+                hideDialog("upModal")
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function lastPage() {
+        if (kPageNumber == 0) {
+            alert("已经是第一页")
+            return
+        }
+
+        kPageNumber = kPageNumber - 1
+        requestList()
+    }
+
+    function nextPage() {
+        if (kPageNumber == parseInt(kCount / 8) || kCount == kPageNumber * 8 + 8) {
+            alert("已经是最后一页了")
+            return
+        }
+        kPageNumber = kPageNumber + 1
+        requestList()
+
+    }
+
+    function endPage() {
+        kPageNumber = parseInt(kCount / 8)
+        requestList()
+    }
+
+</script>
+</html>

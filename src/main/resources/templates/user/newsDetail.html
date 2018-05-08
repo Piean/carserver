@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>新闻发布系统</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft YaHei", "微软雅黑", "consolas";
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        .container {
+            width: 1000px;
+            margin: 0 auto;
+        }
+
+        .index-bg {
+            width: 100%;
+            height: 500px;
+
+            position: absolute;
+            top: -50px;
+            z-index: -10;
+        }
+
+        .news-title {
+            font-size: 23px;
+        }
+
+        .news-content-des {
+            line-height: 28px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1></h1>
+    <div class="author-time">
+        发表于 <span></span>
+    </div>
+    <div class="news-des">
+        <div class="news-content-des">
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/common.js"></script>
+<script>
+    $(function () {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../news/getNewsDetail",
+            data: {id: getQueryString("id")},
+            success: function (data) {
+                var tmp = "<h1>" + data.title + "</h1>";
+                tmp += "<div class='author-time'>";
+                tmp += "<span>" + timestampToTime(data.createTime) + "</span>";
+                tmp += "</div>";
+                tmp += "<div class=\"news-des\">";
+                tmp += "<div class=\"news-content-des\">";
+                tmp += data.content;
+                tmp += "</div></div>";
+                $(".container").empty();
+                $(".container").append(tmp);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.responseText)
+            }
+        })
+    });
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+</script>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="renderer" content="webkit">
+    <title></title>
+    <link rel="stylesheet" href="../../../static/css/pintuer.css">
+    <link rel="stylesheet" href="../../../static/css/admin.css">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 问卷统计 </strong></div>
+    <div>
+        <div class="col-xs-6" id="chart1" style="height: 300px;"></div>
+        <div class="col-xs-6" id="chart2" style="height: 300px;"></div>
+        <div class="col-xs-6" id="chart3" style="height: 300px;"></div>
+        <div class="col-xs-6" id="chart4" style="height: 300px;"></div>
+
+    </div>
+    <table class="table table-hover text-center" id="main-table">
+    </table>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="addModel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                <h4 class="modal-title">添加用户</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel admin-panel margin-top">
+                    <div class="body-content">
+                        <form method="post" class="form-x" action="">
+
+                            <div class="form-group">
+                                <div class="label">
+                                    <label>账号：</label>
+                                </div>
+                                <div class="field">
+                                    <input type="text" class="input" name="s_title" id="input_account"/>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="label">
+                                    <label>密码：</label>
+                                </div>
+                                <div class="field">
+                                    <input type="text" class="input" name="s_title" id="input_password"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="label">
+                                    <label>会员：</label>
+                                </div>
+                                <div class="field">
+                                    <select name="pid" class="input w50" id="select_vip">
+                                        <option value="0">普通用户</option>
+                                        <option value="1">会员用户</option>
+                                    </select>
+                                    <div class="tips">设置用户是否为会员</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="label">
+                                    <label>积分：</label>
+                                </div>
+                                <div class="field">
+                                    <input type="text" class="input" name="s_keywords" id="input_score"/>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-success" id="btn-insert">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="reportModel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                <h4 class="modal-title">问卷信息</h4>
+            </div>
+            <div class="modal-body" style="widows: 600px;">
+                <form>
+                    <div style="padding: 15px;">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">1. 您最需要汽车销售商提供那些方面的服务</label>
+                            <div class="radio" id="exampleInputEmail1">
+                                <label>
+                                    <input type="radio" name="optionsRadios1" value="A.售前服务" checked>
+                                    A.售前服务 </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios1" value="B.代办手续">
+                                    B.代办手续 </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios1" value="C.保养维修">
+                                    C.保养维修 </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios1" value="D.咨询服务">
+                                    D.咨询服务 </label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail2">2.你喜欢一下哪种购车的优惠方式？</label>
+                            <div class="radio" id="exampleInputEmail2">
+                                <label>
+                                    <input type="radio" name="optionsRadios2" value="A.赠送燃油消费卷" checked>
+                                    A.赠送燃油消费卷
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios2" value="B.降价让利">
+                                    B.降价让利 </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios2" value="C.维修保养优惠">
+                                    C.维修保养优惠 </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios2" value="D.保险优惠">
+                                    D.保险优惠 </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail3">3.影响您现在马上购车的最主要原因是什么？</label>
+                            <div class="radio" id="exampleInputEmail3">
+                                <label>
+                                    <input type="radio" name="optionsRadios3" value="A.经济收入" checked>
+                                    A.经济收入 </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios3" value="B.汽车价格">
+                                    B.汽车价格
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios3" value="C.使用环境">
+                                    C.使用环境
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios3" value="B.汽车价格">
+                                    D.限制政策
+                                </label>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail4">4.您最近半年是否有买车计划？</label>
+                            <div class="radio" id="exampleInputEmail4">
+                                <label>
+                                    <input type="radio" name="optionsRadios4" value="A.是" checked>
+                                    A.是
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios4" value="B.否">
+                                    B.否
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail5">5. 对我们的店意见：</label>
+                            <input type="email" class="form-control" id="exampleInputEmail5" placeholder="...">
+                        </div>
+
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-success" id="btn-update">确定修改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+</body>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/pintuer.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../static/js/echarts.common.min.js"></script>
+<script src="../../static/js/admin.js"></script>
+<script>
+
+    var kCount
+    var kPageNumber
+
+    $(function () {
+        kPageNumber = 0
+        requestCount()
+        requestMapData()
+
+    })
+
+    function requestCount() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../report/count",
+            data: {},
+            success: function (data) {
+                kCount = data
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function requestMapData() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../report/getReportResult",
+            data: {},
+            success: function (data) {
+                generateCharts(data)
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function requestList() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../report/selectUserList",
+            data: {
+                pageNumber: kPageNumber
+            },
+            success: function (data) {
+                generateList(data)
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function generateCharts(data) {
+        if (data.length <= 0) return
+
+        var Titles = ["您最需要汽车销售商提供那些方面的服务?", "你喜欢一下哪种购车的优惠方式？", "影响您现在马上购车的最主要原因是什么？", "您最近半年是否有买车计划？"]
+
+        for (var i = 0; i < data.length; i++) {
+            var map = data[i]
+            var keys = []
+            var values = []
+
+            for (var key in map) {
+                keys.push(key)
+                values.push({value: map[key], name: key})
+            }
+            drawCharts("chart" + (i + 1), "问题" + (i + 1), Titles[i], keys, values)
+
+        }
+
+    }
+
+    function generateList(data) {
+        if (data.length <= 0) return
+
+        var tempStr = "<tr>\n" +
+            "            <th width=\"5%\">ID</th>\n" +
+            "            <th width=\"15%\">用户</th>\n" +
+            "            <th width=\"10%\">操作</th>\n" +
+            "        </tr>";
+        for (var i = 0; i < data.length; i++) {
+            tempStr += "<tr>"
+            tempStr += "<td>" + data[i].id + "</td>\n"
+            tempStr += "<td>" + data[i].username + "</td>\n"
+            tempStr += "<td><div class=\"button-group\">" +
+                "<a class=\"button border-main\" onclick='showReportModel(" + JSON.stringify(data[i]) + ")'><span class=\"icon-edit\"></span> 查看</a>" +
+                "</div></td>"
+            tempStr += "</tr>"
+        }
+        tempStr += "<tr>\n" +
+            "        <td colspan=\"8\"><div class=\"pagelist\"> <a onclick='lastPage()'>上一页</a><a id='display-page'>第" + (kPageNumber + 1) + "页，共" + (parseInt(kCount / 8) + (kCount % 8 == 0 ? 0 : 1)) + "页</a><a onclick='nextPage()'>下一页</a><a onclick='endPage()'>尾页</a> </div></td>\n" +
+            "      </tr>"
+        $("#main-table").empty()
+        $("#main-table").append(tempStr)
+    }
+
+
+    function showReportModel(data) {
+        showDialog("reportModel")
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../report/selectByUserId",
+            data: {
+                userId: data.id
+            },
+            success: function (data) {
+                var map = new Map()
+                for (var i = 0; i < data.length; i++) {
+                    map.set(data[i].questionId, data[i].answer)
+                }
+                $("input[value='" + map.get(1) + "']").attr("checked", true)
+                $("input[value='" + map.get(2) + "']").attr("checked", true)
+                $("input[value='" + map.get(3) + "']").attr("checked", true)
+                $("input[value='" + map.get(4) + "']").attr("checked", true)
+                $("#exampleInputEmail5").val(map.get(5))
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+
+    function lastPage() {
+        if (kPageNumber == 0) {
+            alert("已经是第一页")
+            return
+        }
+
+        kPageNumber = kPageNumber - 1
+        requestList()
+    }
+
+    function nextPage() {
+        if (kPageNumber == parseInt(kCount / 8) || kCount == kPageNumber * 8 + 8) {
+            alert("已经是最后一页了")
+            return
+        }
+        kPageNumber = kPageNumber + 1
+        requestList()
+
+    }
+
+    function endPage() {
+        kPageNumber = parseInt(kCount / 8)
+        requestList()
+    }
+
+</script>
+</html>

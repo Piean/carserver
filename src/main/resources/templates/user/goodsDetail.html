@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>卡其汽车4S店管理系统</title>
+    <link href="../../static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <!--<link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>-->
+    <!--<link rel="stylesheet" href="../../static/css/jquery.jqzoom.css" type="text/css">-->
+
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+<!---start-wrap--->
+<div class="wrap">
+    <!---start-header--->
+    <div class="header">
+        <!---start-top-header--->
+        <div class="top-header" style="display: none;">
+            <div class="top-header-left">
+                <ul>
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Specials</a></li>
+                    <li><a href="#">Delivery</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="top-header-right">
+                <ul>
+                    <li><a href="#">CURRENCY:</a></li>
+                    <li>
+                        <select>
+                            <option>Dollar</option>
+                            <option>Euro</option>
+                            <option>Pound</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="sub-header" style="margin-top: 24px;">
+            <div class="logo">
+                <a href="index.html"><img src="../../static/images/logo.png" title="logo"/></a>
+            </div>
+            <div class="sub-header-right">
+                <ul>
+                    <li><a id="li_shopping_car">购物车 <img src="../../static/images/cart.png" title="cart"/></a></li>
+                </ul>
+                <!--<input type="text"><input type="submit" value="查找"/>-->
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="top-nav">
+            <ul>
+                <li><a id="li_home">主页</a></li>
+                <li><a id="li_news">最新资讯</a></li>
+                <li><a id="li_score">积分商城</a></li>
+                <li><a id="li_car_fix">车辆维护</a></li>
+                <li><a id="li_question">咨询服务</a></li>
+                <li><a id="li_report">问卷调查</a></li>
+                <!--<li><a href="login.html">Feedback</a></li>-->
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <!---end-top-header--->
+        <!---End-header--->
+    </div>
+    <!--content-->
+    <div class="content">
+        <div class="single-page"><br/>
+            <div class="single-top-pagination">
+                <ul>
+                    <li><a href="index">商城 /</a></li>
+                    <li><span>商品详情</span></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <div class="product-info">
+                <div class="product-image">
+                    <div class="clearfix" id="content">
+                        <div class="clearfix">
+                            <a th:href="${goodsEntity.imageUrl}" class="jqzoom" rel='gal1' title="triumph">
+                                <img th:src="${goodsEntity.imageUrl}" title="triumph"
+                                     style="border: 1px solid rgba(102, 102, 102, 0.2);">
+                            </a>
+                        </div>
+                        <br/>
+                        <div class="clearfix">
+                            <ul id="thumblist" class="clearfix">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-price-info">
+                    <!--<div class="product-catrgory-pagenation">-->
+                    <!--<ul>-->
+                    <!--<li><h3>Categories :</h3></li>-->
+                    <!--<li class="active3"><a href="#">Productname</a></li>-->
+                    <!--<li><a href="#">Product2</a></li>-->
+                    <!--<li><a href="#">Product3</a></li>-->
+                    <!--</ul>-->
+                    <!--</div>-->
+                    <div class="product-value">
+                        <h4 th:text="${goodsEntity.name}">Product-Complete Deatils With Value</h4>
+                        <ul>
+                            <li><h2>积分 :</h2></li>
+                            <li><span th:text="${goodsEntity.price}">$350</span></li>
+                            <li><h5 th:text="${goodsEntity.price * goodsEntity.discount /10}"></h5></li>
+                            <li></li>
+                        </ul>
+                        <ul>
+                            <li><h3> 折扣：</h3></li>
+                            <li><h3 th:text="${goodsEntity.discount}"></h3></li>
+                            <li><h3>折</h3></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                    <div class="product-shipping">
+                        <br>
+                        <span>当前活动 :</span>
+                        <p>
+                            <lable>会员</lable>
+                            使用积分下单，更享专属折扣。
+                        </p>
+                        <div class="clear"></div>
+                    </div>
+                    <!--<div class="product-payments">-->
+                    <!--<span>Payments: :</span>-->
+                    <!--<p>-->
+                    <!--<lable>paypal</lable>-->
+                    <!-- - (Credit card, EMI, Debit card, Online Bank Transfer), PaisaPay COD-->
+                    <!--</p>-->
+                    <!--<div class="clear"></div>-->
+                    <!--</div>-->
+                    <div class="product-description">
+                        <h3>商品介绍 :</h3>
+                        <p th:text="${goodsEntity.introduction}"></p>
+                        <a href="javascript:void(0);" onclick="addCart()">添加至购物车</a>
+                    </div>
+                    <div class="product-share">
+                        <h3>分享至:</h3>
+                        <ul>
+                            <li><a href="#"><img src="./static/images/facebook.png" title="facebook"/>Facebook</a></li>
+                            <li><a href="#"><img src="./static/images/twitter.png" title="Twitter"/>Twitter</a></li>
+                            <li><a href="#"><img src="./static/images/rss.png" title="Rss"/>Rss</a></li>
+                            <li><a href="#"><img src="./static/images/gpluse.png" title="Googlepluse"/>Google+</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <input id="input_goods_id" hidden="hidden" th:value="${goodsEntity.id}">
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="footer">
+        <div class="section group">
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>INFORMATION</h3>
+                <ul>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">位置信息</a></li>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">团队精神</a></li>
+                    <li><a href="#">法律责任</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>OUR OFFERS</h3>
+                <ul>
+                    <li><a href="#">最新产品</a></li>
+                    <li><a href="#">今日特价</a></li>
+                    <li><a href="#">全部产品</a></li>
+                    <li><a href="#">维护套餐</a></li>
+                    <li><a href="#">维护预约</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>YOUR ACCOUNT</h3>
+                <ul>
+                    <li><a href="#">我的账号</a></li>
+                    <li><a href="#">会员信息</a></li>
+                    <li><a href="#">积分详情</a></li>
+                    <li><a href="#">收货地址</a></li>
+                    <li><a href="#">我的购物车</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4 footer-lastgrid">
+                <h3>Get in touch</h3>
+                <ul>
+                    <li><a href="#"><img src="../../static/images/facebook.png" title="facebook"/></a></li>
+                    <li><a href="#"><img src="../../static/images/twitter.png" title="Twiiter"/></a></li>
+                    <li><a href="#"><img src="../../static/images/rss.png" title="Rss"/></a></li>
+                    <li><a href="#"><img src="../../static/images/gpluse.png" title="Google+"/></a></li>
+                </ul>
+                <p>Design by <a href="#">W3layouts</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../../static/js/common.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            getShoppingCartCount()
+        })
+
+        function addCart() {
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "../shoppingCart/saveOrUpdate",
+                data: {
+                    tbGoodsId: $("#input_goods_id").val(),
+                    count: 1,
+                    isSale: 0
+                },
+                success: function (data) {
+                    if (data.id != -1) {
+                        alert("成功添加")
+                        getShoppingCartCount()
+                    }
+                },
+                error: function (data) {
+                    alert("系统错误")
+                }
+            })
+        }
+    </script>
+</div>
+<!---End-wrap--->
+</body>
+</html>
+

@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>卡其汽车4S店管理系统</title>
+    <link href="../../static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <!--<link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>-->
+</head>
+<body>
+<!---start-wrap--->
+<div class="wrap">
+    <!---start-header--->
+    <div class="header">
+        <!---start-top-header--->
+        <div class="top-header" style="display: none;">
+            <div class="top-header-left">
+                <ul>
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Specials</a></li>
+                    <li><a href="#">Delivery</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="top-header-right">
+                <ul>
+                    <li><a href="#">CURRENCY:</a></li>
+                    <li>
+                        <select>
+                            <option>Dollar</option>
+                            <option>Euro</option>
+                            <option>Pound</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="sub-header" style="margin-top: 24px;">
+            <div class="logo">
+                <a href="index.html"><img src="../../static/images/logo.png" title="logo"/></a>
+            </div>
+            <div class="sub-header-right">
+                <ul>
+                    <li><a id="li_login">登录</a></li>
+                    <li><a id="li_account">我的账户</a></li>
+                    <li><a id="li_shopping_car">购物车 <img src="../../static/images/cart.png" title="cart"/></a></li>
+                </ul>
+                <!--<input type="text"><input type="submit" value="查找"/>-->
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="top-nav">
+            <ul>
+                <li><a id="li_home">主页</a></li>
+                <li><a id="li_news">最新资讯</a></li>
+                <li><a id="li_score">积分商城</a></li>
+                <li><a id="li_car_fix">车辆维护</a></li>
+                <li><a id="li_question">咨询服务</a></li>
+                <li><a id="li_report">问卷调查</a></li>
+                <!--<li><a href="login.html">Feedback</a></li>-->
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <!---end-top-header--->
+        <!---End-header--->
+    </div>
+    <div class="content">
+        <div class="contact">
+            <div class="section group">
+                <div class="col span_1_of_3">
+                    <div class="contact_info">
+                        <h3>卡其汽车4S店管理系统</h3>
+                        <img src="../../static/images/11.jpg" width="100%" height="180"/>
+                    </div>
+                </div>
+                <div class="col span_2_of_3">
+                    <div class="contact-form">
+                        <h3>快速咨询</h3>
+                        <form>
+                            <div>
+                                <span><textarea id="textarea-question" disabled></textarea></span>
+                                <span><input type="text" value="" placeholder="输入问题编号" id="input_idx"></span>
+                            </div>
+                            <div>
+                                <button id="btn_send" type="button">发 送</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="footer">
+        <div class="section group">
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>INFORMATION</h3>
+                <ul>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">位置信息</a></li>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">团队精神</a></li>
+                    <li><a href="#">法律责任</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>OUR OFFERS</h3>
+                <ul>
+                    <li><a href="#">最新产品</a></li>
+                    <li><a href="#">今日特价</a></li>
+                    <li><a href="#">全部产品</a></li>
+                    <li><a href="#">维护套餐</a></li>
+                    <li><a href="#">维护预约</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>YOUR ACCOUNT</h3>
+                <ul>
+                    <li><a href="#">我的账号</a></li>
+                    <li><a href="#">会员信息</a></li>
+                    <li><a href="#">积分详情</a></li>
+                    <li><a href="#">收货地址</a></li>
+                    <li><a href="#">我的购物车</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4 footer-lastgrid">
+                <h3>Get in touch</h3>
+                <ul>
+                    <li><a href="#"><img src="../../static/images/facebook.png" title="facebook"/></a></li>
+                    <li><a href="#"><img src="../../static/images/twitter.png" title="Twiiter"/></a></li>
+                    <li><a href="#"><img src="../../static/images/rss.png" title="Rss"/></a></li>
+                    <li><a href="#"><img src="../../static/images/gpluse.png" title="Google+"/></a></li>
+                </ul>
+                <p>Design by <a href="#">W3layouts</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!---End-wrap--->
+</body>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/common.js"></script>
+<script>
+
+    var kQuestionList
+
+    $(function () {
+        getShoppingCartCount()
+
+        replaceTextarea()
+        $("#btn_send").click(function () {
+            showAnswer($("#input_idx").val())
+            $("#input_idx").val("")
+        })
+    })
+
+    // 初始化回复框
+    function replaceTextarea() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "question/getQuestionList",
+            data: {},
+            success: function (data) {
+                if (data.length == 0) return
+
+                kQuestionList = data
+                var tempStr = "· 回复问题编号，可快速获取对应的咨询 ·\n"
+                for (var i = 0; i < data.length; i++) {
+                    tempStr += "问题 " + data[i].id + ": " + data[i].question + "\n"
+                }
+                console.log(tempStr);
+                $("#textarea-question").val(tempStr)
+
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    }
+
+    // 根据输入内容做对应回答
+    function showAnswer(idx) {
+        console.log(kQuestionList);
+        if (kQuestionList == undefined || kQuestionList.length == 0) return
+        for (var i = 0; i < kQuestionList.length; i++) {
+            if (kQuestionList[i].id == idx) {
+                var tempStr = $("#textarea-question").val()
+                tempStr += "问题 " + idx + " 回复:\n"
+                tempStr += kQuestionList[i].answer + "\n"
+                $("#textarea-question").val(tempStr)
+            }
+        }
+    }
+
+</script>
+</html>
+

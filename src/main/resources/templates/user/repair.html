@@ -1,0 +1,258 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>卡其汽车4S店管理系统</title>
+    <link href="../../../static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="../../../static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all"/>
+    <!--<link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>-->
+
+</head>
+<body>
+<!---start-wrap--->
+<div class="wrap">
+    <!---start-header--->
+    <div class="header">
+        <!---start-top-header--->
+        <div class="top-header" style="display: none;">
+            <div class="top-header-left">
+                <ul>
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Specials</a></li>
+                    <li><a href="#">Delivery</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="top-header-right">
+                <ul>
+                    <li><a href="#">CURRENCY:</a></li>
+                    <li>
+                        <select>
+                            <option>Dollar</option>
+                            <option>Euro</option>
+                            <option>Pound</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="sub-header" style="margin-top: 24px;">
+            <div class="logo">
+                <a href="index.html"><img src="../../static/images/logo.png" title="logo"/></a>
+            </div>
+            <div class="sub-header-right">
+                <ul>
+                    <li><a id="li_login">登录</a></li>
+                    <li><a id="li_account">我的账户</a></li>
+                    <li><a id="li_shopping_car">购物车 <img src="../../static/images/cart.png" title="cart"/></a></li>
+                </ul>
+                <!--<input type="text"><input type="submit" value="查找"/>-->
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="top-nav">
+            <ul>
+                <li><a id="li_home">主页</a></li>
+                <li><a id="li_news">最新资讯</a></li>
+                <li><a id="li_score">积分商城</a></li>
+                <li><a id="li_car_fix">车辆维护</a></li>
+                <li><a id="li_question">咨询服务</a></li>
+                <li><a id="li_report">问卷调查</a></li>
+                <!--<li><a href="login.html">Feedback</a></li>-->
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <!---end-top-header--->
+        <!---End-header--->
+    </div>
+    <div class="content">
+        <div class="contact">
+            <div class="section group">
+                <div class="col span_1_of_3">
+                    <div class="contact_info">
+                        <h3>卡其汽车4S店管理系统</h3>
+                        <img src="../../static/images/11.jpg" width="100%" height="180"/>
+                    </div>
+
+                </div>
+                <div class="col span_2_of_3">
+                    <div class="contact-form">
+                        <h3></h3>
+                        <form>
+                            <div>
+                                <span><label>品牌</label></span>
+                                <select class="form-control" id="sel-car-brand">
+                                    <option value="">请选择品牌</option>
+                                    <option value="A AC Schnitzer">A AC Schnitzer</option>
+                                    <option value="ALPINA">ALPINA</option>
+                                    <option value="ARCFOX">ARCFOX</option>
+                                    <option value="奥迪">奥迪</option>
+                                    <option value="宝马">宝马</option>
+                                    <option value="宝骏">宝骏</option>
+                                    <option value="保时捷">保时捷</option>
+                                    <option value="奔驰">奔驰</option>
+                                    <option value="本田">本田</option>
+                                    <option value="比亚迪">比亚迪</option>
+                                    <option value="宾利">宾利</option>
+                                    <option value="布加迪">布加迪</option>
+                                    <option value="长安">长安</option>
+                                    <option value="东风小康">东风小康</option>
+                                    <option value="广汽吉奥">广汽吉奥</option>
+                                    <option value="Jeep">Jeep</option>
+                                    <option value="捷豹">捷豹</option>
+                                    <option value="卡迪拉克">卡迪拉克</option>
+                                    <option value="兰博基尼">兰博基尼</option>
+                                    <option value="路虎">路虎</option>
+                                    <option value="MINI">MINI</option>
+                                    <option value="马萨拉蒂">马萨拉蒂</option>
+                                    <option value="迈巴赫">迈巴赫</option>
+                                </select>
+                            </div>
+                            <div>
+                                <span><label>车系</label></span>
+                                <select class="form-control" id="sel-car-line">
+                                    <option value="">请选择车系</option>
+                                    <option value="AC Schnitzer M3">AC Schnitzer M3</option>
+                                    <option value="AC Schnitzer X5">AC Schnitzer X5</option>
+                                    <option value="AC Schniter Eagle">AC Schniter Eagle</option>
+                                    <option value="AC Schniter 1系">AC Schniter 1系</option>
+                                    <option value="AC Schniter 3系">AC Schniter 3系</option>
+                                    <option value="AC Schniter 5系">AC Schniter 5系</option>
+                                    <option value="AC Schniter 6系">AC Schniter 6系</option>
+                                    <option value="AC Schniter 7系">AC Schniter 7系</option>
+                                </select>
+                            </div>
+                            <div>
+                                <span><label>车型</label></span>
+                                <select class="form-control" id="sel-car-type">
+                                    <option value="">请选择车型</option>
+                                    <option value="2015款 ACS3 sport">2015款 ACS3 sport</option>
+                                    <option value="2015款 ACS35 35i">2015款 ACS35 35i</option>
+                                    <option value="2011款 ACS5  35i">2011款 ACS5 35i</option>
+                                    <option value="2010款 X5 M">2010款 X5 M</option>
+                                    <option value="2008款 BMW X5 Falcon">2008款 BMW X5 Falcon</option>
+                                    <option value="2012款 基本型">2012款 基本型</option>
+                                    <option value="2011款 MINI Eagle">2011款 MINI Eagle</option>
+                                </select>
+                            </div>
+                            <div>
+                                <span><label>联系方式</label></span>
+                                <span><input type="text" value="" id="input_phone"></span>
+                            </div>
+                            <div>
+                                <span><label>第一预约日期</label></span>
+                                <span><input type="date" value="" id="input_date"></span>
+                            </div>
+                            <div>
+                                <span><label>第二预约日期</label></span>
+                                <span><input type="date" value="" id="input_date_2"></span>
+                            </div>
+                            <div>
+                                <span><label>第三预约日期</label></span>
+                                <span><input type="date" value="" id="input_date_3"></span>
+                            </div>
+                            <div>
+                                <span><label>问题描述</label></span>
+                                <span><textarea id="input_matter"> </textarea></span>
+                            </div>
+                            <div>
+                                <button id="btn_submit" type="button">提 交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="footer">
+        <div class="section group">
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>INFORMATION</h3>
+                <ul>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">位置信息</a></li>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">团队精神</a></li>
+                    <li><a href="#">法律责任</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>OUR OFFERS</h3>
+                <ul>
+                    <li><a href="#">最新产品</a></li>
+                    <li><a href="#">今日特价</a></li>
+                    <li><a href="#">全部产品</a></li>
+                    <li><a href="#">维护套餐</a></li>
+                    <li><a href="#">维护预约</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>YOUR ACCOUNT</h3>
+                <ul>
+                    <li><a href="#">我的账号</a></li>
+                    <li><a href="#">会员信息</a></li>
+                    <li><a href="#">积分详情</a></li>
+                    <li><a href="#">收货地址</a></li>
+                    <li><a href="#">我的购物车</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4 footer-lastgrid">
+                <h3>Get in touch</h3>
+                <ul>
+                    <li><a href="#"><img src="../../static/images/facebook.png" title="facebook"/></a></li>
+                    <li><a href="#"><img src="../../static/images/twitter.png" title="Twiiter"/></a></li>
+                    <li><a href="#"><img src="../../static/images/rss.png" title="Rss"/></a></li>
+                    <li><a href="#"><img src="../../static/images/gpluse.png" title="Google+"/></a></li>
+                </ul>
+                <p>Design by <a href="#">W3layouts</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!---End-wrap--->
+</body>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/common.js"></script>
+<script>
+    $(function () {
+        getShoppingCartCount()
+
+        $("#btn_submit").off("click").click(function () {
+            addRepair()
+        })
+    })
+
+
+    function addRepair() {
+        var tempType = $("#sel-car-brand").val() + "-" + $("#sel-car-line").val() + "-" + $("#sel-car-type").val()
+        var tempDate = new Date($("#input_date").val())
+        var tempDate2 = new Date($("#input_date_2").val())
+        var tempDate3 = new Date($("#input_date_3").val())
+
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "repair/insert",
+            data: {
+                carType: tempType,
+                phone: $("#input_phone").val(),
+                matter: $("#input_matter").val(),
+                dateTime: Number(tempDate),
+                dateTimea: Number(tempDate2),
+                dateTimeb: Number(tempDate3)
+            },
+            success: function (data) {
+                alert("添加成功")
+            },
+            error: function () {
+                alert("系统错误")
+            }
+        })
+    }
+</script>
+</html>
+
