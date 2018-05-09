@@ -10,6 +10,8 @@ public interface StoreService {
 
     List<StoreDao> selectByPageNumber(Integer pageNumber);
 
+    StoreEntity getByGoodsId(Integer goodsId);
+
     Integer delete(Integer id);
 
     Integer insert(StoreEntity storeEntity);

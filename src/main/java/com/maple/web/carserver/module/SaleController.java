@@ -1,19 +1,24 @@
 package com.maple.web.carserver.module;
 
+import com.maple.web.carserver.dao.SaleDao;
 import com.maple.web.carserver.domain.SaleEntity;
+import com.maple.web.carserver.domain.StoreEntity;
 import com.maple.web.carserver.service.SaleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.maple.web.carserver.service.StoreService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
 @RequestMapping("/sale")
 public class SaleController {
 
-    @Autowired
+    @Resource
     private SaleService saleService;
+    @Resource
+    private StoreService storeService;
 
     /**
      * 总数
@@ -30,7 +35,7 @@ public class SaleController {
      * @return
      */
     @RequestMapping("/selectByPageNumber")
-    public List<SaleEntity> selectByPageNumber(Integer pageNumber) {
+    public List<SaleDao> selectByPageNumber(Integer pageNumber) {
         return saleService.selectByPageNumber(pageNumber);
     }
 
@@ -41,6 +46,14 @@ public class SaleController {
      */
     @RequestMapping("/deleteByPrimaryKey")
     public Integer deleteByPrimaryKey(Integer id) {
+        SaleEntity sale = saleService.getById(id);
+        if (sale != null) {
+            StoreEntity store = storeService.getByGoodsId(sale.getGoodsId());
+            if (store != null) {
+                store.setCount(store.getCount() + sale.getCount());
+                storeService.update(store);
+            }
+        }
         return saleService.deleteByPrimaryKey(id);
     }
 
@@ -51,6 +64,11 @@ public class SaleController {
      */
     @RequestMapping("/insert")
     public Integer insert(SaleEntity saleEntity) {
+        StoreEntity store = storeService.getByGoodsId(saleEntity.getGoodsId());
+        if (store != null) {
+            store.setCount(store.getCount() - saleEntity.getCount());
+            storeService.update(store);
+        }
         return saleService.insert(saleEntity);
     }
 
@@ -61,6 +79,14 @@ public class SaleController {
      */
     @RequestMapping("/update")
     public Integer update(SaleEntity saleEntity) {
+        SaleEntity sale = saleService.getById(saleEntity.getId());
+        if (sale != null) {
+            StoreEntity store = storeService.getByGoodsId(sale.getGoodsId());
+            if (store != null) {
+                store.setCount(store.getCount() + (sale.getCount() - saleEntity.getCount()));
+                storeService.update(store);
+            }
+        }
         return saleService.update(saleEntity);
     }
 }

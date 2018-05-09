@@ -6,21 +6,21 @@ import com.maple.web.carserver.domain.ShoppingCartEntity;
 import com.maple.web.carserver.domain.UserEntity;
 import com.maple.web.carserver.mapper.ShoppingCartEntityMapper;
 import com.maple.web.carserver.mapper.UserEntityMapper;
-import org.omg.PortableInterceptor.INACTIVE;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.maple.web.carserver.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class ShoppingCartServiceImpl implements com.maple.web.carserver.service.ShoppingCartService {
+public class ShoppingCartServiceImpl implements ShoppingCartService {
 
-    @Autowired
+    @Resource
     private ShoppingCartEntityMapper entityMapper;
 
-    @Autowired
+    @Resource
     private UserEntityMapper userEntityMapper;
 
     @Override
@@ -31,6 +31,14 @@ public class ShoppingCartServiceImpl implements com.maple.web.carserver.service.
     @Override
     public List<ShoppingCartDao> selectGoodsList(Integer userId) {
         return entityMapper.selectGoodsList(userId);
+    }
+
+    @Override
+    public ShoppingCartEntity getById(Integer userId, Integer goodsId) {
+        ShoppingCartEntity entity = new ShoppingCartEntity();
+        entity.setTbUserId(userId);
+        entity.setTbGoodsId(goodsId);
+        return entityMapper.selectByGoodsId(entity);
     }
 
     @Override

@@ -1,17 +1,19 @@
 package com.maple.web.carserver.service.impl;
 
+import com.maple.web.carserver.dao.SaleDao;
 import com.maple.web.carserver.domain.SaleEntity;
 import com.maple.web.carserver.mapper.SaleEntityMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.maple.web.carserver.service.SaleService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class SaleServiceImpl implements com.maple.web.carserver.service.SaleService {
+public class SaleServiceImpl implements SaleService {
 
-    @Autowired
+    @Resource
     private SaleEntityMapper entityMapper;
 
 
@@ -21,8 +23,13 @@ public class SaleServiceImpl implements com.maple.web.carserver.service.SaleServ
     }
 
     @Override
-    public List<SaleEntity> selectByPageNumber(Integer pageNumber) {
+    public List<SaleDao> selectByPageNumber(Integer pageNumber) {
         return entityMapper.selectByPageNumber(pageNumber * 8);
+    }
+
+    @Override
+    public SaleEntity getById(Integer id) {
+        return entityMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -33,7 +40,7 @@ public class SaleServiceImpl implements com.maple.web.carserver.service.SaleServ
     @Override
     public Integer insert(SaleEntity saleEntity) {
         saleEntity.setCreateTime(new Date());
-        return entityMapper.insertSelective(saleEntity);
+        return entityMapper.insert(saleEntity);
     }
 
     @Override

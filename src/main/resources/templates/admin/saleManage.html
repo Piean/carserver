@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,7 +40,10 @@
                                     <label>车辆型号：</label>
                                 </div>
                                 <div class="field">
-                                    <input type="text" class="input" name="s_title" id="input_carType"/>
+                                    <select class="form-control" name="s_title" id="select_goodsId" onchange="typeChange(this)">
+                                        <option value="" price="0">请选择型号</option>
+                                        <option th:each="goods : ${goodsList}" th:value="${goods.id}" th:text="${goods.name}" th:price="${goods.price}"></option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -50,7 +53,7 @@
                                     <label>车辆售价：</label>
                                 </div>
                                 <div class="field">
-                                    <input type="text" class="input" name="s_title" id="input_amount" onkeyup="value=value.replace(/[^\d\.]/g,'')"/>
+                                    <input type="text" class="input" value="0" name="s_title" id="input_price" onkeyup="value=value.replace(/[^\d\.]/g,'')"/>
                                 </div>
                             </div>
 
@@ -60,6 +63,24 @@
                                 </div>
                                 <div class="field">
                                     <input type="text" class="input" name="s_title" id="input_salerName"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="label" style="width: 70px;">
+                                    <label>实际售价：</label>
+                                </div>
+                                <div class="field">
+                                    <input type="text" class="input" name="s_title" id="input_amount" onkeyup="value=value.replace(/[^\d\.]/g,'')"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="label" style="width: 70px;">
+                                    <label>售出数量：</label>
+                                </div>
+                                <div class="field">
+                                    <input type="text" class="input" name="s_title" id="input_count" onkeyup="value=value.replace(/[^\d\.]/g,'')"/>
                                 </div>
                             </div>
 
@@ -108,7 +129,7 @@
                 kCount = data
                 requestList()
             },
-            error: function (data) {
+            error: function () {
                 alert("系统错误")
             }
         })
@@ -123,6 +144,10 @@
 //            updateRequest()
 //        })
     })
+
+    function typeChange(selector) {
+        $("#input_price").val($(selector).find("option:selected").attr("price"));
+    }
 
     function requestList() {
         $.ajax({
@@ -149,6 +174,8 @@
             "            <th width=\"15%\">车辆型号</th>\n" +
             "            <th width=\"10%\">车辆售价</th>\n" +
             "            <th width=\"10%\">销售员</th>\n" +
+            "            <th width=\"10%\">实际售价</th>\n" +
+            "            <th width=\"10%\">售出数量</th>\n" +
             "            <th width=\"10%\">销售时间</th>\n" +
             "            <th width=\"10%\">操作</th>\n" +
             "        </tr>";
@@ -158,9 +185,11 @@
 
             tempStr += "<tr>"
             tempStr += "<td>" + data[i].id + "</td>\n"
-            tempStr += "<td>" + data[i].carType + "</td>\n"
-            tempStr += "<td>" + data[i].amount + "</td>\n"
+            tempStr += "<td>" + data[i].name + "</td>\n"
+            tempStr += "<td>" + data[i].price + "</td>\n"
             tempStr += "<td>" + data[i].salerName + "</td>\n"
+            tempStr += "<td>" + data[i].amount + "</td>\n"
+            tempStr += "<td>" + data[i].count + "</td>\n"
             tempStr += "<td>" + tempDate.toLocaleString() + "</td>\n"
             tempStr += "<td><div class=\"button-group\">" +
                 "<a class=\"button border-main\" onclick='showUpdateModel(" + JSON.stringify(data[i]) + ")'><span class=\"icon-edit\"></span> 修改</a>" +
@@ -183,11 +212,6 @@
     }
 
     function showAddModel() {
-
-        $("#input_carType").val("")
-        $("#input_amount").val("")
-        $("#input_salerName").val("")
-        $("#input_introduction").val("")
         showDialog("addModel")
 
         $("#btn-insert").text("添加")
@@ -198,9 +222,11 @@
 
     function showUpdateModel(data) {
         kUpdateId = data.id
-        $("#input_carType").val(data.carType)
-        $("#input_amount").val(data.amount)
+        $("#select_goodsId").val(data.goodsId)
+        $("#input_price").val(data.price)
         $("#input_salerName").val(data.salerName)
+        $("#input_amount").val(data.amount)
+        $("#input_count").val(data.count)
         $("#input_introduction").val(data.introduction)
         showDialog("addModel")
         $("#btn-insert").text("保存")
@@ -217,9 +243,11 @@
             dataType: "json",
             url: "../sale/insert",
             data: {
-                carType: $("#input_carType").val(),
-                amount: $("#input_amount").val(),
+                goodsId: $("#select_goodsId").val(),
+                price: $("#input_price").val(),
                 salerName: $("#input_salerName").val(),
+                amount: $("#input_amount").val(),
+                count: $("#input_count").val(),
                 introduction: $("#input_introduction").val()
             },
             success: function (data) {
@@ -262,9 +290,11 @@
             url: "../sale/update",
             data: {
                 id: kUpdateId,
-                carType: $("#input_carType").val(),
-                amount: $("#input_amount").val(),
+                goodsId: $("#select_goodsId").val(),
+                price: $("#input_price").val(),
                 salerName: $("#input_salerName").val(),
+                amount: $("#input_amount").val(),
+                count: $("#input_count").val(),
                 introduction: $("#input_introduction").val()
             },
             success: function (data) {

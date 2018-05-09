@@ -3,12 +3,14 @@ package com.maple.web.carserver.module;
 import com.maple.web.carserver.dao.ShoppingCartDao;
 import com.maple.web.carserver.dao.ShoppingCartParamsDto;
 import com.maple.web.carserver.domain.ShoppingCartEntity;
+import com.maple.web.carserver.domain.StoreEntity;
 import com.maple.web.carserver.service.ShoppingCartService;
+import com.maple.web.carserver.service.StoreService;
 import com.maple.web.carserver.utils.SessionUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -16,8 +18,10 @@ import java.util.List;
 @RequestMapping("shoppingCart")
 public class ShoppingCartController {
 
-    @Autowired
+    @Resource
     private ShoppingCartService shoppingCartService;
+    @Resource
+    private StoreService storeService;
 
     /**
      * 获取某个用户购物车商品
@@ -59,6 +63,11 @@ public class ShoppingCartController {
         if (paramsDto.getTbUserId() == null || paramsDto.getTbUserId() == 0) {
             paramsDto.setTbUserId(SessionUtil.getInstance().getUserId(request.getSession().getId()));
         }
+        StoreEntity store = storeService.getByGoodsId(paramsDto.getTbGoodsId());
+        if (store != null) {
+            store.setCount(store.getCount() + paramsDto.getCount());
+            storeService.update(store);
+        }
         return shoppingCartService.delete(paramsDto);
     }
 
@@ -73,6 +82,14 @@ public class ShoppingCartController {
         if (paramsDto.getTbUserId() == null || paramsDto.getTbUserId() == 0) {
             paramsDto.setTbUserId(SessionUtil.getInstance().getUserId(request.getSession().getId()));
         }
+        ShoppingCartEntity cart = shoppingCartService.getById(paramsDto.getTbUserId(), paramsDto.getTbGoodsId());
+        if (cart != null) {
+            StoreEntity store = storeService.getByGoodsId(cart.getTbGoodsId());
+            if (store != null) {
+                store.setCount(store.getCount() + (cart.getCount() - paramsDto.getCount()));
+                storeService.update(store);
+            }
+        }
         return shoppingCartService.updateCount(paramsDto);
     }
 
@@ -86,6 +103,11 @@ public class ShoppingCartController {
     public Integer saveOrUpdate(ShoppingCartEntity shoppingCartEntity, HttpServletRequest request) {
         if (shoppingCartEntity.getTbUserId() == null || shoppingCartEntity.getTbUserId() == 0) {
             shoppingCartEntity.setTbUserId(SessionUtil.getInstance().getUserId(request.getSession().getId()));
+        }
+        StoreEntity store = storeService.getByGoodsId(shoppingCartEntity.getTbGoodsId());
+        if (store != null) {
+            store.setCount(store.getCount() + shoppingCartEntity.getCount());
+            storeService.update(store);
         }
         return shoppingCartService.saveOrUpdate(shoppingCartEntity);
     }

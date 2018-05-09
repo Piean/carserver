@@ -4,16 +4,16 @@ import com.maple.web.carserver.dao.StoreDao;
 import com.maple.web.carserver.domain.StoreEntity;
 import com.maple.web.carserver.mapper.StoreEntityMapper;
 import com.maple.web.carserver.service.StoreService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class StoreServiceImpl implements StoreService {
 
-    @Autowired
+    @Resource
     private StoreEntityMapper entityMapper;
 
     @Override
@@ -24,6 +24,11 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public List<StoreDao> selectByPageNumber(Integer pageNumber) {
         return entityMapper.selectByPageNumber(pageNumber * 8);
+    }
+
+    @Override
+    public StoreEntity getByGoodsId(Integer goodsId) {
+        return entityMapper.getByGoodsId(goodsId);
     }
 
     @Override

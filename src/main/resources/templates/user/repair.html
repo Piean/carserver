@@ -140,23 +140,23 @@
                             </div>
                             <div>
                                 <span><label>联系方式</label></span>
-                                <span><input type="text" value="" id="input_phone"></span>
+                                <span><input class="form-control" type="text" value="" id="input_phone"></span>
                             </div>
                             <div>
                                 <span><label>第一预约日期</label></span>
-                                <span><input type="date" value="" id="input_date"></span>
+                                <span><input class="form-control" type="date" value="" id="input_date"></span>
                             </div>
                             <div>
                                 <span><label>第二预约日期</label></span>
-                                <span><input type="date" value="" id="input_date_2"></span>
+                                <span><input class="form-control" type="date" value="" id="input_date_2"></span>
                             </div>
                             <div>
                                 <span><label>第三预约日期</label></span>
-                                <span><input type="date" value="" id="input_date_3"></span>
+                                <span><input class="form-control" type="date" value="" id="input_date_3"></span>
                             </div>
                             <div>
                                 <span><label>问题描述</label></span>
-                                <span><textarea id="input_matter"> </textarea></span>
+                                <span><textarea class="form-control" id="input_matter"> </textarea></span>
                             </div>
                             <div>
                                 <button id="btn_submit" type="button">提 交</button>
@@ -208,7 +208,7 @@
                     <li><a href="#"><img src="../../static/images/rss.png" title="Rss"/></a></li>
                     <li><a href="#"><img src="../../static/images/gpluse.png" title="Google+"/></a></li>
                 </ul>
-                <p>Design by <a href="#">W3layouts</a></p>
+                <p>Design by <a href="#">Maple</a></p>
             </div>
         </div>
     </div>
@@ -222,10 +222,23 @@
         getShoppingCartCount()
 
         $("#btn_submit").off("click").click(function () {
-            addRepair()
+            if (checkInput()) {
+                addRepair();
+            }
         })
     })
 
+    function checkInput() {
+        $(".form-control").each(function () {
+            const text = $(this).val();
+            if (text === "") {
+                $(this).focus();
+                $(this).css("border-color","red");
+                alert("信息填写不完整，提交失败");
+                return false;
+            }
+        });
+    }
 
     function addRepair() {
         var tempType = $("#sel-car-brand").val() + "-" + $("#sel-car-line").val() + "-" + $("#sel-car-type").val()

@@ -1,17 +1,16 @@
 package com.maple.web.carserver.module;
 
 import com.maple.web.carserver.domain.GoodsEntity;
-import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.maple.web.carserver.service.GoodsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
-import javax.servlet.http.HttpServletRequest;
-import java.nio.file.Paths;
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author lijing
@@ -20,6 +19,9 @@ import java.nio.file.Paths;
 public class IndexController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Resource
+    private GoodsService goodsService;
 
     /**
      * 默认访问至用户端主页
@@ -211,7 +213,9 @@ public class IndexController {
      * @return
      */
     @RequestMapping("admin/saleManage")
-    public ModelAndView saleManage() {
+    public ModelAndView saleManage(Model model) {
+        List<GoodsEntity> goodsList = goodsService.getAll();
+        model.addAttribute("goodsList",goodsList);
         return new ModelAndView("admin/saleManage");
     }
 

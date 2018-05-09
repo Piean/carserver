@@ -12,6 +12,8 @@ public interface ShoppingCartService {
 
     List<ShoppingCartDao> selectGoodsList(Integer userId);
 
+    ShoppingCartEntity getById(Integer userId, Integer goodsId);
+
     Integer delete(ShoppingCartParamsDto paramsDto);
 
     Integer updateCount(ShoppingCartParamsDto paramsDto);
