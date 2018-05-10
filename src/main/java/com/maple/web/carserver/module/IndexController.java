@@ -197,6 +197,11 @@ public class IndexController {
         return new ModelAndView("admin/newsManage");
     }
 
+    @RequestMapping("admin/questionManage")
+    public ModelAndView questionManage() {
+        return new ModelAndView("admin/questionManage");
+    }
+
     /**
      * 问卷统计页面
      *

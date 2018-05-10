@@ -8,4 +8,8 @@ public interface QuestionService {
 
     List<QuestionEntity> getQuestionList();
 
+    int insert(QuestionEntity questionEntity);
+    int updatre(QuestionEntity questionEntity);
+    int delete(Integer id);
+
 }

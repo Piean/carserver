@@ -21,8 +21,22 @@ public class QuestionController {
      * @return
      */
     @RequestMapping("/getQuestionList")
-    public List<QuestionEntity> getQuestionList() {
+    public List<QuestionEntity> getQuestionList(Integer pageNumber) {
         return questionService.getQuestionList();
     }
 
+    @RequestMapping("/insert")
+    public Integer addQuestion(QuestionEntity questionEntity) {
+        return questionService.insert(questionEntity);
+    }
+
+    @RequestMapping("/update")
+    public Integer updateQuestion(QuestionEntity questionEntity) {
+        return questionService.updatre(questionEntity);
+    }
+
+    @RequestMapping("/delete")
+    public Integer delQuestion(Integer id) {
+        return questionService.delete(id);
+    }
 }
