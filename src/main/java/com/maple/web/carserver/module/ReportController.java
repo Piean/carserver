@@ -3,12 +3,13 @@ package com.maple.web.carserver.module;
 import com.maple.web.carserver.domain.ReportEntity;
 import com.maple.web.carserver.domain.UserEntity;
 import com.maple.web.carserver.service.ReportService;
+import com.maple.web.carserver.service.UserService;
 import com.maple.web.carserver.utils.SessionUtil;
 import net.sf.json.JSONArray;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,10 @@ import java.util.Map;
 @RequestMapping("/report")
 public class ReportController {
 
-    @Autowired
+    @Resource
     private ReportService reportService;
+    @Resource
+    private UserService userService;
 
     /**
      * 总数
@@ -78,5 +81,21 @@ public class ReportController {
         return 1;
     }
 
+    @RequestMapping("/addIntegral")
+    public Integer addIntegral(HttpServletRequest request) {
+        Integer userId = SessionUtil.getInstance().getUserId(request.getSession().getId());
+        UserEntity user = userService.getUserInfo(userId);
+        if (user == null) {
+            return -1;
+        }
+
+        final int score = (int) (Math.random() * (1000 - 100 + 1) + 100);
+        user.setIntegral(user.getIntegral() + score);
+        if (userService.updateAccount(user) > 0) {
+            return score;
+        } else {
+            return -1;
+        }
+    }
 
 }

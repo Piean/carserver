@@ -9,6 +9,34 @@
 
 </head>
 <body>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="addModel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                <h4 class="modal-title">谢谢参与</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel admin-panel margin-top">
+                    <div class="body-content">
+                        <form method="post" class="form-x" action="">
+                            <div class="form-group">
+                                <div id="user_score">
+                                    请点击右下角的“抽奖”按钮抽取积分奖励
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-success" id="btn-insert">抽奖</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
 <!---start-wrap--->
 <div class="wrap">
     <!---start-header--->
@@ -284,11 +312,17 @@
             data: {
                 reportArray: JSON.stringify(reportArray)
             },
-            success: function (data) {
-                alert("提交成功，谢谢您的参与")
+            success: function () {
+                $("#addModel").modal('show');
+                $("#btn-insert").off().click(function () {
+                    $.post("../report/addIntegral", function (data) {
+                        $("#user_score").html("感谢您填写问卷，您已获得随机积分：" + data);
+                        $("#btn-insert").remove();
+                    })
+                });
             },
             error: function () {
-                alert("提交成功，谢谢您的参与")
+                alert("提交失败，系统异常")
             }
         })
     }

@@ -71,14 +71,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public Integer buyAllGoods(Integer userId, Double realSum) {
         UserEntity userEntity = userEntityMapper.selectByPrimaryKey(userId);
-        double integral;
-        if (userEntity.getIntegral() == null) {
-            integral = 0;
-        } else {
-            integral = Double.parseDouble(userEntity.getIntegral());
+        if (userEntity.getIntegral() == null || realSum == null) {
+            return -1;
         }
-        if (integral >= realSum) {
-            userEntity.setIntegral((integral - realSum) + "");
+        if (userEntity.getIntegral() >= realSum) {
+            userEntity.setIntegral(userEntity.getIntegral() - realSum);
             userEntityMapper.updateByPrimaryKeySelective(userEntity);
             return entityMapper.buyAllGoods(userId);
         } else {

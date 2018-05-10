@@ -4,12 +4,9 @@ import com.maple.web.carserver.domain.UserEntity;
 import com.maple.web.carserver.mapper.UserEntityMapper;
 import com.maple.web.carserver.service.UserService;
 import com.maple.web.carserver.utils.SessionUtil;
-import com.mysql.jdbc.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +15,8 @@ import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserEntityMapper userEntityMapper;
+    @Resource
+    private UserEntityMapper userEntityMapper;
 
     @Override
     public Integer count() {
@@ -66,9 +63,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer addAccount(UserEntity userEntity) {
         if (userEntityMapper.selectByUsername(userEntity.getUsername()) != null) return -1;
-        if (StringUtils.isNullOrEmpty(userEntity.getIntegral())) {
-            userEntity.setIntegral("0");
-        }
         userEntity.setCreateTime(new Date());
         return userEntityMapper.insertSelective(userEntity);
     }
