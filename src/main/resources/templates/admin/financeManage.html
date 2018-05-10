@@ -34,20 +34,30 @@
                 <div class="panel admin-panel margin-top">
                     <div class="body-content">
                         <form method="post" class="form-x" action="">
-
                             <div class="form-group">
                                 <div class="label" style="width: 70px;">
                                     <label>报销类型：</label>
                                 </div>
                                 <div class="field">
-                                    <input type="text" class="input" name="s_title" id="input_carType"/>
+                                    <select class="form-control" onchange="typeChange(this)">
+                                        <option value="1">收入</option>
+                                        <option value="-1">支出</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="label" style="width: 70px;">
+                                    <label></label>
+                                </div>
+                                <div class="field">
+                                    <select class="form-control" name="s_type" id="select_type">
+                                    </select>
                                 </div>
                             </div>
 
-
                             <div class="form-group">
                                 <div class="label" style="width: 70px;">
-                                    <label>报销金额：</label>
+                                    <label>金额：</label>
                                 </div>
                                 <div class="field">
                                     <input type="text" class="input" name="s_title" id="input_amount" onkeyup="value=value.replace(/[^\d\.]/g,'')"/>
@@ -55,21 +65,11 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="label" style="width: 70px;">
-                                    <label>报销人：</label>
-                                </div>
-                                <div class="field">
-                                    <input type="text" class="input" name="s_title" id="input_salerName"/>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="label" style="width: 70px;">
-                                    <label>备注：</label>
+                                <div class="label" style="width: 70px;" id="">
+                                    <label id="label_origin">收入来源：</label>
                                 </div>
                                 <div class="field">
                                     <textarea name="scopyright" class="input" style="height:120px;" id="input_introduction"></textarea>
-                                    <!--<input type="text" class="input" name="s_keywords" id="input_introduction"/>-->
                                 </div>
                             </div>
 
@@ -177,11 +177,6 @@
     }
 
     function showAddModel() {
-
-        $("#input_carType").val("")
-        $("#input_amount").val("")
-        $("#input_salerName").val("")
-        $("#input_introduction").val("")
         showDialog("addModel")
 
         $("#btn-insert").text("添加")
@@ -192,7 +187,7 @@
 
     function showUpdateModel(data) {
         kUpdateId = data.id
-        $("#input_carType").val(data.type)
+        $("#select_type").val(data.type)
         $("#input_amount").val(data.amount)
         $("#input_salerName").val(data.user)
         $("#input_introduction").val(data.remark)
@@ -201,6 +196,28 @@
         $("#btn-insert").off("click").click(function () {
             updateRequest()
         })
+    }
+
+    function typeChange(selector) {
+        var type = $(selector).val();
+        $type = $("#select_type");
+        $origin = $("#label_origin");
+        if (type > 0) {
+            $type.empty();
+            $type.append('<option value="维修收入">维修收入</option>');
+            $type.append('<option value="销售收入">销售收入</option>');
+            $origin.html("收入来源");
+        } else {
+            $type.empty();
+            $type.append('<option value="工资">工资</option>');
+            $type.append('<option value="差旅">差旅</option>');
+            $type.append('<option value="交通">交通</option>');
+            $type.append('<option value="通讯">通讯</option>');
+            $type.append('<option value="水电费">水电费</option>');
+            $type.append('<option value="燃油费">燃油费</option>');
+            $type.append('<option value="采购费">采购费</option>');
+            $origin.html("支出名称");
+        }
     }
 
     // 增删改接口请求
