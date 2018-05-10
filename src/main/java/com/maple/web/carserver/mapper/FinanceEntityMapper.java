@@ -14,6 +14,10 @@ public interface FinanceEntityMapper {
      */
     Integer count();
 
+    Double earning();
+
+    Double expend();
+
     /**
      * 分页获取数据
      *

@@ -22,6 +22,14 @@
     -->
     id, amount, type, create_time, remark, user
   </sql>
+
+  <select id="earning" resultType="java.lang.Double">
+    select sum(amount) from tb_finance where char_length(type) &gt;= 4
+  </select>
+  <select id="expend" resultType="java.lang.Double">
+    select sum(amount) from tb_finance where char_length(type) &lt;= 3
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated

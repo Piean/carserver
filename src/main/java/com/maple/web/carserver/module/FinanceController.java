@@ -64,4 +64,13 @@ public class FinanceController {
         return financeService.update(financeEntity);
     }
 
+    @RequestMapping("/statistics")
+    public Double[] statistics() {
+        Double[] result = new Double[2];
+        //总收入
+        result[0] = financeService.earning();
+        //总支出
+        result[1] = financeService.expend();
+        return result;
+    }
 }

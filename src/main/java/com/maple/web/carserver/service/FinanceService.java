@@ -7,6 +7,10 @@ import java.util.List;
 public interface FinanceService {
     Integer count();
 
+    double earning();
+
+    double expend();
+
     List<FinanceEntity> selectByPageNumber(Integer pageNumber);
 
     Integer deleteByPrimaryKey(Integer id);

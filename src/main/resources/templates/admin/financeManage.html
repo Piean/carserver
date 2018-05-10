@@ -23,6 +23,8 @@
     </table>
 </div>
 
+<div id="finance_statistics"></div>
+
 <div class="modal fade" tabindex="-1" role="dialog" id="addModel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -39,7 +41,7 @@
                                     <label>报销类型：</label>
                                 </div>
                                 <div class="field">
-                                    <select class="form-control" onchange="typeChange(this)">
+                                    <select class="form-control" id="select_io" onchange="typeChange(this)">
                                         <option value="1">收入</option>
                                         <option value="-1">支出</option>
                                     </select>
@@ -51,6 +53,8 @@
                                 </div>
                                 <div class="field">
                                     <select class="form-control" name="s_type" id="select_type">
+                                        <option value="维修收入">维修收入</option>
+                                        <option value="销售收入">销售收入</option>
                                     </select>
                                 </div>
                             </div>
@@ -65,6 +69,15 @@
                             </div>
 
                             <div class="form-group">
+                                <div class="label" style="width: 70px;">
+                                    <label>报销人：</label>
+                                </div>
+                                <div class="field">
+                                    <input type="text" class="input" name="s_title" id="input_salerName"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <div class="label" style="width: 70px;" id="">
                                     <label id="label_origin">收入来源：</label>
                                 </div>
@@ -72,7 +85,6 @@
                                     <textarea name="scopyright" class="input" style="height:120px;" id="input_introduction"></textarea>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -132,7 +144,11 @@
             error: function (data) {
                 alert("系统错误")
             }
-        })
+        });
+
+        $.post("../finance/statistics", function (data) {
+            $("#finance_statistics").html("总收入：" + data[0] + " 总支出：" + data[1] + " 净利润：" + (data[0] - data[1]));
+        });
     }
 
     function generateList(data) {
@@ -187,14 +203,19 @@
 
     function showUpdateModel(data) {
         kUpdateId = data.id
-        $("#select_type").val(data.type)
-        $("#input_amount").val(data.amount)
-        $("#input_salerName").val(data.user)
-        $("#input_introduction").val(data.remark)
-        showDialog("addModel")
-        $("#btn-insert").text("保存")
+        if (data.type.length > 3)  {
+            $("#select_io").val("1");
+        } else {
+            $("#select_io").val("-1");
+        }
+        $("#select_type").val(data.type);
+        $("#input_amount").val(data.amount);
+        $("#input_salerName").val(data.user);
+        $("#input_introduction").val(data.remark);
+        showDialog("addModel");
+        $("#btn-insert").text("保存");
         $("#btn-insert").off("click").click(function () {
-            updateRequest()
+            updateRequest();
         })
     }
 
@@ -206,7 +227,7 @@
             $type.empty();
             $type.append('<option value="维修收入">维修收入</option>');
             $type.append('<option value="销售收入">销售收入</option>');
-            $origin.html("收入来源");
+            $origin.html("收入来源：");
         } else {
             $type.empty();
             $type.append('<option value="工资">工资</option>');
@@ -216,7 +237,7 @@
             $type.append('<option value="水电费">水电费</option>');
             $type.append('<option value="燃油费">燃油费</option>');
             $type.append('<option value="采购费">采购费</option>');
-            $origin.html("支出名称");
+            $origin.html("支出名称：");
         }
     }
 
@@ -228,7 +249,7 @@
             dataType: "json",
             url: "../finance/insert",
             data: {
-                type: $("#input_carType").val(),
+                type: $("#select_type").val(),
                 amount: $("#input_amount").val(),
                 user: $("#input_salerName").val(),
                 remark: $("#input_introduction").val()
@@ -269,7 +290,7 @@
             url: "../finance/update",
             data: {
                 id: kUpdateId,
-                type: $("#input_carType").val(),
+                type: $("#select_type").val(),
                 amount: $("#input_amount").val(),
                 user: $("#input_salerName").val(),
                 remark: $("#input_introduction").val()
