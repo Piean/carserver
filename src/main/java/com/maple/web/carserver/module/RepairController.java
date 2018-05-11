@@ -3,17 +3,20 @@ package com.maple.web.carserver.module;
 import com.maple.web.carserver.domain.RepairEntity;
 import com.maple.web.carserver.service.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
 @RequestMapping("/repair")
 public class RepairController {
 
-    @Autowired
+    @Resource
     private RepairService repairService;
 
     /**
@@ -44,9 +47,8 @@ public class RepairController {
      * @return
      */
     @RequestMapping("/insert")
-    public ModelAndView insert(RepairEntity repairEntity) {
-        repairService.insert(repairEntity);
-        return new ModelAndView("user/repair");
+    public Integer insert(RepairEntity repairEntity) {
+        return repairService.insert(repairEntity);
     }
 
     /**
