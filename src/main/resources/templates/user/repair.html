@@ -1,10 +1,12 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>卡其汽车4S店管理系统</title>
     <link href="../../../static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
-    <link href="../../../static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all"/>
+    <link rel="stylesheet" href="../../../static/css/admin.css">
+    <link rel="stylesheet" href="../../../static/css/pintuer.css">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
     <!--<link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>-->
 
 </head>
@@ -68,6 +70,76 @@
         <!---end-top-header--->
         <!---End-header--->
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="addModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title">保修信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel admin-panel margin-top">
+                        <div class="body-content">
+                            <form method="post" class="form-x" action="">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <div class="label" style="width: 70px;">
+                                            <label>车型号：</label>
+                                        </div>
+                                        <div class="field">
+                                            <input type="text" class="form-control" id="input_car" placeholder="请填写完整的车辆型号"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="label" style="width: 70px;">
+                                        <label>联系人：</label>
+                                    </div>
+                                    <div class="field">
+                                        <input type="text" class="form-control" id="input_name" placeholder="请填您的姓名"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="label" style="width: 70px;">
+                                        <label>手机号：</label>
+                                    </div>
+                                    <div class="field">
+                                        <input type="text" class="form-control" id="input_phone" placeholder="请填写可以联系到您的手机号码"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="label" style="width: 70px;">
+                                        <label>预约时间：</label>
+                                    </div>
+                                    <div class="field">
+                                        <input type="date" class="form-control" id="input_date" placeholder="请选择您方便的维修时间"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="label" style="width: 70px;">
+                                        <label>问题描述：</label>
+                                    </div>
+                                    <div class="field">
+                                    <textarea class="form-control" style="height:120px;" id="input_matter" placeholder="请详细描述车辆故障"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success" id="btn-insert">预约</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <div class="content">
         <div class="contact">
             <div class="section group">
@@ -81,87 +153,13 @@
                 <div class="col span_2_of_3">
                     <div class="contact-form">
                         <h3></h3>
-                        <form>
-                            <div>
-                                <span><label>品牌</label></span>
-                                <select class="form-control" id="sel-car-brand">
-                                    <option value="">请选择品牌</option>
-                                    <option value="A AC Schnitzer">A AC Schnitzer</option>
-                                    <option value="ALPINA">ALPINA</option>
-                                    <option value="ARCFOX">ARCFOX</option>
-                                    <option value="奥迪">奥迪</option>
-                                    <option value="宝马">宝马</option>
-                                    <option value="宝骏">宝骏</option>
-                                    <option value="保时捷">保时捷</option>
-                                    <option value="奔驰">奔驰</option>
-                                    <option value="本田">本田</option>
-                                    <option value="比亚迪">比亚迪</option>
-                                    <option value="宾利">宾利</option>
-                                    <option value="布加迪">布加迪</option>
-                                    <option value="长安">长安</option>
-                                    <option value="东风小康">东风小康</option>
-                                    <option value="广汽吉奥">广汽吉奥</option>
-                                    <option value="Jeep">Jeep</option>
-                                    <option value="捷豹">捷豹</option>
-                                    <option value="卡迪拉克">卡迪拉克</option>
-                                    <option value="兰博基尼">兰博基尼</option>
-                                    <option value="路虎">路虎</option>
-                                    <option value="MINI">MINI</option>
-                                    <option value="马萨拉蒂">马萨拉蒂</option>
-                                    <option value="迈巴赫">迈巴赫</option>
-                                </select>
-                            </div>
-                            <div>
-                                <span><label>车系</label></span>
-                                <select class="form-control" id="sel-car-line">
-                                    <option value="">请选择车系</option>
-                                    <option value="AC Schnitzer M3">AC Schnitzer M3</option>
-                                    <option value="AC Schnitzer X5">AC Schnitzer X5</option>
-                                    <option value="AC Schniter Eagle">AC Schniter Eagle</option>
-                                    <option value="AC Schniter 1系">AC Schniter 1系</option>
-                                    <option value="AC Schniter 3系">AC Schniter 3系</option>
-                                    <option value="AC Schniter 5系">AC Schniter 5系</option>
-                                    <option value="AC Schniter 6系">AC Schniter 6系</option>
-                                    <option value="AC Schniter 7系">AC Schniter 7系</option>
-                                </select>
-                            </div>
-                            <div>
-                                <span><label>车型</label></span>
-                                <select class="form-control" id="sel-car-type">
-                                    <option value="">请选择车型</option>
-                                    <option value="2015款 ACS3 sport">2015款 ACS3 sport</option>
-                                    <option value="2015款 ACS35 35i">2015款 ACS35 35i</option>
-                                    <option value="2011款 ACS5  35i">2011款 ACS5 35i</option>
-                                    <option value="2010款 X5 M">2010款 X5 M</option>
-                                    <option value="2008款 BMW X5 Falcon">2008款 BMW X5 Falcon</option>
-                                    <option value="2012款 基本型">2012款 基本型</option>
-                                    <option value="2011款 MINI Eagle">2011款 MINI Eagle</option>
-                                </select>
-                            </div>
-                            <div>
-                                <span><label>联系方式</label></span>
-                                <span><input class="form-control" type="text" value="" id="input_phone"></span>
-                            </div>
-                            <div>
-                                <span><label>第一预约日期</label></span>
-                                <span><input class="form-control" type="date" value="" id="input_date"></span>
-                            </div>
-                            <div>
-                                <span><label>第二预约日期</label></span>
-                                <span><input class="form-control" type="date" value="" id="input_date_2"></span>
-                            </div>
-                            <div>
-                                <span><label>第三预约日期</label></span>
-                                <span><input class="form-control" type="date" value="" id="input_date_3"></span>
-                            </div>
-                            <div>
-                                <span><label>问题描述</label></span>
-                                <span><textarea class="form-control" id="input_matter"> </textarea></span>
-                            </div>
-                            <div>
-                                <button id="btn_submit" type="button">提 交</button>
-                            </div>
-                        </form>
+                        <div th:each="repair : ${repairList}">
+                            <h4 th:text="${repair.carType} + '&nbsp;&nbsp;&nbsp;&nbsp;' + ${repair.matter} + '&nbsp;&nbsp;&nbsp;&nbsp;' + ${#dates.format(repair.dateTime, 'yyyy-MM-dd')}"></h4>
+                            <p th:text="${repair.process}"></p>
+                            <hr>
+                        </div>
+
+                        <button id="btn_add_repair">预约维修</button>
                     </div>
                 </div>
             </div>
@@ -216,22 +214,27 @@
 <!---End-wrap--->
 </body>
 <script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
 <script src="../../static/js/common.js"></script>
 <script>
     $(function () {
         getShoppingCartCount()
 
-        $("#btn_submit").off("click").click(function () {
-            if (checkInput()) {
+        $("#btn_add_repair").off().click(function () {
+            $("#addModel").modal("show");
+        })
+
+        $("#btn-insert").off("click").click(function () {
+            // if (checkInput()) {
                 addRepair();
-            }
+            // }
         })
     })
 
     function checkInput() {
         $(".form-control").each(function () {
             const text = $(this).val();
-            if (text === "") {
+            if (text == null || text === "") {
                 $(this).focus();
                 $(this).css("border-color","red");
                 alert("信息填写不完整，提交失败");
@@ -241,24 +244,19 @@
     }
 
     function addRepair() {
-        var tempType = $("#sel-car-brand").val() + "-" + $("#sel-car-line").val() + "-" + $("#sel-car-type").val()
-        var tempDate = new Date($("#input_date").val())
-        var tempDate2 = new Date($("#input_date_2").val())
-        var tempDate3 = new Date($("#input_date_3").val())
-
         $.ajax({
             type: "post",
             dataType: "json",
             url: "repair/insert",
             data: {
-                carType: tempType,
+                carType: $("#input_car").val(),
                 phone: $("#input_phone").val(),
+                name: $("#input_name").val(),
                 matter: $("#input_matter").val(),
-                dateTime: Number(tempDate),
-                dateTimea: Number(tempDate2),
-                dateTimeb: Number(tempDate3)
+                process: "等待处理",
+                dateTime: Number(new Date($("#input_date").val())),
             },
-            success: function (data) {
+            success: function () {
                 alert("添加成功")
             },
             error: function () {

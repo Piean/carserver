@@ -44,6 +44,17 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <div class="label" style="width: 70px;">
+                                    <label>商品类型：</label>
+                                </div>
+                                <div class="field">
+                                    <select class="input" name="s_title" id="input_kind">
+                                        <option value="车辆">车辆</option>
+                                        <option value="配件">配件</option>
+                                    </select>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <div class="label" style="width: 70px;">
@@ -157,7 +168,8 @@
         var tempStr = "<tr>\n" +
             "            <th width=\"5%\">ID</th>\n" +
             "            <th width=\"15%\">商品名称</th>\n" +
-            "            <th width=\"10%\">兑换积分</th>\n" +
+            "            <th width=\"10%\">商品类型</th>\n" +
+            "            <th width=\"10%\">积分售价</th>\n" +
             "            <th width=\"10%\">会员折扣</th>\n" +
             "            <th width=\"10%\">修改时间</th>\n" +
             "            <th width=\"10%\">操作</th>\n" +
@@ -169,6 +181,7 @@
             tempStr += "<tr>"
             tempStr += "<td>" + data[i].id + "</td>\n"
             tempStr += "<td>" + data[i].name + "</td>\n"
+            tempStr += "<td>" + data[i].kind + "</td>\n"
             tempStr += "<td>" + data[i].price + "</td>\n"
             tempStr += "<td>" + data[i].discount + "</td>\n"
             tempStr += "<td>" + tempDate.toLocaleString() + "</td>\n"
@@ -195,6 +208,7 @@
     function showAddModel() {
         kImageUrl = "#"
         $("#input_name").val("")
+        $("#input_kind").val("")
         $("#input_amount").val("")
         $("#input_discount").val("")
         $("#input_introduction").val("")
@@ -211,6 +225,7 @@
         kImageUrl = data.imageUrl
         kUpdateId = data.id
         $("#input_name").val(data.name)
+        $("#input_kind").val(data.kind)
         $("#input_amount").val(data.price)
         $("#input_discount").val(data.discount)
         $("#input_introduction").val(data.introduction)
@@ -231,6 +246,7 @@
             url: "../goods/insert",
             data: {
                 name: $("#input_name").val(),
+                kind: $("#input_kind").val(),
                 price: $("#input_amount").val(),
                 discount: $("#input_discount").val(),
                 introduction: $("#input_introduction").val(),
@@ -260,6 +276,7 @@
             data: {
                 id: kUpdateId,
                 name: $("#input_name").val(),
+                kind: $("#input_kind").val(),
                 price: $("#input_amount").val(),
                 discount: $("#input_discount").val(),
                 introduction: $("#input_introduction").val(),
@@ -280,7 +297,7 @@
         $.ajax({
             type: "post",
             dataType: "json",
-            url: "../goods/deleteByPrimaryKey",
+            url: "../goods/delete",
             data: {
                 id: kDeleteId
             },

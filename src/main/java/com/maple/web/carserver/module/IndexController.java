@@ -1,7 +1,9 @@
 package com.maple.web.carserver.module;
 
 import com.maple.web.carserver.domain.GoodsEntity;
+import com.maple.web.carserver.domain.RepairEntity;
 import com.maple.web.carserver.service.GoodsService;
+import com.maple.web.carserver.service.RepairService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
@@ -22,6 +24,8 @@ public class IndexController {
 
     @Resource
     private GoodsService goodsService;
+    @Resource
+    private RepairService repairService;
 
     /**
      * 默认访问至用户端主页
@@ -72,12 +76,14 @@ public class IndexController {
     }
 
     /**
-     * 跳转至问卷页面
+     * 跳转至维修页面
      *
      * @return
      */
     @RequestMapping("/repair")
-    public ModelAndView repair() {
+    public ModelAndView repair(Model model) {
+        List<RepairEntity> repairList = repairService.selectByPageNumber(0);
+        model.addAttribute("repairList",repairList);
         return new ModelAndView("user/repair");
     }
 

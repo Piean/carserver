@@ -2,16 +2,16 @@ package com.maple.web.carserver.service.impl;
 
 import com.maple.web.carserver.domain.RepairEntity;
 import com.maple.web.carserver.mapper.RepairEntityMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class RepairServiceImpl implements com.maple.web.carserver.service.RepairService {
 
-    @Autowired
+    @Resource
     private RepairEntityMapper entityMapper;
 
     @Override
@@ -32,7 +32,7 @@ public class RepairServiceImpl implements com.maple.web.carserver.service.Repair
     @Override
     public Integer insert(RepairEntity repairEntity) {
         repairEntity.setCreateTime(new Date());
-        return entityMapper.insertSelective(repairEntity);
+        return entityMapper.insert(repairEntity);
     }
 
     @Override

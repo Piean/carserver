@@ -2,8 +2,6 @@ package com.maple.web.carserver.dao;
 
 import com.maple.web.carserver.domain.RepairEntity;
 
-import java.util.Date;
-
 /**
  * 用于报修单保存
  */
@@ -22,8 +20,6 @@ public class RepairParamsDto {
         entity.setCarType(carType);
         entity.setMatter(matter);
         entity.setPhone(phone);
-        entity.setDateTime2(dateTimea);
-        entity.setDateTime3(dateTimeb);
         return entity;
     }
 

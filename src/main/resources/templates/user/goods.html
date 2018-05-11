@@ -169,6 +169,7 @@
         $.post("../goodsDetail", {
             id : data.id,
             name : data.name,
+            kind : data.kind,
             introduction : data.introduction,
             price : data.price,
             imageUrl : data.imageUrl,
@@ -193,6 +194,7 @@
             tempString += '<div class="grid_1_of_5 images_1_of_5">' +
                 '<img src="' + data[i].imageUrl + '">' +
                 '<h3>商品名：' + data[i].name + '</h3>' +
+                '<h3>类型：' + data[i].kind + '</h3>' +
                 '<p>介绍：' + data[i].introduction + '</p>' +
                 '<h4>价格：' + data[i].price + ' 积分</h4>' +
                 "<div class=\"button\"><span><a href=\"javascript:void(0);\" onclick='goodsDetail(" + JSON.stringify(data[i]) + ")'>详情</a></span></div>" +
@@ -206,6 +208,7 @@
             tempString += '<div class="grid_1_of_5 images_1_of_5">' +
                 '<img src="' + data[i].imageUrl + '">' +
                 '<h3>商品名：' + data[i].name + '</h3>' +
+                '<h3>类型：' + data[i].kind + '</h3>' +
                 '<p>介绍：' + data[i].introduction + '</p>' +
                 '<h4>价格：' + data[i].price + ' 积分</h4>' +
                 "<div class=\"button\"><span><a href=\"javascript:void(0);\" onclick='goodsDetail(" + JSON.stringify(data[i]) + ")'>详情</a></span></div>" +

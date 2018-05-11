@@ -140,6 +140,7 @@
                         <h3>商品介绍 :</h3>
                         <p th:text="${goodsEntity.introduction}"></p>
                         <a href="javascript:void(0);" onclick="addCart()">添加至购物车</a>
+                        <a th:if="${goodsEntity.kind} == '车辆'" href="javascript:void(0);" onclick="addCart()">预约试驾</a>
                     </div>
                     <div class="product-share">
                         <h3>分享至:</h3>

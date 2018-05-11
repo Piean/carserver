@@ -1,6 +1,5 @@
 package com.maple.web.carserver.module;
 
-import com.maple.web.carserver.dao.RepairParamsDto;
 import com.maple.web.carserver.domain.RepairEntity;
 import com.maple.web.carserver.service.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class RepairController {
      * @return
      */
     @RequestMapping("/count")
-    Integer count() {
+    public Integer count() {
         return repairService.count();
     }
 
@@ -33,24 +32,19 @@ public class RepairController {
      * @return
      */
     @RequestMapping("/selectByPageNumber")
-    List<RepairEntity> selectByPageNumber(Integer pageNumber) {
+    public List<RepairEntity> selectByPageNumber(Integer pageNumber) {
         return repairService.selectByPageNumber(pageNumber);
     }
 
     /**
      * 用户端：添加一条保修数据
      *
-     * @param paramsDto
+     * @param
      * @return
      */
     @RequestMapping("/insert")
-    Integer insert(RepairParamsDto paramsDto) {
-        try {
-            return repairService.insert(paramsDto.toEntity());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
+    public Integer insert(RepairEntity repairEntity) {
+        return repairService.insert(repairEntity);
     }
 
     /**
@@ -60,7 +54,7 @@ public class RepairController {
      * @return
      */
     @RequestMapping("/delete")
-    Integer delete(Integer id) {
+    public Integer delete(Integer id) {
         return repairService.delete(id);
     }
 
@@ -71,7 +65,7 @@ public class RepairController {
      * @return
      */
     @RequestMapping("/update")
-    Integer update(RepairEntity repairEntity) {
+    public Integer update(RepairEntity repairEntity) {
         return repairService.update(repairEntity);
     }
 }
