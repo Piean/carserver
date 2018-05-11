@@ -5,6 +5,7 @@ import com.maple.web.carserver.service.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -43,8 +44,9 @@ public class RepairController {
      * @return
      */
     @RequestMapping("/insert")
-    public Integer insert(RepairEntity repairEntity) {
-        return repairService.insert(repairEntity);
+    public ModelAndView insert(RepairEntity repairEntity) {
+        repairService.insert(repairEntity);
+        return new ModelAndView("user/repair");
     }
 
     /**

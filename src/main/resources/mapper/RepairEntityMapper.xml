@@ -54,7 +54,7 @@
     insert into tb_repair (<include refid="Base_Column_List" />)
     values (#{id,jdbcType=INTEGER}, #{dateTime,jdbcType=TIMESTAMP}, #{carType,jdbcType=VARCHAR}, 
       #{matter,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{process,jdbcType=VARCHAR}, #{isRepair,jdbcType=TINYINT},
-      #{createTime,jdbcType=TIMESTAMP}}
+      #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.maple.web.carserver.domain.RepairEntity">
@@ -197,7 +197,7 @@
     <include refid="Base_Column_List" />
     from tb_repair
     order by date_time desc
-    limit #{start}, 10
+    limit #{start}, 5
   </select>
 
 </mapper>

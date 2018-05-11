@@ -114,15 +114,14 @@ public class RepairEntity {
      *
      * @mbg.generated Wed May 02 21:45:38 CST 2018
      */
+
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 
-    public void setDateTime(Long dateTime) {
-        this.dateTime = new Date(dateTime);
-    }
-
-
+//    public void setDateTime(Long dateTime) {
+//        this.dateTime = new Date(dateTime);
+//    }
 
 
     /**

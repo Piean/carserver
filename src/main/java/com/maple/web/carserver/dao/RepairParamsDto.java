@@ -16,7 +16,7 @@ public class RepairParamsDto {
 
     public RepairEntity toEntity() {
         RepairEntity entity = new RepairEntity();
-        entity.setDateTime(dateTime);
+//        entity.setDateTime(dateTime);
         entity.setCarType(carType);
         entity.setMatter(matter);
         entity.setPhone(phone);
