@@ -28,6 +28,11 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
+    public List<SaleDao> getAllSale() {
+        return entityMapper.getAllSale();
+    }
+
+    @Override
     public SaleEntity getById(Integer id) {
         return entityMapper.selectByPrimaryKey(id);
     }

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="renderer" content="webkit"/>
+    <title></title>
+    <link rel="stylesheet" href="../../../static/css/pintuer.css">/
+    <link rel="stylesheet" href="../../../static/css/admin.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 维修预约单管理 </strong></div>
+    <!--<div class="padding border-bottom">-->
+    <!--<button type="button" class="button border-yellow" id="btn-add"><span-->
+    <!--class="icon-plus-square-o"></span> 添加记录-->
+    <!--</button>-->
+    <!--</div>-->
+    <table class="table table-hover text-center" id="main-table">
+    </table>
+</div>
+
+</body>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/pintuer.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/admin.js"></script>
+<script>
+
+    var kCount
+    var kDeleteId
+    var kPageNumber
+
+    $(function () {
+        kPageNumber = 0
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../order/count",
+            data: {},
+            success: function (data) {
+                kCount = data
+                requestList()
+            },
+            error: function (data) {
+                alert("系统错误")
+            }
+        })
+    })
+
+    function requestList() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../order/list",
+            data: {
+                pageNumber: kPageNumber
+            },
+            success: function (data) {
+                generateList(data)
+            },
+            error: function () {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function generateList(data) {
+        if (data.length <= 0) return
+
+        var tempStr = "<tr>\n" +
+            "            <th width=\"5%\">ID</th>\n" +
+            "            <th width=\"30%\">车型</th>\n" +
+            "            <th width=\"15%\">姓名</th>\n" +
+            "            <th width=\"15%\">手机</th>\n" +
+            "            <th width=\"15%\">试驾日期</th>\n" +
+            "            <th width=\"3%\">操作</th>\n" +
+            "        </tr>";
+        for (var i = 0; i < data.length; i++) {
+            var tempDate = new Date()
+            tempDate.setTime(data[i].dateTime)
+
+            tempStr += "<tr>"
+            tempStr += "<td>" + data[i].id + "</td>\n"
+            tempStr += "<td>" + data[i].carName + "</td>\n"
+            tempStr += "<td>" + data[i].name + "</td>\n"
+            tempStr += "<td>" + data[i].phone + "</td>\n"
+            tempStr += "<td>" + tempDate.toLocaleDateString() + "</td>\n"
+            tempStr += "<td>" + status + "</td>\n"
+            tempStr += "<td><div class=\"button-group\">" +
+                (data[i].status == 0 ? ("<a class=\"button border-main\" onclick='agreeModel(" + JSON.stringify(data[i].id) + ")'><span class=\"icon-edit\"></span>处理</a>") : "") +
+                "<a class=\"button border-main\" onclick='showDeleteModel(" + JSON.stringify(data[i].id) + ")'><span class=\"icon-edit\"></span>删除</a>" +
+                "</div></td>"
+            tempStr += "</tr>"
+        }
+        tempStr += "<tr>\n" +
+            "        <td colspan=\"8\"><div class=\"pagelist\"> <a onclick='lastPage()'>上一页</a><a id='display-page'>第" + (kPageNumber + 1) + "页，共" + (parseInt(kCount / 5) + (kCount % 5 == 0 ? 0 : 1)) + "页</a><a onclick='nextPage()'>下一页</a><a onclick='endPage()'>尾页</a> </div></td>\n" +
+            "      </tr>"
+        $("#main-table").empty()
+        $("#main-table").append(tempStr)
+    }
+
+    // model 显示控制
+    function agreeModel(id) {
+        kDeleteId = id
+        addDialog("处理预约？", "是否同意试驾预约？", "finishModal", finishRequest)
+        showDialog("finishModal")
+    }
+
+    // model 显示控制
+    function showDeleteModel(id) {
+        kDeleteId = id
+        addDialog("是否删除？", "是否删除？", "deleteModal", deleteRequest)
+        showDialog("deleteModal")
+    }
+
+    // 增删改接口请求
+    function deleteRequest() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../order/delete",
+            data: {
+                id: kDeleteId
+            },
+            success: function () {
+                alert("处理成功")
+                requestList()
+            },
+            error: function () {
+                alert("系统错误")
+            }
+        })
+    }
+
+    // 增删改接口请求
+    function finishRequest() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "../order/update",
+            data: {
+                id: kDeleteId,
+                status: 1
+            },
+            success: function () {
+                alert("删除成功")
+                requestList()
+            },
+            error: function () {
+                alert("系统错误")
+            }
+        })
+    }
+
+    function lastPage() {
+        if (kPageNumber == 0) {
+            alert("已经是第一页")
+            return
+        }
+
+        kPageNumber = kPageNumber - 1
+        requestList()
+    }
+
+    function nextPage() {
+        if (kPageNumber == parseInt(kCount / 5) || kCount == kPageNumber * 5 + 5) {
+            alert("已经是最后一页了")
+            return
+        }
+        kPageNumber = kPageNumber + 1
+        requestList()
+
+    }
+
+    function endPage() {
+        kPageNumber = parseInt(kCount / 5)
+        requestList()
+    }
+
+</script>
+</html>

@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>卡其汽车4S店管理系统</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
     <link href="../../static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
     <!--<link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>-->
     <!--<link rel="stylesheet" href="../../static/css/jquery.jqzoom.css" type="text/css">-->
@@ -74,7 +75,7 @@
         <div class="single-page"><br/>
             <div class="single-top-pagination">
                 <ul>
-                    <li><a href="index">商城 /</a></li>
+                    <li><a href="../../goods">商城 /</a></li>
                     <li><span>商品详情</span></li>
                 </ul>
             </div>
@@ -140,7 +141,7 @@
                         <h3>商品介绍 :</h3>
                         <p th:text="${goodsEntity.introduction}"></p>
                         <a href="javascript:void(0);" onclick="addCart()">添加至购物车</a>
-                        <a th:if="${goodsEntity.kind} == '车辆'" href="javascript:void(0);" onclick="addCart()">预约试驾</a>
+                        <a th:if="${goodsEntity.kind} == '车辆'" href="javascript:void(0);" onclick="meetCar()">预约试驾</a>
                     </div>
                     <div class="product-share">
                         <h3>分享至:</h3>
@@ -203,7 +204,51 @@
         </div>
     </div>
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="addModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title">预约试驾</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel admin-panel margin-top">
+                        <div class="body-content">
+                            <form method="post" class="form-x" action="">
+                                <div class="form-group">
+                                    <h4>预约试驾成功后，您将会收到致电，我们将为您提供一对一服务</h4>
+                                </div>
+                                <div class="form-group">
+                                    <div class="field">
+                                        姓名：<input type="text" class="form-control" id="input_name" placeholder="请填您的姓名"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="field">
+                                        手机号：<input type="text" class="form-control" id="input_phone" placeholder="请填写可以联系到您的手机号码"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="field">
+                                        试驾日期：<input type="date" class="form-control" id="input_date" placeholder="请选择您方便的维修时间"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success" id="btn-insert">预约</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="../../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../../static/js/bootstrap.min.js"></script>
     <script src="../../static/js/common.js"></script>
     <script type="text/javascript">
 
@@ -231,6 +276,33 @@
                     alert("系统错误")
                 }
             })
+        }
+
+        function meetCar() {
+            $("#addModel").modal("show");
+
+            $("#btn-insert").off("click").click(function () {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "../order/insert",
+                    data: {
+                        carId: $("#input_goods_id").val(),
+                        name: $("#input_name").val(),
+                        phone: $("#input_phone").val(),
+                        dateTime: new Date($("#input_date").val()),
+                        status: 0
+                    },
+                    success: function () {
+                        alert("预约成功")
+                        $("#addModel").modal("hide");
+                        getShoppingCartCount()
+                    },
+                    error: function () {
+                        alert("系统错误")
+                    }
+                })
+            });
         }
     </script>
 </div>

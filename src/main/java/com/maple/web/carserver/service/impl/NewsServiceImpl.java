@@ -6,13 +6,14 @@ import com.maple.web.carserver.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class NewsServiceImpl implements NewsService {
 
-    @Autowired
+    @Resource
     private NewsEntityMapper newsEntityMapper;
 
 

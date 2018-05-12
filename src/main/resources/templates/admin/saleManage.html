@@ -18,6 +18,7 @@
         <button type="button" class="button border-yellow" id="btn-add"><span
                 class="icon-plus-square-o"></span> 添加记录
         </button>
+        <button type="button" class="button border-yellow" id="btn-excel">导出表格</button>
     </div>
     <table class="table table-hover text-center" id="main-table">
     </table>
@@ -36,7 +37,7 @@
                         <form method="post" class="form-x" action="">
                             <div class="form-group">
                                 <div class="label" style="width: 70px;">
-                                    <label>车辆型号：</label>
+                                    <label>商品名称：</label>
                                 </div>
                                 <div class="field">
                                     <select class="form-control" name="s_title" id="select_goodsId" onchange="typeChange(this)">
@@ -49,10 +50,10 @@
 
                             <div class="form-group">
                                 <div class="label" style="width: 70px;">
-                                    <label>车辆售价：</label>
+                                    <label>商品售价：</label>
                                 </div>
                                 <div class="field">
-                                    <input type="text" class="input" value="0" name="s_title" id="input_price" onkeyup="value=value.replace(/[^\d\.]/g,'')"/>
+                                    <input type="text" readonly="readonly" class="input" value="0" name="s_title" id="input_price" onkeyup="value=value.replace(/[^\d\.]/g,'')"/>
                                 </div>
                             </div>
 
@@ -136,12 +137,10 @@
         $("#btn-add").click(function () {
             showAddModel()
         })
-//        $("#btn-insert").click(function () {
-//            addAccount()
-//        })
-//        $("#btn-update").click(function () {
-//            updateRequest()
-//        })
+
+        $("#btn-excel").click(function () {
+            location.href = "../sale/excel";
+        })
     })
 
     function typeChange(selector) {
@@ -170,8 +169,8 @@
 
         var tempStr = "<tr>\n" +
             "            <th width=\"5%\">ID</th>\n" +
-            "            <th width=\"15%\">车辆型号</th>\n" +
-            "            <th width=\"10%\">车辆售价</th>\n" +
+            "            <th width=\"15%\">商品名称</th>\n" +
+            "            <th width=\"10%\">商品售价</th>\n" +
             "            <th width=\"10%\">销售员</th>\n" +
             "            <th width=\"10%\">实际售价</th>\n" +
             "            <th width=\"10%\">售出数量</th>\n" +
@@ -179,9 +178,6 @@
             "            <th width=\"10%\">操作</th>\n" +
             "        </tr>";
         for (var i = 0; i < data.length; i++) {
-            var tempDate = new Date()
-            tempDate.setTime(data[i].createTime)
-
             tempStr += "<tr>"
             tempStr += "<td>" + data[i].id + "</td>\n"
             tempStr += "<td>" + data[i].name + "</td>\n"
@@ -189,7 +185,7 @@
             tempStr += "<td>" + data[i].salerName + "</td>\n"
             tempStr += "<td>" + data[i].amount + "</td>\n"
             tempStr += "<td>" + data[i].count + "</td>\n"
-            tempStr += "<td>" + tempDate.toLocaleString() + "</td>\n"
+            tempStr += "<td>" + data[i].date + "</td>\n"
             tempStr += "<td><div class=\"button-group\">" +
                 "<a class=\"button border-main\" onclick='showUpdateModel(" + JSON.stringify(data[i]) + ")'><span class=\"icon-edit\"></span> 修改</a>" +
                 "<a class=\"button border-red\" href=\"javascript:void(0)\" onclick=\"showDeleteModel(" + data[i].id + ")\"><span class=\"icon-trash-o\"></span> 删除</a>" +

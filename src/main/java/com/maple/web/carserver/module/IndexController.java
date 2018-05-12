@@ -208,6 +208,11 @@ public class IndexController {
         return new ModelAndView("admin/questionManage");
     }
 
+    @RequestMapping("admin/orderManage")
+    public ModelAndView orderManage() {
+        return new ModelAndView("admin/orderManage");
+    }
+
     /**
      * 问卷统计页面
      *

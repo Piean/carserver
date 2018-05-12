@@ -5,10 +5,13 @@ import com.maple.web.carserver.domain.SaleEntity;
 import com.maple.web.carserver.domain.StoreEntity;
 import com.maple.web.carserver.service.SaleService;
 import com.maple.web.carserver.service.StoreService;
+import com.maple.web.carserver.utils.ExcelUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -89,4 +92,19 @@ public class SaleController {
         }
         return saleService.update(saleEntity);
     }
+
+    @RequestMapping("/excel")
+    public Integer excel(HttpServletResponse response) {
+        response.setContentType("application/binary;charset=UTF-8");
+        try {
+            String fileName = "SaleInfo-" + System.currentTimeMillis();
+            response.setHeader("Content-disposition", "attachment; filename=" + fileName + ".xls");
+            ExcelUtil.exportSale(response.getOutputStream(),saleService.getAllSale());
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
 }

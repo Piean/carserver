@@ -10,6 +10,8 @@ public interface SaleService {
 
     List<SaleDao> selectByPageNumber(Integer pageNumber);
 
+    List<SaleDao> getAllSale();
+
     SaleEntity getById(Integer id);
 
     Integer deleteByPrimaryKey(Integer id);

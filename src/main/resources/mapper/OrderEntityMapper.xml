@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maple.web.carserver.mapper.OrderEntityMapper">
+    <resultMap id="BaseResultMap" type="com.maple.web.carserver.dao.OrderDao">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="car_id" jdbcType="INTEGER" property="carId" />
+        <result column="car_name" jdbcType="VARCHAR" property="carName" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="date_time" jdbcType="TIMESTAMP" property="dateTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, car_id, name, phone, date_time, status, create_time
+    </sql>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(1) from tb_order
+    </select>
+
+    <select id="getListByPage" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+          o.*,c.name as car_name
+        from
+          tb_order as o, tb_goods as c
+        where
+          o.car_id = c.id
+        order by
+          o.date_time desc
+        limit #{start}, 8
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+          <include refid="Base_Column_List"/>
+        from
+          tb_order
+        where
+          id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.maple.web.carserver.domain.OrderEntity">
+        insert into tb_order (
+          <include refid="Base_Column_List"/>
+        ) values (
+          #{id},
+          #{userId},
+          #{carId},
+          #{name},
+          #{phone},
+          #{dateTime},
+          #{status},
+          NOW()
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.maple.web.carserver.domain.OrderEntity">
+        update tb_order set
+        <if test="userId != null">
+            user_id = #{userId},
+        </if>
+        <if test="carId != null">
+            car_id = #{carId},
+        </if>
+        <if test="name != null">
+            name = #{name},
+        </if>
+        <if test="phone != null">
+            phone = #{phone},
+        </if>
+        <if test="dateTime != null">
+            date_time = #{dateTime},
+        </if>
+        <if test="status != null">
+            status = #{status},
+        </if>
+            create_time = create_time
+        where
+            id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from tb_order where id = #{id}
+    </delete>
+</mapper>

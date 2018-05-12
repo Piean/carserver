@@ -189,5 +189,20 @@
     LIMIT #{start}, 8
   </select>
 
+  <select id="getAllSale" resultType="com.maple.web.carserver.dao.SaleDao">
+    SELECT
+      tb_sale.id,
+      tb_sale.goods_id AS goodsId,
+      tb_sale.price,
+      tb_sale.saler_name AS salerName,
+      tb_sale.amount,
+      tb_sale.count,
+      tb_sale.introduction,
+      tb_sale.create_time AS createTime,
+      tb_goods.name
+    FROM
+      tb_sale,tb_goods
+    WHERE tb_sale.goods_id = tb_goods.id
+  </select>
 
 </mapper>
