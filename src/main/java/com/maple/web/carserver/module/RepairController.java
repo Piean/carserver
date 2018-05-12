@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -70,6 +73,27 @@ public class RepairController {
      */
     @RequestMapping("/update")
     public Integer update(RepairEntity repairEntity) {
-        return repairService.update(repairEntity);
+        RepairEntity repair = repairService.getById(repairEntity.getId());
+        if (repair == null) {
+            return -1;
+        }
+        if (repair.getIsRepair() == 2) {
+            return 1;
+        }
+
+        if (repair.getIsRepair() == 0 && repairEntity.getIsRepair() == 1) {
+            repair.setIsRepair((byte) 1);
+            if (repairEntity.getProcess() == null) {
+                repairEntity.setProcess(new SimpleDateFormat("yyyy-MM-dd").format(new Date().getTime()) + " 预约成功");
+            }
+            repair.setProcess(repairEntity.getProcess());
+        } else if (repair.getIsRepair() == 1 && repairEntity.getIsRepair() == 1) {
+            repair.setIsRepair(repairEntity.getIsRepair());
+            repair.setProcess(repair.getProcess() + "<br>" + repairEntity.getProcess());
+        } else if (repairEntity.getIsRepair() == 2) {
+            repair.setIsRepair(repairEntity.getIsRepair());
+            repair.setProcess((repair.getProcess() == null ? "" : repair.getProcess()) + "<br>" + new SimpleDateFormat("yyyy-MM-dd").format(new Date().getTime()) + " 完成维修");
+        }
+        return repairService.update(repair);
     }
 }

@@ -19,7 +19,6 @@ function addDialog(title, content, dialogId, callback) {
         "    </div>\n" +
         "  </div>\n" +
         "</div>"
-
     $('body').append(html)
 
     // $("#" + dialogId + "OKButton").data('params', params)

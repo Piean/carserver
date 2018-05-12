@@ -9,6 +9,8 @@ public interface RepairService {
 
     List<RepairEntity> selectByPageNumber(Integer pageNumber);
 
+    RepairEntity getById(Integer id);
+
     Integer delete(Integer id);
 
     Integer insert(RepairEntity repairEntity);

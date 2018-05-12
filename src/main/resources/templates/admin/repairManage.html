@@ -2,13 +2,13 @@
 <html lang="zh-cn">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <meta name="renderer" content="webkit">
+    <meta name="renderer" content="webkit"/>
     <title></title>
-    <link rel="stylesheet" href="../../../static/css/pintuer.css">
-    <link rel="stylesheet" href="../../../static/css/admin.css">
-    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../static/css/pintuer.css">/
+    <link rel="stylesheet" href="../../../static/css/admin.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
 
 </head>
 <body>
@@ -24,37 +24,48 @@
 </div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="upModal">
-    <div class="modal-dialog" role="document" style="width: 500px;">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                 <h4 class="modal-title">维修信息</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="width: 500px;">
                 <div class="panel admin-panel margin-top">
                     <div class="body-content">
+                        <form method="post" class="form-x" action="">
+                        <div class="form-group">
+                            <h4>维修记录</h4>
+                            <div id="repair_history"></div>
+                        </div>
+                        <div class="form-group">
+                            <hr>
+                            <h4>新增记录</h4>
+                        </div>
+
                         <div class="form-group">
                             <div class="label" style="width: 70px;">
                                 <label>维修时间：</label>
                             </div>
-                            <div class="field" style="width: 300px;">
-                                <input type="date" class="form-control" id="sel-time" >
+                            <div class="field">
+                                <input type="date" class="form-control" id="sel-time" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="label" style="width: 70px;">
                                 <label>维修内容：</label>
                             </div>
-                            <div class="field" style="width: 300px;">
-                                <input type="text" class="form-control" id="sel-process" >
+                            <div class="field">
+                                <input type="text" class="form-control" id="sel-process" />
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-success" onclick="updateRequest()">确定</button>
+                <button type="button" class="btn btn-success" onclick="updateRequest(1,true)">确定</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -68,7 +79,6 @@
 <script>
 
     var kCount
-    var kUpdateItem
     var kDeleteId
     var kPageNumber
 
@@ -130,7 +140,7 @@
                 op = "记录";
             } else {
                 status = "已维修";
-                op = "删除";
+                op = "查看";
             }
             var tempDate = new Date()
             tempDate.setTime(data[i].dateTime)
@@ -145,13 +155,13 @@
             tempStr += "<td>" + status + "</td>\n"
             tempStr += "<td><div class=\"button-group\">" +
                 "<a class=\"button border-main\" onclick='showUpdateModel(" + JSON.stringify(data[i]) + ")'><span class=\"icon-edit\"></span>" + op + "</a>" +
-                "<a class=\"button border-main\" onclick='showFinishModel(" + JSON.stringify(data[i].id) + ")'><span class=\"icon-edit\"></span>完成</a>" +
+                (data[i].isRepair != 2 ? ("<a class=\"button border-main\" onclick='showFinishModel(" + JSON.stringify(data[i].id) + ")'><span class=\"icon-edit\"></span>完成</a>") : "") +
                 "<a class=\"button border-main\" onclick='showDeleteModel(" + JSON.stringify(data[i].id) + ")'><span class=\"icon-edit\"></span>删除</a>" +
                 "</div></td>"
             tempStr += "</tr>"
         }
         tempStr += "<tr>\n" +
-            "        <td colspan=\"8\"><div class=\"pagelist\"> <a onclick='lastPage()'>上一页</a><a id='display-page'>第" + (kPageNumber + 1) + "页，共" + (parseInt(kCount / 8) + (kCount % 8 == 0 ? 0 : 1)) + "页</a><a onclick='nextPage()'>下一页</a><a onclick='endPage()'>尾页</a> </div></td>\n" +
+            "        <td colspan=\"8\"><div class=\"pagelist\"> <a onclick='lastPage()'>上一页</a><a id='display-page'>第" + (kPageNumber + 1) + "页，共" + (parseInt(kCount / 5) + (kCount % 5 == 0 ? 0 : 1)) + "页</a><a onclick='nextPage()'>下一页</a><a onclick='endPage()'>尾页</a> </div></td>\n" +
             "      </tr>"
         $("#main-table").empty()
         $("#main-table").append(tempStr)
@@ -172,18 +182,17 @@
     }
 
     function showUpdateModel(data) {
-
-        var isRepair = data.isRepair;
-        if (isRepair == 0) {
-            data.process = "开始处理";
-        } else if (isRepair.isRepair == 1) {
-            data.process = data.process;
+        kDeleteId = data.id;
+        if (data.isRepair == 0) {
+            meetRequest();
+        } else if (data.isRepair == 1) {
+            $("#repair_history").html(data.process);
+            showDialog("upModal")
         } else {
-            data.process = data.process + "\n" + new Date().toLocaleDateString().replace('/','-').replace('/','-') + " 维修完成";
+            $("#seeModal").remove();
+            addDialog("维修过程", data.process, "seeModal", seeProcess)
+            showDialog("seeModal")
         }
-
-        $("#sel-process").val(process);
-        showDialog("upModal")
     }
 
     // 增删改接口请求
@@ -207,37 +216,46 @@
 
     // 增删改接口请求
     function finishRequest() {
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "../repair/finish",
-            data: {
-                id: kDeleteId
-            },
-            success: function (data) {
-                alert("操作成功")
-                requestList()
-            },
-            error: function (data) {
-                alert("系统错误")
-            }
-        })
+        updateRequest(2,false);
     }
 
-    function updateRequest() {
+    function meetRequest() {
+        updateRequest(0,false);
+    }
+
+    // 增删改接口请求
+    function seeProcess() {
+
+    }
+
+    function updateRequest(status,model) {
+        var isRepair;
+        var process;
+        if (status == 0) {
+            isRepair = 1;
+        }
+        if (status == 1) {
+            isRepair = 1;
+            process = $("#sel-time").val() + " " + $("#sel-process").val();
+        }
+        if (status == 2) {
+            isRepair = 2;
+        }
         $.ajax({
             type: "post",
             dataType: "json",
             url: "../repair/update",
             data: {
-                id: kUpdateItem.id,
-                isRepair: 1
+                id: kDeleteId,
+                isRepair: isRepair,
+                process: process
             },
-            success: function (data) {
+            success: function () {
                 alert("修改成功")
-//                hideDialog("addModel")
-                hideDialog("upModal")
-                requestList()
+                requestList();
+                if (model) {
+                    $("#repair_history").html($("#repair_history").html() + "<br/>" + process)
+                }
             },
             error: function (data) {
                 alert("系统错误")
@@ -256,7 +274,7 @@
     }
 
     function nextPage() {
-        if (kPageNumber == parseInt(kCount / 8) || kCount == kPageNumber * 8 + 8) {
+        if (kPageNumber == parseInt(kCount / 5) || kCount == kPageNumber * 5 + 5) {
             alert("已经是最后一页了")
             return
         }
@@ -266,11 +284,9 @@
     }
 
     function endPage() {
-        kPageNumber = parseInt(kCount / 8)
+        kPageNumber = parseInt(kCount / 5)
         requestList()
     }
 
 </script>
-
-<a class="button border-main" onclick='showUpdateModel({"id":13,"datetime":1526083200000,"cartype":"宝马x5","matter":"车胎爆了","phone":"110","name":"蘑菇","process":"等待处理","isrepair":0,"createtime":1526042404000})'><span class="icon-edit"></span>处理</a>
 </html>

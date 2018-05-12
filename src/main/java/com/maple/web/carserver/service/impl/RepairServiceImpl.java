@@ -2,6 +2,7 @@ package com.maple.web.carserver.service.impl;
 
 import com.maple.web.carserver.domain.RepairEntity;
 import com.maple.web.carserver.mapper.RepairEntityMapper;
+import com.maple.web.carserver.service.RepairService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -9,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class RepairServiceImpl implements com.maple.web.carserver.service.RepairService {
+public class RepairServiceImpl implements RepairService {
 
     @Resource
     private RepairEntityMapper entityMapper;
@@ -21,7 +22,12 @@ public class RepairServiceImpl implements com.maple.web.carserver.service.Repair
 
     @Override
     public List<RepairEntity> selectByPageNumber(Integer pageNumber) {
-        return entityMapper.selectByPageNumber(pageNumber * 8);
+        return entityMapper.selectByPageNumber(pageNumber * 5);
+    }
+
+    @Override
+    public RepairEntity getById(Integer id) {
+        return entityMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -37,8 +43,6 @@ public class RepairServiceImpl implements com.maple.web.carserver.service.Repair
 
     @Override
     public Integer update(RepairEntity repairEntity) {
-        RepairEntity entity = entityMapper.selectByPrimaryKey(repairEntity.getId());
-        entity.setIsRepair(repairEntity.getIsRepair());
         return entityMapper.updateByPrimaryKeySelective(repairEntity);
     }
 

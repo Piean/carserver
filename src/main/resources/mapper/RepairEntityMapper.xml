@@ -155,12 +155,6 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="dateTime2 != null">
-        date_time_2 = #{dateTime2,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dateTime3 != null">
-        date_time_3 = #{dateTime3,jdbcType=TIMESTAMP},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
