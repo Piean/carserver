@@ -162,7 +162,10 @@
         WHERE tb_user_id = #{tbUserId,jdbcType=INTEGER} AND tb_goods_id = #{tbGoodsId,jdbcType=INTEGER} AND is_sale = 0 limit 1
     </select>
 
-    <update id="buyAllGoods" parameterType="java.lang.Integer">
-      UPDATE tb_shopping_cart SET is_sale = 1 WHERE tb_user_id = #{userId}
+    <update id="buyAllGoods" parameterType="java.util.Map">
+      UPDATE tb_shopping_cart SET is_sale = 1 WHERE id IN
+      <foreach collection="cartIdList" item="id" open="(" separator="," close=")">
+          #{id}
+      </foreach>
     </update>
 </mapper>

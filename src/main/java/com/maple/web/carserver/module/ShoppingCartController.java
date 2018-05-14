@@ -2,10 +2,14 @@ package com.maple.web.carserver.module;
 
 import com.maple.web.carserver.dao.ShoppingCartDao;
 import com.maple.web.carserver.dao.ShoppingCartParamsDto;
+import com.maple.web.carserver.domain.IndentEntity;
 import com.maple.web.carserver.domain.ShoppingCartEntity;
 import com.maple.web.carserver.domain.StoreEntity;
+import com.maple.web.carserver.domain.UserEntity;
+import com.maple.web.carserver.service.IndentService;
 import com.maple.web.carserver.service.ShoppingCartService;
 import com.maple.web.carserver.service.StoreService;
+import com.maple.web.carserver.service.UserService;
 import com.maple.web.carserver.utils.SessionUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("shoppingCart")
@@ -22,6 +27,10 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
     @Resource
     private StoreService storeService;
+    @Resource
+    private UserService userService;
+    @Resource
+    private IndentService indentService;
 
     /**
      * 获取某个用户购物车商品
@@ -112,19 +121,48 @@ public class ShoppingCartController {
         return shoppingCartService.saveOrUpdate(shoppingCartEntity);
     }
 
-    /**
-     * 购买全部商品
-     *
-     * @param userId
-     * @param realSum
-     * @return
-     */
+
     @RequestMapping("/buyAllGoods")
-    public Integer buyAllGoods(Integer userId, Double realSum, HttpServletRequest request) {
-        if (userId == null || userId == 0) {
-            userId = SessionUtil.getInstance().getUserId(request.getSession().getId());
+    public Integer buyAllGoods(HttpServletRequest request, IndentEntity indent) {
+        UserEntity user;
+        if (indent.getUserId() == null) {
+            indent.setUserId(SessionUtil.getInstance().getUserId(request.getSession().getId()));
         }
-        return shoppingCartService.buyAllGoods(userId, realSum);
+        user = userService.getUserById(indent.getUserId());
+        if (user == null) {
+            return -1;
+        }
+
+        List<ShoppingCartDao> goodsList = shoppingCartService.selectGoodsList(indent.getUserId());
+        double total = 0;
+        double pay = 0;
+        for (ShoppingCartDao goods : goodsList) {
+            total = total + goods.getPrice() * goods.getCount();
+            pay = pay + goods.getPrice() * goods.getCount() * goods.getDiscount() / 100D;
+        }
+
+        //余额或积分不足
+        if (user.getBalance() < indent.getMoney() || user.getIntegral() < indent.getIntegral()) {
+            return -1;
+        }
+
+        String cartIdList = goodsList.stream().map(g -> g.getId().toString()).collect(Collectors.joining(","));
+
+        //更新购物车商品状态
+        shoppingCartService.buyAllGoods(cartIdList.split(","));
+
+        //生成订单信息
+        indent.setCartId(String.join(cartIdList));
+        indent.setStatus(0);
+        indent.setTotal(total); //商品总金额
+        indent.setPay(pay); //折后总金额
+        indentService.insert(indent);
+
+        //扣除账户中的钱款和积分
+        user.setBalance(user.getBalance() - indent.getMoney());
+        user.setIntegral(user.getIntegral() - indent.getIntegral());
+        userService.updateAccount(user);
+        return 1;
     }
 
 }

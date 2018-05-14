@@ -231,13 +231,13 @@
             return
         }
         var sum = 0
-        var realSum = 0
+        var deposit = 0
 
         var tempString = ''
         for (var i = 0; i < data.length; i++) {
 
             sum += data[i].count * data[i].price
-            realSum += (data[i].count * data[i].price * data[i].discount / 10)
+            deposit += (data[i].count * data[i].price * data[i].discount / 10)
             tempString +=
                 '<tr>\n' +
                 '<td><div><strong>' + data[i].name + '</strong></div></td>\n' +
@@ -252,10 +252,10 @@
         }
         $("#table-body").empty().append(tempString)
 
-        kAllScore = realSum
+        kAllScore = deposit
         $("#td_sum").text(sum.toFixed(2) + " 积分")
-        $("#tb_discount_sum").text((sum - realSum).toFixed(2) + " 积分")
-        $("#tb_real_sum").text(realSum.toFixed(2) + " 积分")
+        $("#tb_discount_sum").text((sum - deposit).toFixed(2) + " 积分")
+        $("#tb_real_sum").text(deposit.toFixed(2) + " 积分")
 
     }
 
@@ -314,7 +314,7 @@
             dataType: "json",
             url: "../shoppingCart/buyAllGoods",
             data: {
-                realSum: kAllScore
+                deposit: kAllScore
             },
             success: function (data) {
                 if (data == -1) {

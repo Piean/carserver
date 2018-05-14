@@ -3,12 +3,10 @@ package com.maple.web.carserver.service.impl;
 import com.maple.web.carserver.dao.ShoppingCartDao;
 import com.maple.web.carserver.dao.ShoppingCartParamsDto;
 import com.maple.web.carserver.domain.ShoppingCartEntity;
-import com.maple.web.carserver.domain.UserEntity;
 import com.maple.web.carserver.mapper.ShoppingCartEntityMapper;
 import com.maple.web.carserver.mapper.UserEntityMapper;
 import com.maple.web.carserver.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -68,19 +66,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    @Transactional
-    public Integer buyAllGoods(Integer userId, Double realSum) {
-        UserEntity userEntity = userEntityMapper.selectByPrimaryKey(userId);
-        if (userEntity.getIntegral() == null || realSum == null) {
-            return -1;
-        }
-        if (userEntity.getIntegral() >= realSum) {
-            userEntity.setIntegral(userEntity.getIntegral() - realSum);
-            userEntityMapper.updateByPrimaryKeySelective(userEntity);
-            return entityMapper.buyAllGoods(userId);
-        } else {
-            return -1;
-        }
+    public Integer buyAllGoods(String[] cartIdList) {
+        return entityMapper.buyAllGoods(cartIdList);
     }
 
 }

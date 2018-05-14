@@ -3,7 +3,6 @@ package com.maple.web.carserver.service;
 import com.maple.web.carserver.dao.ShoppingCartDao;
 import com.maple.web.carserver.dao.ShoppingCartParamsDto;
 import com.maple.web.carserver.domain.ShoppingCartEntity;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +19,5 @@ public interface ShoppingCartService {
 
     Integer saveOrUpdate(ShoppingCartEntity shoppingCartEntity);
 
-    @Transactional
-    Integer buyAllGoods(Integer userId, Double realSum);
+    Integer buyAllGoods(String[] cartIdList);
 }
