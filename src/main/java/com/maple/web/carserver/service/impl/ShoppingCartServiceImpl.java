@@ -40,9 +40,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public Integer delete(ShoppingCartParamsDto paramsDto) {
-        ShoppingCartEntity entity = entityMapper.selectByGoodsId(paramsDto.toEntity());
-        return entityMapper.deleteByPrimaryKey(entity.getId());
+    public Integer delete(Integer cartId) {
+        return entityMapper.deleteByPrimaryKey(cartId);
     }
 
     @Override

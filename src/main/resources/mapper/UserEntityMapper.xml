@@ -63,7 +63,7 @@
       <if test="isAdmin != null">
         is_admin = #{isAdmin,jdbcType=TINYINT},
       </if>
-        create_time = createTime
+        create_time = create_time
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>

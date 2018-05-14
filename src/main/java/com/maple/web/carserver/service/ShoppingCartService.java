@@ -13,7 +13,7 @@ public interface ShoppingCartService {
 
     ShoppingCartEntity getById(Integer userId, Integer goodsId);
 
-    Integer delete(ShoppingCartParamsDto paramsDto);
+    Integer delete(Integer cartId);
 
     Integer updateCount(ShoppingCartParamsDto paramsDto);
 

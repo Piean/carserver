@@ -2,10 +2,12 @@ package com.maple.web.carserver.module;
 
 import com.maple.web.carserver.domain.RepairEntity;
 import com.maple.web.carserver.service.RepairService;
+import com.maple.web.carserver.utils.SessionUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +40,12 @@ public class RepairController {
         return repairService.selectByPageNumber(pageNumber);
     }
 
+    @RequestMapping("/getByUserId")
+    public List<RepairEntity> getListByUserId(HttpServletRequest request) {
+        Integer userId = SessionUtil.getInstance().getUserId(request.getSession().getId());
+        return repairService.getListByUserId(userId);
+    }
+
     /**
      * 用户端：添加一条保修数据
      *
@@ -45,7 +53,12 @@ public class RepairController {
      * @return
      */
     @RequestMapping("/insert")
-    public Integer insert(RepairEntity repairEntity) {
+    public Integer insert(HttpServletRequest request, RepairEntity repairEntity) {
+        Integer userId = SessionUtil.getInstance().getUserId(request.getSession().getId());
+        if (userId == null || userId == 0) {
+            return -1;
+        }
+        repairEntity.setUserId(userId);
         return repairService.insert(repairEntity);
     }
 

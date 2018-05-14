@@ -181,6 +181,7 @@
     select
     <include refid="Base_Column_List" />
     from tb_goods
+    order by kind asc
     limit #{start}, 8
   </select>
 

@@ -64,20 +64,23 @@ public class ShoppingCartController {
     /**
      * 删除购物车中某件商品
      *
-     * @param paramsDto
+     * @param goodsId
      * @return
      */
     @RequestMapping("/delete")
-    public Integer delete(ShoppingCartParamsDto paramsDto, HttpServletRequest request) {
-        if (paramsDto.getTbUserId() == null || paramsDto.getTbUserId() == 0) {
-            paramsDto.setTbUserId(SessionUtil.getInstance().getUserId(request.getSession().getId()));
+    public Integer delete(HttpServletRequest request, Integer goodsId) {
+        Integer userId = SessionUtil.getInstance().getUserId(request.getSession().getId());
+        if (goodsId == null || goodsId == 0 || userId == null || userId == 0) {
+            return -1;
         }
-        StoreEntity store = storeService.getByGoodsId(paramsDto.getTbGoodsId());
-        if (store != null) {
-            store.setCount(store.getCount() + paramsDto.getCount());
+        ShoppingCartEntity cart = shoppingCartService.getById(userId, goodsId);
+        StoreEntity store = storeService.getByGoodsId(goodsId);
+        if (store != null && cart != null) {
+            store.setCount(store.getCount() + cart.getCount());
             storeService.update(store);
         }
-        return shoppingCartService.delete(paramsDto);
+
+        return shoppingCartService.delete(cart.getId());
     }
 
     /**
@@ -146,13 +149,13 @@ public class ShoppingCartController {
             return -1;
         }
 
-        String cartIdList = goodsList.stream().map(g -> g.getId().toString()).collect(Collectors.joining(","));
+        String cartIdList = goodsList.stream().map(g -> g.getCartId().toString()).collect(Collectors.joining(","));
 
         //更新购物车商品状态
         shoppingCartService.buyAllGoods(cartIdList.split(","));
 
         //生成订单信息
-        indent.setCartId(String.join(cartIdList));
+        indent.setCartId(String.join(",", cartIdList));
         indent.setStatus(0);
         indent.setTotal(total); //商品总金额
         indent.setPay(pay); //折后总金额

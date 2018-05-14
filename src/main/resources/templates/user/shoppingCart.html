@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Spareparts Website Template | carlights :: Maple</title>
@@ -56,7 +56,7 @@
             <ul>
                 <li><a id="li_home">主页</a></li>
                 <li><a id="li_news">最新资讯</a></li>
-                <li><a id="li_score">积分商城</a></li>
+                <li><a id="li_score">商城</a></li>
                 <li><a id="li_car_fix">车辆维护</a></li>
                 <li><a id="li_question">咨询服务</a></li>
                 <li><a id="li_report">问卷调查</a></li>
@@ -70,8 +70,7 @@
 
     <!--content-->
     <div class="content" style="margin-top: -30px;">
-        <div class="contact">
-
+        <div th:if="${shoppingCart != null &amp;&amp; shoppingCart.size() > 0}" class="contact">
             <h4 style="padding-top: 20px;">购物车结算</h4>
             <table class="table table-striped" style="padding-top: 10px">
                 <thead>
@@ -79,13 +78,28 @@
                     <th style="font-size: 17px;">商品名称</th>
                     <th style="font-size: 17px;">数量</th>
                     <th style="font-size: 17px;">单价</th>
-                    <th style="font-size: 17px;">优惠</th>
+                    <th style="font-size: 17px;">折扣</th>
                     <th style="font-size: 17px;">总价</th>
                     <th style="font-size: 17px;">操作</th>
                 </tr>
                 </thead>
                 <tbody id="table-body">
-
+                <tr th:each="data : ${shoppingCart}">
+                    <td>
+                        <div><strong th:text="${data.name}"></strong></div>
+                    </td>
+                    <td>
+                        <button class="btn-default btn-xs" th:onclick="'javascript:updateCount('+${data.id}+','+${data.count - 1}+');'">-</button>
+                        <label th:text="${data.count}"></label>
+                        <button class="btn-default btn-xs" th:onclick="'javascript:updateCount('+${data.id}+','+${data.count + 1}+');'">+</button>
+                    </td>
+                    <td th:text="${data.price}"></td>
+                    <td th:text="${data.discount / 10 + '折'}"></td>
+                    <td th:text="${#numbers.formatDecimal(data.count * data.price * data.discount / 100, 0,2)}"></td>
+                    <td>
+                        <button class="btn-danger btn-sm" th:onclick="'javascript:del('+${data.id}+');'">删除</button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
             <table class="table table-striped">
@@ -96,35 +110,64 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td><strong>总价：</strong>
-                    </td>
-                    <td id="td_sum"></td>
+                    <td><strong>订单原价：</strong></td>
+                    <td th:text="${sum}" id="td_sum"></td>
                 </tr>
                 <tr>
-                    <td><strong>优惠：</strong>
-                    </td>
-                    <td id="tb_discount_sum"></td>
+                    <td><strong>折扣优惠：</strong></td>
+                    <td th:text="${#numbers.formatDecimal(deposit, 0,2)}" id="tb_discount_sum"></td>
                 </tr>
                 <tr>
-                    <td><strong>总计</strong>
-                    </td>
-                    <td id="tb_real_sum"></td>
+                    <td><strong>账单总计：</strong></td>
+                    <td th:text="${sum - deposit}" id="tb_real_sum"></td>
                 </tr>
                 <tr>
-                    <td><strong>我的积分</strong>
+                    <td><strong>应付定金：</strong></td>
+                    <td th:text="${#numbers.formatDecimal((sum - deposit) * 0.1, 0,0)}" id="tb_my_pay"></td>
+                </tr>
+                <tr>
+                    <td><strong>积分抵扣(100积分=1元)</strong>
+                    <td>
+                        <label for="use_score"></label>
+                        <input id="use_score" type="number" min="0" th:max="${user.integral}" step="100" value="0" onchange="scoreChange()" style="width: 70px;"/>
                     </td>
-                    <td id="tb_my_score"></td>
+                </tr>
+                <tr>
+                    <td><strong>账户余额</strong>
+                    </td>
+                    <td th:text="${user.balance}" id="tb_my_balance"></td>
+                </tr>
+                <tr>
+                    <td><strong>账户积分</strong>
+                    </td>
+                    <td th:text="${user.integral}" id="tb_my_score"></td>
                 </tr>
                 </tbody>
-
             </table>
 
+            <div>
+                <h4>请填写您的个人信息后支付</h4>
+                <label><input id="user_name" type="text" placeholder="姓名" /></label>
+                <label><input id="user_phone" type="text" placeholder="手机号" onkeyup="value=value.replace(/[^\d]/g,'')" /></label>
+                <label><input id="user_address" type="text" placeholder="联系地址" /></label>
+            </div>
+
             <div class="text-right">
-                <button class="btn btn-primary" onclick="buyAllGoods()"><i class="fa fa-dollar"></i>购买</button>
+                <label for="tb_pay_money">余额扣除:</label><label id="tb_pay_money" th:text="${#numbers.formatDecimal((sum - deposit) * 0.1, 0,0)}"></label>&nbsp;
+                <label for="tb_pay_integral">积分扣除:</label><label id="tb_pay_integral">0</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-primary" onclick="buyAllGoods()"><i class="fa fa-dollar"></i>支付定金</button>
             </div>
         </div>
+        <div th:if="${shoppingCart == null || shoppingCart.size() == 0}" class="contact">
+            <h4 style="padding-top: 40px;">哦NO，购物车空空如也！</h4>
+            <table class="table table-striped" style="padding-top: 10px">
 
-
+            </table>
+            <br/>
+            <h4 style="padding-top: 10px;">去<a href="../goods">商城</a>逛逛</h4>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        </div>
     </div>
 </div>
 
@@ -183,90 +226,9 @@
 <script src="../../static/js/admin.js"></script>
 <script src="../../static/js/jquery.form.js"></script>
 <script>
-    var kAllScore
-    var kIntegral
-
     $(function () {
         getShoppingCartCount()
-
-        requestList()
     })
-
-    function requestList() {
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "../shoppingCart/selectGoodsList",
-            data: {},
-            success: function (data) {
-                generateList(data)
-            },
-            error: function (data) {
-                alert("系统错误")
-            }
-        })
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "../account/getUserInfo",
-            data: {},
-            success: function (data) {
-                kIntegral = (data.integral == null ? "0" : data.integral)
-                $("#tb_my_score").text(kIntegral + "积分")
-            },
-            error: function (data) {
-                alert("系统错误")
-            }
-        })
-    }
-
-
-    function generateList(data) {
-        if (data.length <= 0) {
-            $("#table-body").empty()
-            $("#td_sum").text("")
-            $("#tb_discount_sum").text("")
-            $("#tb_real_sum").text("")
-            kAllScore = 0
-            return
-        }
-        var sum = 0
-        var deposit = 0
-
-        var tempString = ''
-        for (var i = 0; i < data.length; i++) {
-
-            sum += data[i].count * data[i].price
-            deposit += (data[i].count * data[i].price * data[i].discount / 10)
-            tempString +=
-                '<tr>\n' +
-                '<td><div><strong>' + data[i].name + '</strong></div></td>\n' +
-                '<td><button class="btn-default btn-xs" onclick=\'decount(' + JSON.stringify(data[i]) + ')\' >-</button> ' + data[i].count + '' +
-                ' <button class="btn-default btn-xs" onclick=\'addCount(' + JSON.stringify(data[i]) + ')\' >+</button></td>\n' +
-                '<td>' + data[i].price.toFixed(2) + '</td>\n' +
-                '<td>' + data[i].discount + '折</td>\n' +
-                '<td>' + (data[i].count * data[i].price * data[i].discount / 10).toFixed(2) + '</td>\n' +
-                '<td><button class="btn-danger btn-sm" onclick="del(' + data[i].id + ')">删除</button></td>\n' +
-                '</tr>'
-
-        }
-        $("#table-body").empty().append(tempString)
-
-        kAllScore = deposit
-        $("#td_sum").text(sum.toFixed(2) + " 积分")
-        $("#tb_discount_sum").text((sum - deposit).toFixed(2) + " 积分")
-        $("#tb_real_sum").text(deposit.toFixed(2) + " 积分")
-
-    }
-
-    function addCount(data) {
-        updateCount(data, data.count + 1)
-    }
-
-    function decount(data) {
-        updateCount(data, data.count - 1)
-
-    }
 
     function del(id) {
         $.ajax({
@@ -274,61 +236,82 @@
             dataType: "json",
             url: "../shoppingCart/delete",
             data: {
-                tbGoodsId: id,
+                goodsId: id,
             },
-            success: function (data) {
-                requestList()
+            success: function () {
+                window.location.href = '../shoppingCart'
             },
-            error: function (data) {
+            error: function () {
                 alert("系统错误")
             }
         })
     }
 
     function updateCount(data, count) {
+        if (count < 1) {
+            alert("商品件数不能小于1")
+            return false;
+        }
         $.ajax({
             type: "post",
             dataType: "json",
             url: "../shoppingCart/updateCount",
             data: {
-                tbGoodsId: data.id,
+                goodsId: data,
                 count: count
             },
-            success: function (data) {
-                requestList()
+            success: function () {
+                window.location.href = '../shoppingCart'
             },
-            error: function (data) {
+            error: function () {
                 alert("系统错误")
             }
         })
     }
 
     function buyAllGoods() {
-        var myScore = parseInt(kIntegral)
-        if (myScore < kAllScore) {
-            alert("积分不足")
-            return
+        const balance = Number($("#tb_my_balance").text());
+        const money = Number($("#tb_pay_money").text());
+        if (money > balance) {
+            alert("你的余额不足，请充值");
+            return false;
         }
+
         $.ajax({
             type: "post",
             dataType: "json",
             url: "../shoppingCart/buyAllGoods",
             data: {
-                deposit: kAllScore
+                name: $("#user_name").val(),
+                phone: $("#user_phone").val(),
+                address: $("#user_address").val(),
+                money: money,
+                integral: Number($("#tb_pay_integral").text())
             },
             success: function (data) {
-                if (data == -1) {
-                    alert("积分不足")
+                if (-1 === data) {
+                    alert("余额不足,请充值")
                 } else {
-                    requestList()
+                    window.location.href = '../goods'
                 }
             },
-            error: function (data) {
+            error: function () {
                 alert("系统错误")
             }
         })
     }
 
+    function scoreChange() {
+        const score = Number($("#use_score").val());
+        const pay = Number($("#tb_my_pay").text());
+        const money = pay - score / 100;
+        if (money < 0) {
+            alert("支付金额不能小于0");
+            return false;
+        }
+        $("#tb_pay_money").text(money);
+        $("#tb_pay_integral").text(score);
+    }
 
 </script>
 </html>

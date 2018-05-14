@@ -65,7 +65,7 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
-        create_time = createTime
+        create_time = create_time
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>

@@ -8,7 +8,9 @@ public class ShoppingCartDao {
 
     // goods entity
     private Integer id;
+    private Integer cartId;
     private String name;
+    private String kind;
     private String introduction;
     private String imageUrl;
     private Double price;
@@ -63,8 +65,8 @@ public class ShoppingCartDao {
         this.price = price;
     }
 
-    public Integer getDiscount() {
-        return discount;
+    public Double getDiscount() {
+        return Double.valueOf(discount);
     }
 
     public void setDiscount(Integer discount) {
@@ -77,5 +79,21 @@ public class ShoppingCartDao {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(Integer cartId) {
+        this.cartId = cartId;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 }

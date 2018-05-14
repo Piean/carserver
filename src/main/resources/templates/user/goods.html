@@ -54,7 +54,7 @@
             <ul>
                 <li><a id="li_home">主页</a></li>
                 <li><a id="li_news">最新资讯</a></li>
-                <li><a id="li_score">积分商城</a></li>
+                <li><a id="li_score">商城</a></li>
                 <li><a id="li_car_fix">车辆维护</a></li>
                 <li><a id="li_question">咨询服务</a></li>
                 <li><a id="li_report">问卷调查</a></li>
@@ -187,7 +187,7 @@
 
         var tempString =
 
-            '<h5><span>积分</span>商城</h5>' +
+            '<h5>商城</h5>' +
             '<div class="section group">'
 
         for (var i = 0; i < (data.length < 4 ? data.length : 4); i++) {
@@ -196,7 +196,7 @@
                 '<h3>商品名：' + data[i].name + '</h3>' +
                 '<h3>类型：' + data[i].kind + '</h3>' +
                 '<p>介绍：' + data[i].introduction + '</p>' +
-                '<h4>价格：' + data[i].price + ' 积分</h4>' +
+                '<h4>价格：' + data[i].price + ' 元</h4>' +
                 "<div class=\"button\"><span><a href=\"javascript:void(0);\" onclick='goodsDetail(" + JSON.stringify(data[i]) + ")'>详情</a></span></div>" +
                 '</div>'
         }
@@ -210,7 +210,7 @@
                 '<h3>商品名：' + data[i].name + '</h3>' +
                 '<h3>类型：' + data[i].kind + '</h3>' +
                 '<p>介绍：' + data[i].introduction + '</p>' +
-                '<h4>价格：' + data[i].price + ' 积分</h4>' +
+                '<h4>价格：' + data[i].price + ' 元</h4>' +
                 "<div class=\"button\"><span><a href=\"javascript:void(0);\" onclick='goodsDetail(" + JSON.stringify(data[i]) + ")'>详情</a></span></div>" +
                 '</div>'
         }

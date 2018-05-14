@@ -26,6 +26,11 @@ public class RepairServiceImpl implements RepairService {
     }
 
     @Override
+    public List<RepairEntity> getListByUserId(Integer userId) {
+        return entityMapper.getListByUserId(userId);
+    }
+
+    @Override
     public RepairEntity getById(Integer id) {
         return entityMapper.selectByPrimaryKey(id);
     }

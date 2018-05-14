@@ -59,7 +59,7 @@
             <ul>
                 <li><a id="li_home">主页</a></li>
                 <li><a id="li_news">最新资讯</a></li>
-                <li><a id="li_score">积分商城</a></li>
+                <li><a id="li_score">商城</a></li>
                 <li><a id="li_car_fix">车辆维护</a></li>
                 <li><a id="li_question">咨询服务</a></li>
                 <li><a id="li_report">问卷调查</a></li>
@@ -97,25 +97,17 @@
                     </div>
                 </div>
                 <div class="product-price-info">
-                    <!--<div class="product-catrgory-pagenation">-->
-                    <!--<ul>-->
-                    <!--<li><h3>Categories :</h3></li>-->
-                    <!--<li class="active3"><a href="#">Productname</a></li>-->
-                    <!--<li><a href="#">Product2</a></li>-->
-                    <!--<li><a href="#">Product3</a></li>-->
-                    <!--</ul>-->
-                    <!--</div>-->
                     <div class="product-value">
-                        <h4 th:text="${goodsEntity.name}">Product-Complete Deatils With Value</h4>
+                        <h4 th:text="${goodsEntity.name}"></h4>
                         <ul>
-                            <li><h2>积分 :</h2></li>
-                            <li><span th:text="${goodsEntity.price}">$350</span></li>
-                            <li><h5 th:text="${goodsEntity.price * goodsEntity.discount /10}"></h5></li>
+                            <li><h2>价格 :</h2></li>
+                            <li><span th:text="${goodsEntity.price}"></span></li>
+                            <li><h5 th:text="${goodsEntity.price * goodsEntity.discount / 100}"></h5></li>
                             <li></li>
                         </ul>
                         <ul>
                             <li><h3> 折扣：</h3></li>
-                            <li><h3 th:text="${goodsEntity.discount}"></h3></li>
+                            <li><h3 th:text="${#numbers.formatDecimal(goodsEntity.discount/10, 0, 1)}"></h3></li>
                             <li><h3>折</h3></li>
                             <li></li>
                         </ul>
@@ -124,8 +116,7 @@
                         <br>
                         <span>当前活动 :</span>
                         <p>
-                            <lable>会员</lable>
-                            使用积分下单，更享专属折扣。
+                            注册会员即可使用积分抵现，还有专属折扣。
                         </p>
                         <div class="clear"></div>
                     </div>

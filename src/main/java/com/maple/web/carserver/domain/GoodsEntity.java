@@ -196,8 +196,8 @@ public class GoodsEntity {
      *
      * @mbg.generated Wed Mar 28 21:23:26 CST 2018
      */
-    public Integer getDiscount() {
-        return discount;
+    public Double getDiscount() {
+        return Double.valueOf(discount);
     }
 
     /**

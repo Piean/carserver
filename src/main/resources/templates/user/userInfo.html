@@ -55,7 +55,7 @@
             <ul>
                 <li><a id="li_home">主页</a></li>
                 <li><a id="li_news">最新资讯</a></li>
-                <li><a id="li_score">积分商城</a></li>
+                <li><a id="li_score">商城</a></li>
                 <li><a id="li_car_fix">车辆维护</a></li>
                 <li><a id="li_question">咨询服务</a></li>
                 <li><a id="li_report">问卷调查</a></li>
@@ -93,15 +93,20 @@
                                 用户名： <span style="display: inline-block" id="userName"></span>
                             </div>
                             <div>
+                                我的余额：<span style="display: inline-block" id="balance"></span>
+                            </div>
+                            <div>
                                 我的积分：<span style="display: inline-block" id="score"></span>
                             </div>
                             <div>
                                 会员：<span style="display: inline-block" id="vip">会员用户</span>
                                 <button id="btn_vip" type="button" style="display: none">申请会员</button>
                             </div>
-
-
                         </form>
+                    </div>
+                    <div class="contact-form">
+                        <input class="form-control" id="input_amount" type="number" min="0" step="1" style="width: 100px; height: 26px">
+                        <button id="btn_recharge" type="button">余额充值</button>
                     </div>
                 </div>
             </div>
@@ -182,6 +187,25 @@
                 }
             })
         })
+
+        $("#btn_recharge").click(function () {
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "../account/updateAccount",
+                data: {
+                    id: kUserId,
+                    balance: $("#input_amount").val()
+                },
+                success: function () {
+                    alert("充值成功")
+                    req()
+                },
+                error: function () {
+                    alert("系统错误")
+                }
+            })
+        })
     })
 
     function req() {
@@ -195,6 +219,7 @@
 
                 kUserId = data.id
                 $("#userName").text(data.username)
+                $("#balance").text(data.balance)
                 $("#score").text(data.integral)
                 if (data.isVip) {
                     $("#vip").text("会员用户")
