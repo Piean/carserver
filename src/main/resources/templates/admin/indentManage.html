@@ -6,23 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta name="renderer" content="webkit"/>
     <title></title>
-    <link rel="stylesheet" href="../../../static/css/pintuer.css">/
+    <link rel="stylesheet" href="../../../static/css/pintuer.css"/>
     <link rel="stylesheet" href="../../../static/css/admin.css"/>
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
-
 </head>
 <body>
 <div class="panel admin-panel">
-    <div class="panel-head"><strong class="icon-reorder"> 维修预约单管理 </strong></div>
-    <!--<div class="padding border-bottom">-->
-    <!--<button type="button" class="button border-yellow" id="btn-add"><span-->
-    <!--class="icon-plus-square-o"></span> 添加记录-->
-    <!--</button>-->
-    <!--</div>-->
+    <div class="panel-head"><strong class="icon-reorder">订单管理</strong></div>
     <table class="table table-hover text-center" id="main-table">
     </table>
 </div>
-
 </body>
 <script src="../../static/js/jquery.js"></script>
 <script src="../../static/js/pintuer.js"></script>
@@ -39,7 +32,7 @@
         $.ajax({
             type: "post",
             dataType: "json",
-            url: "../order/count",
+            url: "../indent/count",
             data: {},
             success: function (data) {
                 kCount = data
@@ -55,7 +48,7 @@
         $.ajax({
             type: "post",
             dataType: "json",
-            url: "../order/list",
+            url: "../indent/list",
             data: {
                 pageNumber: kPageNumber
             },
@@ -70,70 +63,56 @@
 
     function generateList(data) {
         if (data.length <= 0) return
+        const date = new Date();
+        let table = "<tr>";
+        for (let i = 0; i < data.length; i++) {
+            date.setTime(data[i].createTime);
+            table += "<th>ID:" + data[i].id + "</th>";
+            table += "<th>用户ID:" + data[i].userId + "</th>";
+            table += "<th>订单原价:" + data[i].total + "</th>";
+            table += "<th>折后总价:" + data[i].pay + "</th>";
+            table += "<th>定金(余额部分):" + data[i].money + "</th>";
+            table += "<th>定金(积分部分):" + data[i].integral + "</th>";
+            table += "<th>下单人姓名:" + data[i].name + "</th>";
+            table += "<th>下单人手机号:" + data[i].phone + "</th>";
+            table += "<th>下单人地址:" + data[i].address + "</th>";
+            table += "<th><div class=\"button-group\">" +
+                (data[i].status === 0 ? ("<a class=\"button border-main\" onclick='agreeModel(" + JSON.stringify(data[i].id) + ")'><span class=\"icon-edit\"></span>处理</a>") : "已处理") +
+                "</div></th>"
 
-        var tempStr = "<tr>\n" +
-            "            <th width=\"5%\">ID</th>\n" +
-            "            <th width=\"30%\">车型</th>\n" +
-            "            <th width=\"15%\">姓名</th>\n" +
-            "            <th width=\"15%\">手机</th>\n" +
-            "            <th width=\"15%\">试驾日期</th>\n" +
-            "            <th width=\"3%\">操作</th>\n" +
-            "        </tr>";
-        for (var i = 0; i < data.length; i++) {
-            var tempDate = new Date()
-            tempDate.setTime(data[i].dateTime)
-
-            tempStr += "<tr>"
-            tempStr += "<td>" + data[i].id + "</td>\n"
-            tempStr += "<td>" + data[i].carName + "</td>\n"
-            tempStr += "<td>" + data[i].name + "</td>\n"
-            tempStr += "<td>" + data[i].phone + "</td>\n"
-            tempStr += "<td>" + tempDate.toLocaleDateString() + "</td>\n"
-            tempStr += "<td>" + status + "</td>\n"
-            tempStr += "<td><div class=\"button-group\">" +
-                (data[i].status == 0 ? ("<a class=\"button border-main\" onclick='agreeModel(" + JSON.stringify(data[i].id) + ")'><span class=\"icon-edit\"></span>处理</a>") : "") +
-                "<a class=\"button border-main\" onclick='showDeleteModel(" + JSON.stringify(data[i].id) + ")'><span class=\"icon-edit\"></span>删除</a>" +
-                "</div></td>"
-            tempStr += "</tr>"
+            const cart = data[i].cartDetail;
+            table += "<tr><td colspan='10'><table class=\"table table-hover text-center\">";
+            table += "<th width=\"10%\">商品ID</th>";
+            table += "<th width=\"20%\">名称</th>";
+            table += "<th width=\"10%\">类型</th>";
+            table += "<th width=\"40%\">介绍</th>";
+            table += "<th width=\"10%\">价格</th>";
+            table += "<th width=\"10%\">折扣</th>";
+            table += "</tr>";
+            for (let j = 0; j < cart.length; j++) {
+                table += "<tr>"
+                table += "<td>" + cart[j].id + "</td>"
+                table += "<td>" + cart[j].name + "</td>"
+                table += "<td>" + cart[j].kind + "</td>"
+                table += "<td>" + cart[j].introduction + "</td>"
+                table += "<td>" + cart[j].price + "</td>"
+                table += "<td>" + cart[j].discount + "</td>"
+                table += "</tr>"
+            }
+            table += "</table></td></tr>"
         }
-        tempStr += "<tr>\n" +
+        table += "<tr>" +
             "        <td colspan=\"8\"><div class=\"pagelist\"> <a onclick='lastPage()'>上一页</a><a id='display-page'>第" + (kPageNumber + 1) + "页，共" + (parseInt(kCount / 5) + (kCount % 5 == 0 ? 0 : 1)) + "页</a><a onclick='nextPage()'>下一页</a><a onclick='endPage()'>尾页</a> </div></td>\n" +
-            "      </tr>"
-        $("#main-table").empty()
-        $("#main-table").append(tempStr)
+            "     </tr>"
+
+        $("#main-table").html(table)
     }
 
     // model 显示控制
     function agreeModel(id) {
         kDeleteId = id
-        addDialog("处理预约？", "是否同意试驾预约？", "finishModal", finishRequest)
+        addDialog("处理订单？", "该订单是否已处理完成？", "finishModal", finishRequest)
         showDialog("finishModal")
-    }
-
-    // model 显示控制
-    function showDeleteModel(id) {
-        kDeleteId = id
-        addDialog("是否删除？", "是否删除？", "deleteModal", deleteRequest)
-        showDialog("deleteModal")
-    }
-
-    // 增删改接口请求
-    function deleteRequest() {
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "../order/delete",
-            data: {
-                id: kDeleteId
-            },
-            success: function () {
-                alert("处理成功")
-                requestList()
-            },
-            error: function () {
-                alert("系统错误")
-            }
-        })
     }
 
     // 增删改接口请求
@@ -141,13 +120,13 @@
         $.ajax({
             type: "post",
             dataType: "json",
-            url: "../order/update",
+            url: "../indent/update",
             data: {
                 id: kDeleteId,
                 status: 1
             },
             success: function () {
-                alert("删除成功")
+                alert("处理成功")
                 requestList()
             },
             error: function () {

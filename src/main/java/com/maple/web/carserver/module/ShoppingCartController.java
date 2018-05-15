@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -159,6 +160,7 @@ public class ShoppingCartController {
         indent.setStatus(0);
         indent.setTotal(total); //商品总金额
         indent.setPay(pay); //折后总金额
+        indent.setCreateTime(new Date());
         indentService.insert(indent);
 
         //扣除账户中的钱款和积分
@@ -167,5 +169,4 @@ public class ShoppingCartController {
         userService.updateAccount(user);
         return 1;
     }
-
 }

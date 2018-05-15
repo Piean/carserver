@@ -11,6 +11,8 @@ public interface ShoppingCartService {
 
     List<ShoppingCartDao> selectGoodsList(Integer userId);
 
+    List<ShoppingCartDao> getByIdList(List<String> idList);
+
     ShoppingCartEntity getById(Integer userId, Integer goodsId);
 
     Integer delete(Integer cartId);

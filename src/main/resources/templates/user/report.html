@@ -118,7 +118,7 @@
                 <div class="col span_2_of_3">
                     <div class="contact-form">
                         <h5>问卷调查</h5>
-                        <form>
+                        <form id="form_report">
                             <div style="padding: 15px;">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">1. 您最需要汽车销售商提供那些方面的服务</label>
@@ -143,7 +143,6 @@
                                             D.咨询服务 </label>
                                     </div>
                                 </div>
-
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail2">2.你喜欢一下哪种购车的优惠方式？</label>
@@ -195,9 +194,7 @@
                                             D.限制政策
                                         </label>
                                     </div>
-
                                 </div>
-
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">4.您最近半年是否有买车计划？</label>
@@ -209,7 +206,7 @@
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="optionsRadios4" value="B.否">
+                                            <input type="radio"  name="optionsRadios4" value="B.否">
                                             B.否
                                         </label>
                                     </div>
@@ -217,17 +214,11 @@
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail5">5. 对我们的店意见：</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail5" placeholder="...">
+                                    <input type="text" class="form-control" id="exampleInputEmail5" placeholder="...">
                                 </div>
-
                             </div>
-
                             <button id="btn_login" type="button">确定</button>
-
-
                         </form>
-                        <!--<iframe src="../reportDemo.html" height="550px" width="400px"></iframe>-->
-
                     </div>
                 </div>
             </div>
@@ -288,11 +279,27 @@
 <script>
     $(function () {
         getShoppingCartCount()
-
         $("#btn_login").off("click").click(function () {
-            saveReport()
+            if (checkRadio()) {
+                saveReport();
+            }
         })
     })
+
+    function checkRadio() {
+        let count = 0;
+        $("#form_report").find("input[type='radio']").each(function () {
+            if ($(this).prop("checked") === true) {
+                count++;
+            }
+        });
+        if (count < 4) {
+            alert("请将问卷填写完整");
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     function saveReport() {
 
@@ -316,8 +323,13 @@
                 $("#addModel").modal('show');
                 $("#btn-insert").off().click(function () {
                     $.post("../report/addIntegral", function (data) {
-                        $("#user_score").html("感谢您填写问卷，您已获得随机积分：" + data);
-                        $("#btn-insert").remove();
+                        if (data === -1) {
+                            $("#user_score").html("您已经填写过问卷，无法再获取积分哦");
+                            $("#btn-insert").remove();
+                        } else {
+                            $("#user_score").html("感谢您填写问卷，您已获得随机积分：" + data);
+                            $("#btn-insert").remove();
+                        }
                     })
                 });
             },

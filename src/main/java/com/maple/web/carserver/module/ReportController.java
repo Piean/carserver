@@ -89,6 +89,11 @@ public class ReportController {
             return -1;
         }
 
+        List<ReportEntity> list = reportService.selectByUserId(userId);
+        if (list != null && list.size() > 0) {
+            return -1;
+        }
+
         final int score = (int) (Math.random() * (1000 - 100 + 1) + 100);
         user.setIntegral(user.getIntegral() + score);
         if (userService.updateAccount(user) > 0) {

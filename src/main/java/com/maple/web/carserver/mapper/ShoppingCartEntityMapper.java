@@ -23,6 +23,8 @@ public interface ShoppingCartEntityMapper {
      */
     List<ShoppingCartDao> selectGoodsList(Integer userId);
 
+    List<ShoppingCartDao> getByIdList(List<String> idList);
+
     /**
      * 获取是否已经将某商品加入购物车
      * @param record

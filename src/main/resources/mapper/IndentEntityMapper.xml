@@ -3,7 +3,7 @@
 <mapper namespace="com.maple.web.carserver.mapper.IndentEntityMapper">
   <resultMap id="BaseResultMap" type="com.maple.web.carserver.domain.IndentEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="cartId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="cart_id" jdbcType="VARCHAR" property="cartId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
@@ -79,7 +79,8 @@
       <include refid="Base_Column_List"/>
     from
       tb_indent
-    limit #(page), 8
+    order by status asc , create_time desc
+    limit #{page, jdbcType=INTEGER}, 8
   </select>
 
 </mapper>
