@@ -164,6 +164,6 @@
         from tb_repair
         where user_id = #{userId,jdbcType=INTEGER}
         order by date_time desc
-        limit #{start}, 5
+        limit 5
     </select>
 </mapper>

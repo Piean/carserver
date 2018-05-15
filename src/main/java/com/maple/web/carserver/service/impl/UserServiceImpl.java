@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     public Integer addAccount(UserEntity userEntity) {
         if (userEntityMapper.selectByUsername(userEntity.getUsername()) != null) return -1;
         userEntity.setCreateTime(new Date());
-        return userEntityMapper.insertSelective(userEntity);
+        return userEntityMapper.insert(userEntity);
     }
 
     @Override
