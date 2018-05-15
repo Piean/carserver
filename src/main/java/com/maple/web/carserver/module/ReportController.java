@@ -69,35 +69,40 @@ public class ReportController {
      * 提交问卷
      *
      * @param reportArray
-     * @param userId
+     * @param request
      */
     @RequestMapping("/saveReport")
-    public Integer saveReport(String reportArray, Integer userId, HttpServletRequest request) {
+    public Integer saveReport(HttpServletRequest request, String reportArray) {
+        int result = 0;
+        Integer userId = SessionUtil.getInstance().getUserId(request.getSession().getId());
+        List<ReportEntity> list = reportService.selectByUserId(userId);
+        if (list != null && list.size() > 0) {
+            //表示填写过问卷
+            result = 1;
+        }
+
         JSONArray jsonArray = JSONArray.fromObject(reportArray);
         if (userId == null || userId == 0) {
             userId = SessionUtil.getInstance().getUserId(request.getSession().getId());
         }
         reportService.saveMap(jsonArray, userId);
-        return 1;
+        return result;
     }
 
     @RequestMapping("/addIntegral")
-    public Integer addIntegral(HttpServletRequest request) {
+    public Integer addIntegral(HttpServletRequest request, String integral) {
+        if (integral == null) {
+            return -1;
+        }
+        int number = Integer.parseInt(integral.replace("积分",""));
         Integer userId = SessionUtil.getInstance().getUserId(request.getSession().getId());
         UserEntity user = userService.getUserInfo(userId);
         if (user == null) {
             return -1;
         }
-
-        List<ReportEntity> list = reportService.selectByUserId(userId);
-        if (list != null && list.size() > 0) {
-            return -1;
-        }
-
-        final int score = (int) (Math.random() * (1000 - 100 + 1) + 100);
-        user.setIntegral(user.getIntegral() + score);
+        user.setIntegral(user.getIntegral() + number);
         if (userService.updateAccount(user) > 0) {
-            return score;
+            return number;
         } else {
             return -1;
         }

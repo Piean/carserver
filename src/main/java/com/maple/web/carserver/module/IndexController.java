@@ -306,4 +306,9 @@ public class IndexController {
         return new ModelAndView("admin/repairManage");
     }
 
+    @RequestMapping("user/turntable")
+    public ModelAndView turntable() {
+        return new ModelAndView("user/turntable");
+    }
+
 }

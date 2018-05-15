@@ -5,8 +5,6 @@
     <title>卡其汽车4S店管理系统</title>
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
     <link href="../../static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
-    <!--<link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>-->
-
 </head>
 <body>
 
@@ -20,19 +18,15 @@
             <div class="modal-body">
                 <div class="panel admin-panel margin-top">
                     <div class="body-content">
-                        <form method="post" class="form-x" action="">
-                            <div class="form-group">
-                                <div id="user_score">
-                                    请点击右下角的“抽奖”按钮抽取积分奖励
-                                </div>
-                            </div>
-                        </form>
+                        <div id="user_score">
+                            <iframe src="../user/turntable" mce_src="turntable.html" frameborder="0" scrolling="no" style="width:450px; height: 400px">
+                            </iframe>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-success" id="btn-insert">抽奖</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -319,19 +313,11 @@
             data: {
                 reportArray: JSON.stringify(reportArray)
             },
-            success: function () {
+            success: function (data) {
                 $("#addModel").modal('show');
-                $("#btn-insert").off().click(function () {
-                    $.post("../report/addIntegral", function (data) {
-                        if (data === -1) {
-                            $("#user_score").html("您已经填写过问卷，无法再获取积分哦");
-                            $("#btn-insert").remove();
-                        } else {
-                            $("#user_score").html("感谢您填写问卷，您已获得随机积分：" + data);
-                            $("#btn-insert").remove();
-                        }
-                    })
-                });
+                if (data === 1) {
+                    $("#user_score").html("您已经填写过问卷，无法再获取积分哦");
+                }
             },
             error: function () {
                 alert("提交失败，系统异常")

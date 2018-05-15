@@ -215,7 +215,7 @@
     }
 
     function eGot() {
-        if (optsPrize.chances) removeClass(btn, 'disabled');
+        if (optsPrize.chances) addClass(btn, 'disabled');
         fnGotBack(prizes[optsPrize.prizeId]);
     }
 

@@ -4,12 +4,10 @@ import com.maple.web.carserver.domain.ReportEntity;
 import com.maple.web.carserver.domain.UserEntity;
 import com.maple.web.carserver.mapper.ReportEntityMapper;
 import com.maple.web.carserver.service.ReportService;
-import com.maple.web.carserver.utils.SessionUtil;
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +17,7 @@ import java.util.Map;
 @Service
 public class ReportServiceImpl implements ReportService {
 
-    @Autowired
+    @Resource
     private ReportEntityMapper mapper;
 
 
@@ -51,7 +49,6 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public void saveMap(JSONArray reportArray, Integer userId) {
-
         for (int i = 1; i <= 5; i++) {
             mapper.insertSelective(new ReportEntity(userId, i, reportArray.getString(i - 1)));
         }
