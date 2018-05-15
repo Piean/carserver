@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GB Canvas Turntable</title>
+    <link rel="stylesheet" href="../../static/css/canvas-typo.css">
+    <link rel="stylesheet" href="../../static/css/canvas-turntable.css">
+    <style>
+        .wrapper{
+            padding:20px 40px;
+        }
+        .fork-github a{
+            color: #fff;
+        }
+
+        .gb-turntable a.gb-turntable-btn{
+            border: none;
+        }
+
+    </style>
+</head>
+<body>
+<div class="wrapper typo" id="wrapper">
+    <section id="turntable" class="gb-turntable">
+        <div class="gb-turntable-container">
+            <canvas class="gb-turntable-canvas" width="300" height="300px">浏览器不支持</canvas>
+        </div>
+
+        <a class="gb-turntable-btn" href="javascript:void (0);">抽奖</a>
+    </section>
+</div>
+<script src="../../static/js/turntable.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        gbTurntable.init({
+            id: 'turntable',
+            config: function(callback){
+                // 获取奖品信息
+                callback && callback(['100积分','200积分','300积分','400积分','500积分','600积分','700积分','800积分','900积分','1000积分']);
+            },
+            getPrize: function(callback) {
+                // 获取中奖信息
+                const num = Math.random() * 10 >>> 0;   //奖品ID
+                callback && callback([num, num]);
+            },
+            gotBack: function(data) {
+                alert('恭喜抽中' + data);
+
+            }
+        });
+    }, false);
+</script>
+</body>
+</html>
