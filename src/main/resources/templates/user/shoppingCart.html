@@ -147,9 +147,9 @@
 
             <div>
                 <h4>请填写您的个人信息后支付</h4>
-                <label><input id="user_name" type="text" placeholder="姓名" /></label>
-                <label><input id="user_phone" type="text" placeholder="手机号" onkeyup="value=value.replace(/[^\d]/g,'')" /></label>
-                <label><input id="user_address" type="text" placeholder="联系地址" /></label>
+                <label><input id="user_name" type="text" class="form-control" placeholder="姓名" /></label>
+                <label><input id="user_phone" type="text" class="form-control" placeholder="手机号" onkeyup="value=value.replace(/[^\d]/g,'')" /></label>
+                <label><input id="user_address" type="text" class="form-control" placeholder="联系地址" /></label>
             </div>
 
             <div class="text-right">
@@ -270,6 +270,12 @@
     }
 
     function buyAllGoods() {
+
+        if (!checkInput()) {
+            alert("信息填写不完整，提交失败");
+            return false;
+        }
+
         const balance = Number($("#tb_my_balance").text());
         const money = Number($("#tb_pay_money").text());
         if (money > balance) {
@@ -311,6 +317,22 @@
         }
         $("#tb_pay_money").text(money);
         $("#tb_pay_integral").text(score);
+    }
+
+    function checkInput() {
+        let flag = true;
+        $(".form-control").each(function () {
+            const text = $(this).val();
+            if (text == null || text === "") {
+                $(this).focus();
+                $(this).css("border-color","red");
+                flag = false;
+            } else {
+                $(this).css("border-color","green");
+            }
+        });
+
+        return flag;
     }
 
 </script>

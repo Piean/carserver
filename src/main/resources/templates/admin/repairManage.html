@@ -93,7 +93,7 @@
                 kCount = data
                 requestList()
             },
-            error: function (data) {
+            error: function () {
                 alert("系统错误")
             }
         })
@@ -236,7 +236,13 @@
         }
         if (status == 1) {
             isRepair = 1;
-            process = $("#sel-time").val() + " " + $("#sel-process").val();
+            const time = $("#sel-time").val();
+            const content = $("#sel-process").val();
+            if (time === "" || content === "") {
+                alert("请记录维修内容");
+                return false;
+            }
+            process = time + " " + content;
         }
         if (status == 2) {
             isRepair = 2;

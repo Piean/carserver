@@ -59,7 +59,7 @@
                                     <label>会员：</label>
                                 </div>
                                 <div class="field">
-                                    <select name="pid" class="input w50" id="select_vip">
+                                    <select name="pid" class="input" id="select_vip">
                                         <option value="0">普通用户</option>
                                         <option value="1">会员用户</option>
                                     </select>
@@ -72,7 +72,7 @@
                                     <label>积分：</label>
                                 </div>
                                 <div class="field">
-                                    <input type="text" class="input" name="s_keywords" id="input_score"/>
+                                    <input type="number" class="input" name="s_keywords" id="input_score" value="0"/>
                                 </div>
                             </div>
 
@@ -184,12 +184,32 @@
             showAddModel()
         })
         $("#btn-insert").click(function () {
-            addAccount()
+            if (checkInput()) {
+                addAccount()
+            } else {
+                alert("信息填写不完整，提交失败")
+            }
         })
         $("#btn-update").click(function () {
             updateRequest()
         })
     })
+
+    function checkInput() {
+        let flag = true;
+        $(".input").each(function () {
+            const text = $(this).val();
+            if (text == null || text === "") {
+                $(this).focus();
+                $(this).css("border-color","red");
+                flag = false;
+            } else {
+                $(this).css("border-color","green");
+            }
+        });
+
+        return flag;
+    }
 
     function requestList() {
         $.ajax({
