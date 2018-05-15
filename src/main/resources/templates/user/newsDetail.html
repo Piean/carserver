@@ -1,93 +1,154 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>新闻发布系统</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Microsoft YaHei", "微软雅黑", "consolas";
-        }
+    <title>卡其汽车4S店管理系统</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+    <link href="../../static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <!--<link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>-->
+    <!--<link rel="stylesheet" href="../../static/css/jquery.jqzoom.css" type="text/css">-->
 
-        .clearfix {
-            clear: both;
-        }
+    <style type="text/css">
 
-        .container {
-            width: 1000px;
-            margin: 0 auto;
-        }
-
-        .index-bg {
-            width: 100%;
-            height: 500px;
-
-            position: absolute;
-            top: -50px;
-            z-index: -10;
-        }
-
-        .news-title {
-            font-size: 23px;
-        }
-
-        .news-content-des {
-            line-height: 28px;
-        }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1></h1>
-    <div class="author-time">
-        发表于 <span></span>
+<!---start-wrap--->
+<div class="wrap">
+    <!---start-header--->
+    <div class="header">
+        <!---start-top-header--->
+        <div class="top-header" style="display: none;">
+            <div class="top-header-left">
+                <ul>
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Specials</a></li>
+                    <li><a href="#">Delivery</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="top-header-right">
+                <ul>
+                    <li><a href="#">CURRENCY:</a></li>
+                    <li>
+                        <select>
+                            <option>Dollar</option>
+                            <option>Euro</option>
+                            <option>Pound</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="sub-header" style="margin-top: 24px;">
+            <div class="logo">
+                <a href="index.html"><img src="../../static/images/logo.png" title="logo"/></a>
+            </div>
+            <div class="sub-header-right">
+                <ul>
+                    <li><a id="li_shopping_car">购物车 <img src="../../static/images/cart.png" title="cart"/></a></li>
+                </ul>
+                <!--<input type="text"><input type="submit" value="查找"/>-->
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="top-nav">
+            <ul>
+                <li><a id="li_home">主页</a></li>
+                <li><a id="li_news">最新资讯</a></li>
+                <li><a id="li_score">商城</a></li>
+                <li><a id="li_car_fix">车辆维护</a></li>
+                <li><a id="li_question">咨询服务</a></li>
+                <li><a id="li_report">问卷调查</a></li>
+                <!--<li><a href="login.html">Feedback</a></li>-->
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <!---end-top-header--->
+        <!---End-header--->
     </div>
-    <div class="news-des">
-        <div class="news-content-des">
-
+    <!--content-->
+    <div class="content">
+        <div class="single-page"><br/>
+            <div class="single-top-pagination">
+                <ul>
+                    <li><a href="../../news">资讯 /</a></li>
+                    <li><span>新闻详情</span></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <div class="contact">
+                <div>
+                    <h3 th:text="${news.title}"></h3>
+                    <hr>
+                    <div th:utext="${news.content}"></div>
+                    <br/>
+                    <br/>
+                    <br/>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="footer">
+        <div class="section group">
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>INFORMATION</h3>
+                <ul>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">位置信息</a></li>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">团队精神</a></li>
+                    <li><a href="#">法律责任</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>OUR OFFERS</h3>
+                <ul>
+                    <li><a href="#">最新产品</a></li>
+                    <li><a href="#">今日特价</a></li>
+                    <li><a href="#">全部产品</a></li>
+                    <li><a href="#">维护套餐</a></li>
+                    <li><a href="#">维护预约</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4">
+                <h3>YOUR ACCOUNT</h3>
+                <ul>
+                    <li><a href="#">我的账号</a></li>
+                    <li><a href="#">会员信息</a></li>
+                    <li><a href="#">积分详情</a></li>
+                    <li><a href="#">收货地址</a></li>
+                    <li><a href="#">我的购物车</a></li>
+                </ul>
+            </div>
+            <div class="col_1_of_4 span_1_of_4 footer-lastgrid">
+                <h3>Get in touch</h3>
+                <ul>
+                    <li><a href="#"><img src="../../static/images/facebook.png" title="facebook"/></a></li>
+                    <li><a href="#"><img src="../../static/images/twitter.png" title="Twiiter"/></a></li>
+                    <li><a href="#"><img src="../../static/images/rss.png" title="Rss"/></a></li>
+                    <li><a href="#"><img src="../../static/images/gpluse.png" title="Google+"/></a></li>
+                </ul>
+                <p>Design by <a href="#">Maple</a></p>
+            </div>
         </div>
     </div>
 
-</div>
-
-</body>
-<script src="../../static/js/jquery-3.3.1.min.js"></script>
-<script src="../../static/js/common.js"></script>
-<script>
-    $(function () {
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "../news/getNewsDetail",
-            data: {id: getQueryString("id")},
-            success: function (data) {
-                var tmp = "<h1>" + data.title + "</h1>";
-                tmp += "<div class='author-time'>";
-                tmp += "<span>" + timestampToTime(data.createTime) + "</span>";
-                tmp += "</div>";
-                tmp += "<div class=\"news-des\">";
-                tmp += "<div class=\"news-content-des\">";
-                tmp += data.content;
-                tmp += "</div></div>";
-                $(".container").empty();
-                $(".container").append(tmp);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert(XMLHttpRequest.responseText)
-            }
+    <script src="../../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../../static/js/bootstrap.min.js"></script>
+    <script src="../../static/js/common.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            getShoppingCartCount()
         })
-    });
-
-    function getQueryString(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) return unescape(r[2]);
-        return null;
-    }
-</script>
+    </script>
+</div>
+<!---End-wrap--->
+</body>
 </html>
+

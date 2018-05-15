@@ -2,12 +2,10 @@ package com.maple.web.carserver.module;
 
 import com.maple.web.carserver.dao.ShoppingCartDao;
 import com.maple.web.carserver.domain.GoodsEntity;
+import com.maple.web.carserver.domain.NewsEntity;
 import com.maple.web.carserver.domain.RepairEntity;
 import com.maple.web.carserver.domain.UserEntity;
-import com.maple.web.carserver.service.GoodsService;
-import com.maple.web.carserver.service.RepairService;
-import com.maple.web.carserver.service.ShoppingCartService;
-import com.maple.web.carserver.service.UserService;
+import com.maple.web.carserver.service.*;
 import com.maple.web.carserver.utils.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +32,8 @@ public class IndexController {
     private RepairService repairService;
     @Resource
     private UserService userService;
+    @Resource
+    private NewsService newsService;
     @Resource
     private ShoppingCartService shoppingCartService;
 
@@ -72,8 +72,11 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/newsDetail")
-    public ModelAndView newsDetail(){
-        return new ModelAndView("user/newsDetail");
+    public ModelAndView newsDetail(Integer id){
+        NewsEntity news = newsService.getNewsDetail(id);
+        ModelAndView model = new ModelAndView("user/newsDetail");
+        model.addObject("news",news);
+        return model;
     }
 
     /**

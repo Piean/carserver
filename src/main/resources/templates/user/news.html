@@ -205,7 +205,7 @@
         var tempString = "<div id='items'><ul>";
         for (var i = 0; i < data.length; i++) {
             tempString += "<li class='news-li'>";
-            tempString += "<a href='/newsDetail?id="+data[i].id+"' target='_blank'>"+data[i].title+"</a>"+"<span>"+timestampToTime(data[i].createTime)+"</span>";
+            tempString += "<a href='../newsDetail?id="+data[i].id+"'>"+data[i].title+"</a>"+"<span>"+timestampToTime(data[i].createTime)+"</span>";
             tempString += "</li>";
         }
         tempString += "</ul></div>";
