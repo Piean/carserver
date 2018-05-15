@@ -93,14 +93,13 @@
                                 用户名： <span style="display: inline-block" id="userName"></span>
                             </div>
                             <div>
-                                我的余额：<span style="display: inline-block" id="balance"></span>
+                                余额：<span style="display: inline-block" id="balance"></span>
                             </div>
                             <div>
-                                我的积分：<span style="display: inline-block" id="score"></span>
+                                积分：<span style="display: inline-block" id="score"></span>
                             </div>
                             <div>
                                 会员：<span style="display: inline-block" id="vip">会员用户</span>
-                                <button id="btn_vip" type="button" style="display: none">申请会员</button>
                             </div>
                         </form>
                     </div>
@@ -169,24 +168,6 @@
     $(function () {
         getShoppingCartCount()
         req()
-        $("#btn_vip").click(function () {
-            $.ajax({
-                type: "post",
-                dataType: "json",
-                url: "../account/updateAccount",
-                data: {
-                    id: kUserId,
-                    isVip: 1
-                },
-                success: function (data) {
-                    alert("成功申请")
-                    req()
-                },
-                error: function (data) {
-                    alert("系统错误")
-                }
-            })
-        })
 
         $("#btn_recharge").click(function () {
             $.ajax({
@@ -215,7 +196,7 @@
             url: "account/getUserInfo",
             data: {},
             success: function (data) {
-                if (data.length == 0) return
+                if (data == null) return
 
                 kUserId = data.id
                 $("#userName").text(data.username)
@@ -224,14 +205,10 @@
                 if (data.isVip) {
                     $("#vip").text("会员用户")
                 } else {
-                    $("#btn_vip").css("display", "")
-                    $("#vip").text("非会员用户")
-
+                    $("#vip").text("非会员用户 (一次性充值5000元即可自动成为会员)")
                 }
-
-
             },
-            error: function (data) {
+            error: function () {
                 alert("系统错误")
             }
         })

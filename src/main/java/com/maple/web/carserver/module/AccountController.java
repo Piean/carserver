@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Service;
 import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
 
 
 @RestController
@@ -103,7 +101,17 @@ public class AccountController {
      */
     @RequestMapping("/updateAccount")
     public Integer updateAccount(UserEntity userEntity) {
-        return userService.updateAccount(userEntity);
+        UserEntity user = userService.getUserById(userEntity.getId());
+        if (user == null) {
+            return -1;
+        }
+        if (userEntity.getBalance() != null) {
+            if (userEntity.getBalance() >= 5000) {
+                user.setIsVip((byte) 1);
+            }
+            user.setBalance(user.getBalance() + userEntity.getBalance());
+        }
+        return userService.updateAccount(user);
     }
 
     /**
