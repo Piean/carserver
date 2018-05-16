@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Spareparts Website Template | carlights :: Maple</title>
+    <link href="./static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <!--<link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>-->
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+</head>
+<body>
+<!---start-wrap--->
+<div class="wrap">
+    <!---start-header--->
+    <div class="header">
+        <!---start-top-header--->
+        <div class="top-header" style="display: none;">
+            <div class="top-header-left">
+                <ul>
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Specials</a></li>
+                    <li><a href="#">Delivery</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="top-header-right">
+                <ul>
+                    <li><a href="#">CURRENCY:</a></li>
+                    <li>
+                        <select>
+                            <option>Dollar</option>
+                            <option>Euro</option>
+                            <option>Pound</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="sub-header" style="margin-top: 24px;">
+            <div class="logo">
+                <a href="index.html"><img src="../../static/images/logo.png" title="logo"/></a>
+            </div>
+            <div class="sub-header-right">
+                <ul>
+                    <li><a id="li_login">登录</a></li>
+                    <li><a id="li_account">我的账户</a></li>
+                    <li><a id="li_shopping_car">购物车 <img src="../../static/images/cart.png" title="cart"/></a></li>
+                </ul>
+                <!--<input type="text"><input type="submit" value="查找"/>-->
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="top-nav">
+            <ul>
+                <li><a id="li_home">主页</a></li>
+                <li><a id="li_news">最新资讯</a></li>
+                <li><a id="li_score">商城</a></li>
+                <li><a id="li_car_fix">车辆维护</a></li>
+                <li><a id="li_question">咨询服务</a></li>
+                <li><a id="li_report">问卷调查</a></li>
+                <!--<li><a href="login.html">Feedback</a></li>-->
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <!---end-top-header--->
+        <!---End-header--->
+    </div>
+
+    <!--content-->
+    <div class="content">
+        <div class="single-page"><br/>
+            <div class="clear"></div>
+            <table th:each="indent : ${indentList}" class="table table-hover text-center">
+                <tr>
+                    <th th:text="${'订单号:' + indent.id}"></th>
+                    <th th:text="${'订单原价:' + indent.total}"></th>
+                    <th th:text="${'折后总价:' + indent.pay}"></th>
+                    <th th:text="${'定金(余额部分):' + indent.money}"></th>
+                    <th th:text="${'定金(积分部分):' + indent.integral}"></th>
+                    <th th:text="${'姓名:' + indent.name}"></th>
+                    <th th:text="${'手机号:' + indent.phone}"></th>
+                    <th th:text="${'地址:' + indent.address}"></th>
+                    <th th:if="${indent.status == 0}">待处理</th>
+                    <th th:if="${indent.status == 1}">已完成</th>
+                </tr>
+                <tr>
+                    <td colspan="9">
+                        <table class="table table-hover text-left">
+                            <tr>
+                                <th width=\"40%\">名称</th>
+                                <th width=\"20%\">类型</th>
+                                <th width=\"20%\">价格</th>
+                                <th width=\"20%\">折扣</th>
+                            </tr>
+                            <tr th:each="goods : ${indent.cartDetail}">
+                                <td th:text="${goods.name}"></td>
+                                <td th:text="${goods.kind}"></td>
+                                <td th:text="${goods.price}"></td>
+                                <td th:text="${goods.discount}"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="clear"></div>
+<!--footer-->
+<div class="footer">
+    <div class="section group">
+        <div class="col_1_of_4 span_1_of_4">
+            <h3>INFORMATION</h3>
+            <ul>
+                <li><a href="#">关于我们</a></li>
+                <li><a href="#">位置信息</a></li>
+                <li><a href="#">联系方式</a></li>
+                <li><a href="#">团队精神</a></li>
+                <li><a href="#">法律责任</a></li>
+            </ul>
+        </div>
+        <div class="col_1_of_4 span_1_of_4">
+            <h3>OUR OFFERS</h3>
+            <ul>
+                <li><a href="#">最新产品</a></li>
+                <li><a href="#">今日特价</a></li>
+                <li><a href="#">全部产品</a></li>
+                <li><a href="#">维护套餐</a></li>
+                <li><a href="#">维护预约</a></li>
+            </ul>
+        </div>
+        <div class="col_1_of_4 span_1_of_4">
+            <h3>YOUR ACCOUNT</h3>
+            <ul>
+                <li><a href="#">我的账号</a></li>
+                <li><a href="#">会员信息</a></li>
+                <li><a href="#">积分详情</a></li>
+                <li><a href="#">收货地址</a></li>
+                <li><a href="#">我的购物车</a></li>
+            </ul>
+        </div>
+        <div class="col_1_of_4 span_1_of_4 footer-lastgrid">
+            <h3>Get in touch</h3>
+            <ul>
+                <li><a href="#"><img src="./static/images/facebook.png" title="facebook"/></a></li>
+                <li><a href="#"><img src="./static/images/twitter.png" title="Twiiter"/></a></li>
+                <li><a href="#"><img src="./static/images/rss.png" title="Rss"/></a></li>
+                <li><a href="#"><img src="./static/images/gpluse.png" title="Google+"/></a></li>
+            </ul>
+            <p>Design by <a href="#">Maple</a></p>
+        </div>
+    </div>
+</div>
+</div>
+<!---End-wrap--->
+</body>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/common.js"></script>
+<!--<script src="../../static/js/bootstrap.min.js"></script>-->
+<!--<script src="../../static/js/admin.js"></script>-->
+<!--<script src="../../static/js/jquery.form.js"></script>-->
+<script>
+    $(function () {
+        getShoppingCartCount()
+    })
+</script>
+</html>
+

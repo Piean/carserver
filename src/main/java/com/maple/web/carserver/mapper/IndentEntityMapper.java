@@ -14,4 +14,6 @@ public interface IndentEntityMapper {
     Integer count();
 
     List<IndentEntity> getListByPage(Integer page);
+
+    List<IndentEntity> getListByUser(Integer userId);
 }

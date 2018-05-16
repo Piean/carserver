@@ -69,104 +69,104 @@
     </div>
 
     <!--content-->
-    <div class="content" style="margin-top: -30px;">
-        <div th:if="${shoppingCart != null &amp;&amp; shoppingCart.size() > 0}" class="contact">
-            <h4 style="padding-top: 20px;">购物车结算</h4>
-            <table class="table table-striped" style="padding-top: 10px">
-                <thead>
-                <tr>
-                    <th style="font-size: 17px;">商品名称</th>
-                    <th style="font-size: 17px;">数量</th>
-                    <th style="font-size: 17px;">单价</th>
-                    <th style="font-size: 17px;">折扣</th>
-                    <th style="font-size: 17px;">总价</th>
-                    <th style="font-size: 17px;">操作</th>
-                </tr>
-                </thead>
-                <tbody id="table-body">
-                <tr th:each="data : ${shoppingCart}">
-                    <td>
-                        <div><strong th:text="${data.name}"></strong></div>
-                    </td>
-                    <td>
-                        <button class="btn-default btn-xs" th:onclick="'javascript:updateCount('+${data.id}+','+${data.count - 1}+');'">-</button>
-                        <label th:text="${data.count}"></label>
-                        <button class="btn-default btn-xs" th:onclick="'javascript:updateCount('+${data.id}+','+${data.count + 1}+');'">+</button>
-                    </td>
-                    <td th:text="${data.price}"></td>
-                    <td th:text="${data.discount / 10 + '折'}"></td>
-                    <td th:text="${#numbers.formatDecimal(data.count * data.price * data.discount / 100, 0,2)}"></td>
-                    <td>
-                        <button class="btn-danger btn-sm" th:onclick="'javascript:del('+${data.id}+');'">删除</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th rowspan="2" style="font-size: 17px;">结算</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><strong>订单原价：</strong></td>
-                    <td th:text="${sum}" id="td_sum"></td>
-                </tr>
-                <tr>
-                    <td><strong>折扣优惠：</strong></td>
-                    <td th:text="${#numbers.formatDecimal(deposit, 0,2)}" id="tb_discount_sum"></td>
-                </tr>
-                <tr>
-                    <td><strong>账单总计：</strong></td>
-                    <td th:text="${sum - deposit}" id="tb_real_sum"></td>
-                </tr>
-                <tr>
-                    <td><strong>应付定金：</strong></td>
-                    <td th:text="${#numbers.formatDecimal((sum - deposit) * 0.1, 0,0)}" id="tb_my_pay"></td>
-                </tr>
-                <tr>
-                    <td><strong>积分抵扣(100积分=1元)</strong>
-                    <td>
-                        <label for="use_score"></label>
-                        <input id="use_score" type="number" min="0" th:max="${user.integral}" step="100" value="0" onchange="scoreChange()" style="width: 70px;"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>账户余额</strong>
-                    </td>
-                    <td th:text="${user.balance}" id="tb_my_balance"></td>
-                </tr>
-                <tr>
-                    <td><strong>账户积分</strong>
-                    </td>
-                    <td th:text="${user.integral}" id="tb_my_score"></td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="content">
+        <div class="single-page"><br/>
+            <div class="clear"></div>
+            <div th:if="${shoppingCart != null &amp;&amp; shoppingCart.size() > 0}">
+                <h4 style="padding-top: 20px;">购物车结算</h4>
+                <table class="table table-striped" style="padding-top: 10px">
+                    <thead>
+                    <tr>
+                        <th style="font-size: 17px;">商品名称</th>
+                        <th style="font-size: 17px;">数量</th>
+                        <th style="font-size: 17px;">单价</th>
+                        <th style="font-size: 17px;">折扣</th>
+                        <th style="font-size: 17px;">总价</th>
+                        <th style="font-size: 17px;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    <tr th:each="data : ${shoppingCart}">
+                        <td>
+                            <div><strong th:text="${data.name}"></strong></div>
+                        </td>
+                        <td>
+                            <button class="btn-default btn-xs" th:onclick="'javascript:updateCount('+${data.id}+','+${data.count - 1}+');'">-</button>
+                            <label th:text="${data.count}"></label>
+                            <button class="btn-default btn-xs" th:onclick="'javascript:updateCount('+${data.id}+','+${data.count + 1}+');'">+</button>
+                        </td>
+                        <td th:text="${data.price}"></td>
+                        <td th:text="${data.discount / 10 + '折'}"></td>
+                        <td th:text="${#numbers.formatDecimal(data.count * data.price * data.discount / 100, 0,2)}"></td>
+                        <td>
+                            <button class="btn-danger btn-sm" th:onclick="'javascript:del('+${data.id}+');'">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th rowspan="2" style="font-size: 17px;">结算</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><strong>订单原价：</strong></td>
+                        <td th:text="${sum}" id="td_sum"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>折扣优惠：</strong></td>
+                        <td th:text="${#numbers.formatDecimal(deposit, 0,2)}" id="tb_discount_sum"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>账单总计：</strong></td>
+                        <td th:text="${sum - deposit}" id="tb_real_sum"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>应付定金：</strong></td>
+                        <td th:text="${#numbers.formatDecimal((sum - deposit) * 0.1, 0,0)}" id="tb_my_pay"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>积分抵扣(100积分=1元)</strong>
+                        <td>
+                            <label for="use_score"></label>
+                            <input id="use_score" type="number" min="0" th:max="${user.integral}" step="100" value="0" onchange="scoreChange()" style="width: 70px;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>账户余额</strong>
+                        </td>
+                        <td th:text="${user.balance}" id="tb_my_balance"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>账户积分</strong>
+                        </td>
+                        <td th:text="${user.integral}" id="tb_my_score"></td>
+                    </tr>
+                    </tbody>
+                </table>
 
-            <div>
-                <h4>请填写您的个人信息后支付</h4>
-                <label><input id="user_name" type="text" class="form-control" placeholder="姓名" /></label>
-                <label><input id="user_phone" type="text" class="form-control" placeholder="手机号" onkeyup="value=value.replace(/[^\d]/g,'')" /></label>
-                <label><input id="user_address" type="text" class="form-control" placeholder="联系地址" /></label>
+                <div>
+                    <h4>请填写您的个人信息后支付</h4>
+                    <label><input id="user_name" type="text" class="form-control" placeholder="姓名" /></label>
+                    <label><input id="user_phone" type="text" class="form-control" placeholder="手机号" onkeyup="value=value.replace(/[^\d]/g,'')" /></label>
+                    <label><input id="user_address" type="text" class="form-control" placeholder="联系地址" /></label>
+                </div>
+
+                <div class="text-right">
+                    <label for="tb_pay_money">余额扣除:</label><label id="tb_pay_money" th:text="${#numbers.formatDecimal((sum - deposit) * 0.1, 0,0)}"></label>&nbsp;
+                    <label for="tb_pay_integral">积分扣除:</label><label id="tb_pay_integral">0</label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-primary" onclick="buyAllGoods()"><i class="fa fa-dollar"></i>支付定金</button>
+                </div>
             </div>
-
-            <div class="text-right">
-                <label for="tb_pay_money">余额扣除:</label><label id="tb_pay_money" th:text="${#numbers.formatDecimal((sum - deposit) * 0.1, 0,0)}"></label>&nbsp;
-                <label for="tb_pay_integral">积分扣除:</label><label id="tb_pay_integral">0</label>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <button class="btn btn-primary" onclick="buyAllGoods()"><i class="fa fa-dollar"></i>支付定金</button>
+            <div th:if="${shoppingCart == null || shoppingCart.size() == 0}">
+                <h4>哦NO，购物车空空如也！</h4>
+                <br/>
+                <h4>去<a href="../goods">商城</a>逛逛</h4>
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             </div>
-        </div>
-        <div th:if="${shoppingCart == null || shoppingCart.size() == 0}" class="contact">
-            <h4 style="padding-top: 40px;">哦NO，购物车空空如也！</h4>
-            <table class="table table-striped" style="padding-top: 10px">
-
-            </table>
-            <br/>
-            <h4 style="padding-top: 10px;">去<a href="../goods">商城</a>逛逛</h4>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
         </div>
     </div>
 </div>

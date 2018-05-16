@@ -1,12 +1,11 @@
 package com.maple.web.carserver.module;
 
+import com.maple.web.carserver.dao.IndentDao;
 import com.maple.web.carserver.dao.ShoppingCartDao;
-import com.maple.web.carserver.domain.GoodsEntity;
-import com.maple.web.carserver.domain.NewsEntity;
-import com.maple.web.carserver.domain.RepairEntity;
-import com.maple.web.carserver.domain.UserEntity;
+import com.maple.web.carserver.domain.*;
 import com.maple.web.carserver.service.*;
 import com.maple.web.carserver.utils.SessionUtil;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
@@ -16,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,7 +37,11 @@ public class IndexController {
     @Resource
     private NewsService newsService;
     @Resource
+    private StoreService storeService;
+    @Resource
     private ShoppingCartService shoppingCartService;
+    @Resource
+    private IndentService indentService;
 
     /**
      * 默认访问至用户端主页
@@ -60,31 +66,34 @@ public class IndexController {
 
     /**
      * 跳转至新闻
+     *
      * @return
      */
     @RequestMapping("/news")
-    public ModelAndView news(){
+    public ModelAndView news() {
         return new ModelAndView("user/news");
     }
 
     /**
      * 跳转至新闻
+     *
      * @return
      */
     @RequestMapping("/newsDetail")
-    public ModelAndView newsDetail(Integer id){
+    public ModelAndView newsDetail(Integer id) {
         NewsEntity news = newsService.getNewsDetail(id);
         ModelAndView model = new ModelAndView("user/newsDetail");
-        model.addObject("news",news);
+        model.addObject("news", news);
         return model;
     }
 
     /**
      * 用户信息
+     *
      * @return
      */
     @RequestMapping("/userInfo")
-    public ModelAndView userInfo(){
+    public ModelAndView userInfo() {
         return new ModelAndView("user/userInfo");
     }
 
@@ -97,12 +106,13 @@ public class IndexController {
     public ModelAndView repair(HttpServletRequest request, Model model) {
         Integer userId = SessionUtil.getInstance().getUserId(request.getSession().getId());
         List<RepairEntity> repairList = repairService.getListByUserId(userId);
-        model.addAttribute("repairList",repairList);
+        model.addAttribute("repairList", repairList);
         return new ModelAndView("user/repair");
     }
 
 
-    /**0
+    /**
+     * 0
      * 跳转至问卷页面
      *
      * @return
@@ -134,21 +144,19 @@ public class IndexController {
         if (userId != null) {
             UserEntity user = userService.getUserById(userId);
             List<ShoppingCartDao> shoppingCart = shoppingCartService.selectGoodsList(userId);
-            double sum = 0,deposit = 0;
+            double sum = 0, deposit = 0;
             for (ShoppingCartDao cart : shoppingCart) {
                 sum = sum + cart.getCount() * cart.getPrice();
                 deposit = deposit + cart.getCount() * cart.getPrice() * (1 - cart.getDiscount() / 100D);
             }
-            model.addObject("user",user);
-            model.addObject("sum",sum);
-            model.addObject("deposit",deposit);
-            model.addObject("shoppingCart",shoppingCart);
+            model.addObject("user", user);
+            model.addObject("sum", sum);
+            model.addObject("deposit", deposit);
+            model.addObject("shoppingCart", shoppingCart);
         }
 
         return model;
     }
-
-
 
 
     /**
@@ -159,6 +167,10 @@ public class IndexController {
     @RequestMapping("/goodsDetail")
     public ModelAndView goodsDetail(GoodsEntity goodsEntity) {
         ModelAndView modelAndView = new ModelAndView("user/goodsDetail");
+        StoreEntity store = storeService.getByGoodsId(goodsEntity.getId());
+        if (store != null) {
+            goodsEntity.setStock(store.getCount());
+        }
         modelAndView.addObject(goodsEntity);
         return modelAndView;
     }
@@ -261,7 +273,7 @@ public class IndexController {
     @RequestMapping("admin/saleManage")
     public ModelAndView saleManage(Model model) {
         List<GoodsEntity> goodsList = goodsService.getAll();
-        model.addAttribute("goodsList",goodsList);
+        model.addAttribute("goodsList", goodsList);
         return new ModelAndView("admin/saleManage");
     }
 
@@ -274,6 +286,28 @@ public class IndexController {
     @RequestMapping("admin/indentManage")
     public ModelAndView indentManage() {
         return new ModelAndView("admin/indentManage");
+    }
+
+    @RequestMapping("indent")
+    public ModelAndView indent(HttpServletRequest request) {
+        ModelAndView model = new ModelAndView("user/indent");
+        Integer userId = SessionUtil.getInstance().getUserId(request.getSession().getId());
+        if (userId != null) {
+            List<IndentEntity> indentList = indentService.getListByUser(userId);
+            List<IndentDao> result = new ArrayList<>(indentList.size());
+            for (IndentEntity indent : indentList) {
+                IndentDao dao = new IndentDao();
+                try {
+                    BeanUtils.copyProperties(dao, indent);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+                dao.setCartDetail(shoppingCartService.getByIdList(Arrays.asList(indent.getCartId().split(","))));
+                result.add(dao);
+            }
+            model.addObject("indentList",result);
+        }
+        return model;
     }
 
     /**

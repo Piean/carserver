@@ -46,4 +46,9 @@ public class IndentServiceImpl implements IndentService {
     public List<IndentEntity> getListByPage(Integer page) {
         return indentEntityMapper.getListByPage(page * 8);
     }
+
+    @Override
+    public List<IndentEntity> getListByUser(Integer userId) {
+        return indentEntityMapper.getListByUser(userId);
+    }
 }

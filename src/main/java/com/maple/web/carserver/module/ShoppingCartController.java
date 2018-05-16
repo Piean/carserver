@@ -119,7 +119,7 @@ public class ShoppingCartController {
         }
         StoreEntity store = storeService.getByGoodsId(shoppingCartEntity.getTbGoodsId());
         if (store != null) {
-            store.setCount(store.getCount() + shoppingCartEntity.getCount());
+            store.setCount(store.getCount() - shoppingCartEntity.getCount());
             storeService.update(store);
         }
         return shoppingCartService.saveOrUpdate(shoppingCartEntity);
