@@ -23,8 +23,8 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public List<SaleDao> selectByPageNumber(Integer pageNumber) {
-        return entityMapper.selectByPageNumber(pageNumber * 8);
+    public List<SaleDao> selectByPageNumber(Integer pageNumber, String keyword) {
+        return entityMapper.selectByPageNumber(pageNumber * 8,keyword);
     }
 
     @Override

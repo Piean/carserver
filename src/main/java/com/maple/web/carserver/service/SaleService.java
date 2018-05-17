@@ -8,7 +8,7 @@ import java.util.List;
 public interface SaleService {
     Integer count();
 
-    List<SaleDao> selectByPageNumber(Integer pageNumber);
+    List<SaleDao> selectByPageNumber(Integer pageNumber, String keyword);
 
     List<SaleDao> getAllSale();
 

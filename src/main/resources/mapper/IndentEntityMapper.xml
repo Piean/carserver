@@ -79,8 +79,11 @@
       <include refid="Base_Column_List"/>
     from
       tb_indent
+    <if test="keyword != null">
+      where tb_indent.name like concat("%",#{keyword},"%") or tb_indent.address like concat("%",#{keyword},"%") or tb_indent.phone like concat("%",#{keyword},"%")
+    </if>
     order by status asc , create_time desc
-    limit #{page, jdbcType=INTEGER}, 8
+    limit #{start}, 8
   </select>
 
   <select id="getListByUser"  resultMap="BaseResultMap" parameterType="java.lang.Integer">

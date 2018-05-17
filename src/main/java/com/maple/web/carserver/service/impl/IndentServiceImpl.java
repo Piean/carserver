@@ -43,8 +43,8 @@ public class IndentServiceImpl implements IndentService {
     }
 
     @Override
-    public List<IndentEntity> getListByPage(Integer page) {
-        return indentEntityMapper.getListByPage(page * 8);
+    public List<IndentEntity> getListByPage(Integer page, String keyword) {
+        return indentEntityMapper.getListByPage(page * 8,keyword);
     }
 
     @Override

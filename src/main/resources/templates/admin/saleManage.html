@@ -20,6 +20,14 @@
         </button>
         <button type="button" class="button border-yellow" id="btn-excel">导出表格</button>
     </div>
+    <br>
+    <div class="input-group" style="width: 300px">
+        <input type="text" class="form-control" id="input_query" placeholder="输入商品名称或销售人员姓名查询">
+        <span class="input-group-btn">
+             <button class="btn btn-default" type="button" onclick="query()">查询</button>
+        </span>
+    </div>
+    <hr>
     <table class="table table-hover text-center" id="main-table">
     </table>
 </div>
@@ -116,6 +124,7 @@
     var kCount
     var kDeleteId
     var kPageNumber
+    var keyword
 
     $(function () {
         kPageNumber = 0
@@ -146,25 +155,35 @@
         $("#input_price").val($(selector).find("option:selected").attr("price"));
     }
 
+    function query() {
+        keyword = $("#input_query").val();
+        requestList();
+    }
+
     function requestList() {
         $.ajax({
             type: "post",
             dataType: "json",
             url: "../sale/selectByPageNumber",
             data: {
-                pageNumber: kPageNumber
+                pageNumber: kPageNumber,
+                keyword: keyword
             },
             success: function (data) {
                 generateList(data)
             },
             error: function (data) {
-                alert("系统错误")
+                // alert("系统错误")
+                alert(data.error())
             }
         })
     }
 
     function generateList(data) {
-        if (data.length <= 0) return
+        if (data.length <= 0) {
+            $("#main-table").empty()
+            return
+        }
 
         var tempStr = "<tr>\n" +
             "            <th width=\"5%\">ID</th>\n" +

@@ -17,7 +17,7 @@ public interface IndentService {
 
     Integer count();
 
-    List<IndentEntity> getListByPage(Integer page);
+    List<IndentEntity> getListByPage(Integer page, String keyword);
 
     List<IndentEntity> getListByUser(Integer userId);
 }

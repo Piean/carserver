@@ -172,7 +172,7 @@
     select count(*) from tb_sale
   </select>
 
-  <select id="selectByPageNumber" parameterType="java.lang.Integer" resultType="com.maple.web.carserver.dao.SaleDao">
+  <select id="selectByPageNumber" parameterType="java.util.Map" resultType="com.maple.web.carserver.dao.SaleDao">
     SELECT
       tb_sale.id,
       tb_sale.goods_id AS goodsId,
@@ -186,6 +186,9 @@
     FROM
       tb_sale,tb_goods
     WHERE tb_sale.goods_id = tb_goods.id
+    <if test="keyword != null">
+      AND tb_sale.saler_name LIKE CONCAT("%",#{keyword},"%") OR tb_goods.name LIKE CONCAT("%",#{keyword},"%")
+    </if>
     LIMIT #{start}, 8
   </select>
 

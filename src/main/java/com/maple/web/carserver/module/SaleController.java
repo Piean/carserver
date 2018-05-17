@@ -38,8 +38,8 @@ public class SaleController {
      * @return
      */
     @RequestMapping("/selectByPageNumber")
-    public List<SaleDao> selectByPageNumber(Integer pageNumber) {
-        return saleService.selectByPageNumber(pageNumber);
+    public List<SaleDao> selectByPageNumber(Integer pageNumber, String keyword) {
+        return saleService.selectByPageNumber(pageNumber,keyword);
     }
 
     /**

@@ -12,7 +12,17 @@
 </head>
 <body>
 <div class="panel admin-panel">
-    <div class="panel-head"><strong class="icon-reorder">订单管理</strong></div>
+    <div class="panel-head">
+        <strong class="icon-reorder">订单管理</strong>
+    </div>
+    <br>
+    <div class="input-group" style="width: 300px">
+        <input type="text" class="form-control" id="input_query" placeholder="输入下单人信息查询">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="query()">查询</button>
+        </span>
+    </div>
+    <hr>
     <table class="table table-hover text-center" id="main-table">
     </table>
 </div>
@@ -26,6 +36,7 @@
     var kCount
     var kDeleteId
     var kPageNumber
+    var keyword
 
     $(function () {
         kPageNumber = 0
@@ -38,11 +49,16 @@
                 kCount = data
                 requestList()
             },
-            error: function (data) {
+            error: function () {
                 alert("系统错误")
             }
         })
     })
+
+    function query() {
+        keyword = $("#input_query").val();
+        requestList();
+    }
 
     function requestList() {
         $.ajax({
@@ -50,7 +66,8 @@
             dataType: "json",
             url: "../indent/list",
             data: {
-                pageNumber: kPageNumber
+                pageNumber: kPageNumber,
+                keyword: keyword
             },
             success: function (data) {
                 generateList(data)

@@ -2,6 +2,7 @@ package com.maple.web.carserver.mapper;
 
 import com.maple.web.carserver.dao.SaleDao;
 import com.maple.web.carserver.domain.SaleEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface SaleEntityMapper {
      * @param start
      * @return
      */
-    List<SaleDao> selectByPageNumber(Integer start);
+    List<SaleDao> selectByPageNumber(@Param("start") Integer start, @Param("keyword") String keyword);
 
     List<SaleDao> getAllSale();
 

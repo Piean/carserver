@@ -32,8 +32,8 @@ public class IndentController {
     }
 
     @RequestMapping("/list")
-    public List<IndentDao> getListByPage(Integer pageNumber) {
-        List<IndentEntity> indentList = indentService.getListByPage(pageNumber);
+    public List<IndentDao> getListByPage(Integer pageNumber, String keyword) {
+        List<IndentEntity> indentList = indentService.getListByPage(pageNumber,keyword);
         List<IndentDao> result = new ArrayList<>(indentList.size());
         for (IndentEntity indent : indentList) {
             IndentDao dao = new IndentDao();
