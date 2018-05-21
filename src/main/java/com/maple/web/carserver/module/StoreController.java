@@ -32,7 +32,7 @@ public class StoreController {
      */
     @RequestMapping("/selectByPageNumber")
     public List<StoreDao> selectByPageNumber(Integer pageNumber) {
-        return storeService.selectByPageNumber(pageNumber * 8);
+        return storeService.selectByPageNumber(pageNumber);
     }
 
     /**
